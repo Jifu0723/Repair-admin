@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairProcessMapper">
+    
+    <resultMap type="RepairProcess" id="RepairProcessResult">
+        <result property="processId"    column="process_id"    />
+        <result property="repaireId"    column="repaire_id"    />
+        <result property="repaireNo"    column="repaire_no"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="applyNo"    column="apply_no"    />
+        <result property="repaireUserid"    column="repaire_userid"    />
+        <result property="repaireName"    column="repaire_name"    />
+        <result property="repaireDep"    column="repaire_dep"    />
+        <result property="workFinish"    column="work_finish"    />
+        <result property="processDescribe"    column="process_describe"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="processIsDelete"    column="process_is_delete"    />
+    </resultMap>
+
+    <sql id="selectRepairProcessVo">
+        select process_id, repaire_id, repaire_no, apply_id, apply_no, repaire_name, repaire_dep,
+        work_finish, process_describe, create_time, process_is_delete
+        from repair_process
+    </sql>
+
+    <select id="selectRepairProcessList" parameterType="RepairProcess" resultMap="RepairProcessResult">
+        <include refid="selectRepairProcessVo"/>
+        <where>  
+            <if test="repaireId != null "> and repaire_id = #{repaireId}</if>
+            <if test="repaireNo != null  and repaireNo != ''"> and repaire_no = #{repaireNo}</if>
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+            <if test="applyNo != null  and applyNo != ''"> and apply_no = #{applyNo}</if>
+            <if test="repaireUserid != null  and repaireUserid != ''"> and repaire_userid = #{repaireUserid}</if>
+            <if test="repaireName != null  and repaireName != ''"> and repaire_name like concat('%', #{repaireName}, '%')</if>
+            <if test="repaireDep != null "> and repaire_dep = #{repaireDep}</if>
+            <if test="workFinish != null "> and work_finish = #{workFinish}</if>
+            <if test="processDescribe != null  and processDescribe != ''"> and process_describe = #{processDescribe}</if>
+            <if test="processIsDelete != null "> and process_is_delete = #{processIsDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectRepairProcessById" parameterType="Long" resultMap="RepairProcessResult">
+        <include refid="selectRepairProcessVo"/>
+        where process_id = #{processId}
+    </select>
+        
+    <insert id="insertRepairProcess" parameterType="RepairProcess" useGeneratedKeys="true" keyProperty="processId">
+        insert into repair_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repaireId != null">repaire_id,</if>
+            <if test="repaireNo != null">repaire_no,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="applyNo != null">apply_no,</if>
+            <if test="repaireUserid != null">repaire_userid,</if>
+            <if test="repaireName != null">repaire_name,</if>
+            <if test="repaireDep != null">repaire_dep,</if>
+            <if test="workFinish != null">work_finish,</if>
+            <if test="processDescribe != null">process_describe,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="processIsDelete != null">process_is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repaireId != null">#{repaireId},</if>
+            <if test="repaireNo != null">#{repaireNo},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="applyNo != null">#{applyNo},</if>
+            <if test="repaireUserid != null">#{repaireUserid},</if>
+            <if test="repaireName != null">#{repaireName},</if>
+            <if test="repaireDep != null">#{repaireDep},</if>
+            <if test="workFinish != null">#{workFinish},</if>
+            <if test="processDescribe != null">#{processDescribe},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="processIsDelete != null">#{processIsDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRepairProcess" parameterType="RepairProcess">
+        update repair_process
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repaireId != null">repaire_id = #{repaireId},</if>
+            <if test="repaireNo != null">repaire_no = #{repaireNo},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="applyNo != null">apply_no = #{applyNo},</if>
+            <if test="repaireName != null">repaire_name = #{repaireName},</if>
+            <if test="repaireDep != null">repaire_dep = #{repaireDep},</if>
+            <if test="workFinish != null">work_finish = #{workFinish},</if>
+            <if test="processDescribe != null">process_describe = #{processDescribe},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="processIsDelete != null">process_is_delete = #{processIsDelete},</if>
+        </trim>
+        where process_id = #{processId}
+    </update>
+
+    <delete id="deleteRepairProcessById" parameterType="Long">
+        delete from repair_process where process_id = #{processId}
+    </delete>
+
+    <delete id="deleteRepairProcessByIds" parameterType="String">
+        delete from repair_process where process_id in 
+        <foreach item="processId" collection="array" open="(" separator="," close=")">
+            #{processId}
+        </foreach>
+    </delete>
+</mapper>

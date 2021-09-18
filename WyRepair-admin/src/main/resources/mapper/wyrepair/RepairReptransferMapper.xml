@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairReptransferMapper">
+
+    <resultMap type="RepairReptransfer" id="RepairReptransferResult">
+        <result property="reptransferId"    column="reptransfer_id"    />
+        <result property="reptId"    column="rept_id"    />
+        <result property="reptNo"    column="rept_no"    />
+        <result property="reptToId"    column="rept_to_id"    />
+        <result property="reptToNo"    column="rept_to_no"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="reptransfeMessage"    column="reptransfe_message"    />
+        <result property="reptransfeUser"    column="reptransfe_user"    />
+        <result property="reptransfeToUser"    column="reptransfe_to_user"    />
+        <result property="reptransfeUserType"    column="reptransfe_user_type"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="reptransfeTime"    column="reptransfe_time"    />
+        <result property="reptransfeIsDelete"    column="reptransfe_is_delete"    />
+        <result property="reptToDept"    column="rept_to_dept"    />
+        <!--转单记录与所转用户一对一关系-->
+        <association property="user" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysUser">
+            <result property="userName" column="user_name"/>
+            <result property="nickName" column="nick_name"/>
+        </association>
+        <!--转单记录与所转部门一对一关系-->
+        <association property="dept" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysDept">
+            <result property="deptName" column="dept_name"/>
+        </association>
+        <!--转单记录与申请单一对一关系-->
+        <association property="apply" javaType="com.gxuwz.wyrepair.domain.RepairApply">
+            <result property="applyType" column="apply_type"/>
+            <result property="applyContent" column="apply_content"/>
+            <result property="applyAddress" column="apply_address"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectRepairReptransferVo">
+        select
+        <if test="reptransfeUser != null and reptransfeUser != ''">
+            user.user_name,
+            user.nick_name,
+            apply.apply_type,
+            apply.apply_content,
+            apply.apply_address,
+        </if>
+--         dept.dept_name,
+        reptransfer_id, rept_id, rept_no, rept_to_id, rept_to_no,
+        repair_reptransfer.apply_id, reptransfe_message, reptransfe_user, reptransfe_to_user, reptransfe_user_type,
+        repair_reptransfer.parent_id, reptransfe_time, reptransfe_is_delete from repair_reptransfer
+        <if test="reptransfeUser != null and reptransfeUser != ''">
+            left join repair_apply as apply on repair_reptransfer.apply_id = apply.apply_id
+            left join sys_user as user on repair_reptransfer.reptransfe_user = user.user_id
+        </if>
+--             left join sys_dept as dept on repair_reptransfer.rept_to_dept = dept.dept_id
+    </sql>
+
+    <select id="selectRepairReptransferList" parameterType="RepairReptransfer" resultMap="RepairReptransferResult">
+        <include refid="selectRepairReptransferVo"/>
+        <where>
+            <if test="reptId != null "> and rept_id = #{reptId}</if>
+            <if test="reptNo != null  and reptNo != ''"> and rept_no = #{reptNo}</if>
+            <if test="reptToId != null "> and rept_to_id = #{reptToId}</if>
+            <if test="reptToNo != null  and reptToNo != ''"> and rept_to_no = #{reptToNo}</if>
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+            <if test="reptransfeMessage != null  and reptransfeMessage != ''"> and reptransfe_message = #{reptransfeMessage}</if>
+            <if test="reptransfeUser != null "> and reptransfe_user = #{reptransfeUser}</if>
+            <if test="reptransfeToUser != null "> and reptransfe_to_user = #{reptransfeToUser}</if>
+            <if test="reptransfeUserType != null "> and reptransfe_user_type = #{reptransfeUserType}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="reptransfeTime != null "> and reptransfe_time = #{reptransfeTime}</if>
+            <if test="reptransfeIsDelete != null "> and reptransfe_is_delete = #{reptransfeIsDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectRepairReptransferById" parameterType="Long" resultMap="RepairReptransferResult">
+        <include refid="selectRepairReptransferVo"/>
+        where reptransfer_id = #{reptransferId}
+    </select>
+
+    <insert id="insertRepairReptransfer" parameterType="RepairReptransfer" useGeneratedKeys="true" keyProperty="reptransferId">
+        insert into repair_reptransfer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reptId != null">rept_id,</if>
+            <if test="reptNo != null">rept_no,</if>
+            <if test="reptToId != null">rept_to_id,</if>
+            <if test="reptToNo != null">rept_to_no,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="reptransfeMessage != null">reptransfe_message,</if>
+            <if test="reptransfeUser != null">reptransfe_user,</if>
+            <if test="reptransfeToUser != null">reptransfe_to_user,</if>
+            <if test="reptransfeUserType != null">reptransfe_user_type,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="reptransfeTime != null">reptransfe_time,</if>
+            <if test="reptransfeIsDelete != null">reptransfe_is_delete,</if>
+            <if test="reptToDept != null">rept_to_dept,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reptId != null">#{reptId},</if>
+            <if test="reptNo != null">#{reptNo},</if>
+            <if test="reptToId != null">#{reptToId},</if>
+            <if test="reptToNo != null">#{reptToNo},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="reptransfeMessage != null">#{reptransfeMessage},</if>
+            <if test="reptransfeUser != null">#{reptransfeUser},</if>
+            <if test="reptransfeToUser != null">#{reptransfeToUser},</if>
+            <if test="reptransfeUserType != null">#{reptransfeUserType},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="reptransfeTime != null">#{reptransfeTime},</if>
+            <if test="reptransfeIsDelete != null">#{reptransfeIsDelete},</if>
+            <if test="reptToDept != null">#{reptToDept},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRepairReptransfer" parameterType="RepairReptransfer">
+        update repair_reptransfer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reptId != null">rept_id = #{reptId},</if>
+            <if test="reptNo != null">rept_no = #{reptNo},</if>
+            <if test="reptToId != null">rept_to_id = #{reptToId},</if>
+            <if test="reptToNo != null">rept_to_no = #{reptToNo},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="reptransfeMessage != null">reptransfe_message = #{reptransfeMessage},</if>
+            <if test="reptransfeUser != null">reptransfe_user = #{reptransfeUser},</if>
+            <if test="reptransfeToUser != null">reptransfe_to_user = #{reptransfeToUser},</if>
+            <if test="reptransfeUserType != null">reptransfe_user_type = #{reptransfeUserType},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="reptransfeTime != null">reptransfe_time = #{reptransfeTime},</if>
+            <if test="reptransfeIsDelete != null">reptransfe_is_delete = #{reptransfeIsDelete},</if>
+        </trim>
+        where reptransfer_id = #{reptransferId}
+    </update>
+
+    <delete id="deleteRepairReptransferById" parameterType="Long">
+        delete from repair_reptransfer where reptransfer_id = #{reptransferId}
+    </delete>
+
+    <delete id="deleteRepairReptransferByIds" parameterType="String">
+        delete from repair_reptransfer where reptransfer_id in
+        <foreach item="reptransferId" collection="array" open="(" separator="," close=")">
+            #{reptransferId}
+        </foreach>
+    </delete>
+</mapper>

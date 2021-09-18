@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairRepImgMapper">
+
+    <resultMap type="RepairRepImg" id="RepairRepImgResult">
+        <result property="repimgId" column="repimg_id"/>
+        <result property="repiId" column="repi_id"/>
+        <result property="repimgName" column="repimg_name"/>
+        <result property="repimgPath" column="repimg_path"/>
+        <result property="repimgCreateTime" column="repimg_create_time"/>
+        <result property="repimgIsDeleted" column="repimg_is_deleted"/>
+    </resultMap>
+
+    <sql id="selectRepairRepImgVo">
+        select repimg_id, repi_id, repimg_name, repimg_path, repimg_create_time, repimg_is_deleted from repair_rep_img
+    </sql>
+
+    <select id="selectRepairRepImgList" parameterType="RepairRepImg" resultMap="RepairRepImgResult">
+        <include refid="selectRepairRepImgVo"/>
+        <where>
+            <if test="repiId != null ">and repi_id = #{repiId}</if>
+            <if test="repimgName != null  and repimgName != ''">and repimg_name = #{repimgName}</if>
+            <if test="repimgPath != null  and repimgPath != ''">and repimg_path = #{repimgPath}</if>
+            <if test="repimgCreateTime != null ">and repimg_create_time = #{repimgCreateTime}</if>
+            <if test="repimgIsDeleted != null ">and repimg_is_deleted = #{repimgIsDeleted}</if>
+        </where>
+    </select>
+
+    <select id="selectRepairRepImgById" parameterType="Long" resultMap="RepairRepImgResult">
+        <include refid="selectRepairRepImgVo"/>
+        where repimg_id = #{repimgId}
+    </select>
+
+    <insert id="insertRepairRepImg" parameterType="RepairRepImg" useGeneratedKeys="true" keyProperty="repimgId">
+        insert into repair_rep_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repiId != null">repi_id,</if>
+            <if test="repimgName != null">repimg_name,</if>
+            <if test="repimgPath != null">repimg_path,</if>
+            <if test="repimgCreateTime != null">repimg_create_time,</if>
+            <if test="repimgIsDeleted != null">repimg_is_deleted,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repiId != null">#{repiId},</if>
+            <if test="repimgName != null">#{repimgName},</if>
+            <if test="repimgPath != null">#{repimgPath},</if>
+            <if test="repimgCreateTime != null">#{repimgCreateTime},</if>
+            <if test="repimgIsDeleted != null">#{repimgIsDeleted},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertRepairRepImgBatch" parameterType="list">
+        insert into repair_rep_img(
+        repi_id,
+        repimg_name,
+        repimg_path,
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.repiId},
+                #{item.repimgName},
+                #{item.repimgPath},
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateRepairRepImg" parameterType="RepairRepImg">
+        update repair_rep_img
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repiId != null">repi_id = #{repiId},</if>
+            <if test="repimgName != null">repimg_name = #{repimgName},</if>
+            <if test="repimgPath != null">repimg_path = #{repimgPath},</if>
+            <if test="repimgCreateTime != null">repimg_create_time = #{repimgCreateTime},</if>
+            <if test="repimgIsDeleted != null">repimg_is_deleted = #{repimgIsDeleted},</if>
+        </trim>
+        where repimg_id = #{repimgId}
+    </update>
+
+    <delete id="deleteRepairRepImgById" parameterType="Long">
+        delete from repair_rep_img where repimg_id = #{repimgId}
+    </delete>
+
+    <delete id="deleteRepairRepImgByIds" parameterType="String">
+        delete from repair_rep_img where repimg_id in
+        <foreach item="repimgId" collection="array" open="(" separator="," close=")">
+            #{repimgId}
+        </foreach>
+    </delete>
+</mapper>

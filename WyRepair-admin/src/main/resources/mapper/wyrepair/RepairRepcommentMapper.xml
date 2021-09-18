@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairRepcommentMapper">
+    
+    <resultMap type="RepairRepcomment" id="RepairRepcommentResult">
+        <result property="repcommentId"    column="repcomment_id"    />
+        <result property="repcId"    column="repc_id"    />
+        <result property="repcNo"    column="repc_no"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="applyNo"    column="apply_no"    />
+        <result property="repairType"    column="repair_type"    />
+        <result property="repcommentContent"    column="repcomment_content"    />
+        <result property="repcommentService"    column="repcomment_service"    />
+        <result property="repcommenUserid"    column="repcommen_userid"    />
+        <result property="repcommenCrteateTime"    column="repcommen_crteate_time"    />
+        <result property="repcIsDelete"    column="repc_is_delete"    />
+    </resultMap>
+
+    <sql id="selectRepairRepcommentVo">
+        select repcomment_id, repc_id, repc_no, apply_id, apply_no, repair_type, repcomment_content, repcomment_service, repcommen_userid, repcommen_crteate_time, repc_is_delete from repair_repcomment
+    </sql>
+
+    <select id="selectRepairRepcommentList" parameterType="RepairRepcomment" resultMap="RepairRepcommentResult">
+        <include refid="selectRepairRepcommentVo"/>
+        <where>  
+            <if test="repcId != null "> and repc_id = #{repcId}</if>
+            <if test="repcNo != null  and repcNo != ''"> and repc_no = #{repcNo}</if>
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+            <if test="applyNo != null  and applyNo != ''"> and apply_no = #{applyNo}</if>
+            <if test="repairType != null "> and repair_type = #{repairType}</if>
+            <if test="repcommentContent != null  and repcommentContent != ''"> and repcomment_content = #{repcommentContent}</if>
+            <if test="repcommentService != null "> and repcomment_service = #{repcommentService}</if>
+            <if test="repcommenUserid != null "> and repcommen_userid = #{repcommenUserid}</if>
+            <if test="repcommenCrteateTime != null "> and repcommen_crteate_time = #{repcommenCrteateTime}</if>
+            <if test="repcIsDelete != null "> and repc_is_delete = #{repcIsDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectRepairRepcommentById" parameterType="Long" resultMap="RepairRepcommentResult">
+        <include refid="selectRepairRepcommentVo"/>
+        where repcomment_id = #{repcommentId}
+    </select>
+        
+    <insert id="insertRepairRepcomment" parameterType="RepairRepcomment" useGeneratedKeys="true" keyProperty="repcommentId">
+        insert into repair_repcomment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repcId != null">repc_id,</if>
+            <if test="repcNo != null">repc_no,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="applyNo != null">apply_no,</if>
+            <if test="repairType != null">repair_type,</if>
+            <if test="repcommentContent != null">repcomment_content,</if>
+            <if test="repcommentService != null">repcomment_service,</if>
+            <if test="repcommenUserid != null">repcommen_userid,</if>
+            <if test="repcommenCrteateTime != null">repcommen_crteate_time,</if>
+            <if test="repcIsDelete != null">repc_is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repcId != null">#{repcId},</if>
+            <if test="repcNo != null">#{repcNo},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="applyNo != null">#{applyNo},</if>
+            <if test="repairType != null">#{repairType},</if>
+            <if test="repcommentContent != null">#{repcommentContent},</if>
+            <if test="repcommentService != null">#{repcommentService},</if>
+            <if test="repcommenUserid != null">#{repcommenUserid},</if>
+            <if test="repcommenCrteateTime != null">#{repcommenCrteateTime},</if>
+            <if test="repcIsDelete != null">#{repcIsDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRepairRepcomment" parameterType="RepairRepcomment">
+        update repair_repcomment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repcId != null">repc_id = #{repcId},</if>
+            <if test="repcNo != null">repc_no = #{repcNo},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="applyNo != null">apply_no = #{applyNo},</if>
+            <if test="repairType != null">repair_type = #{repairType},</if>
+            <if test="repcommentContent != null">repcomment_content = #{repcommentContent},</if>
+            <if test="repcommentService != null">repcomment_service = #{repcommentService},</if>
+            <if test="repcommenUserid != null">repcommen_userid = #{repcommenUserid},</if>
+            <if test="repcommenCrteateTime != null">repcommen_crteate_time = #{repcommenCrteateTime},</if>
+            <if test="repcIsDelete != null">repc_is_delete = #{repcIsDelete},</if>
+        </trim>
+        where repcomment_id = #{repcommentId}
+    </update>
+
+    <delete id="deleteRepairRepcommentById" parameterType="Long">
+        delete from repair_repcomment where repcomment_id = #{repcommentId}
+    </delete>
+
+    <delete id="deleteRepairRepcommentByIds" parameterType="String">
+        delete from repair_repcomment where repcomment_id in 
+        <foreach item="repcommentId" collection="array" open="(" separator="," close=")">
+            #{repcommentId}
+        </foreach>
+    </delete>
+</mapper>

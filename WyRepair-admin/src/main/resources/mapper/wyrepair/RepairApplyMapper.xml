@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairApplyMapper">
+
+    <resultMap type="RepairApply" id="RepairApplyResult">
+        <result property="applyId" column="apply_id"/>
+        <result property="applyNo" column="apply_no"/>
+        <result property="applyAddress" column="apply_address"/>
+        <result property="applyContent" column="apply_content"/>
+        <result property="applyType" column="apply_type"/>
+        <result property="applyExpectTime" column="apply_expect_time"/>
+        <result property="applyDep" column="apply_dep"/>
+        <result property="applyUserid" column="apply_userid"/>
+        <result property="applyUser" column="apply_user"/>
+        <result property="applyRole" column="apply_role"/>
+        <result property="applyCreateTime" column="apply_create_time"/>
+        <result property="applyIsDelete" column="apply_is_delete"/>
+        <!--申请单与申请图片一对多关系-->
+        <collection property="appImgList" ofType="com.gxuwz.wyrepair.domain.RepairAppImg">
+            <result property="appimgId" column="appimg_id"/>
+            <result property="appId" column="app_id"/>
+            <result property="appimgName" column="appimg_name"/>
+            <result property="appimgPath" column="appimg_path"/>
+            <result property="appimgCreateTime" column="appimg_create_time"/>
+            <result property="appimgIsDeleted" column="appimg_is_deleted"/>
+        </collection>
+    </resultMap>
+
+    <sql id="selectRepairApplyVo">
+        select apply_id,
+               apply_no,
+               apply_address,
+               apply_content,
+               apply_type,
+               apply_expect_type,
+               apply_expect_time,
+               apply_dep,
+               apply_user,
+               apply_role,
+               apply_create_time,
+               apply_is_delete
+        from repair_apply
+    </sql>
+
+    <select id="selectRepairApplyList" parameterType="RepairApply" resultMap="RepairApplyResult">
+        select
+        apply_id,
+        apply_no,
+        apply_address,
+        apply_content,
+        apply_type,
+        apply_expect_type,
+        apply_expect_time,
+        apply_dep,
+        apply_user,
+        apply_role,
+        apply_create_time,
+        apply_is_delete,
+        appimgs.*
+        from repair_apply
+        left join repair_app_img appimgs on repair_apply.apply_id = appimgs.app_id
+        <where>
+            <if test="applyNo != null  and applyNo != ''">and apply_no = #{applyNo}</if>
+            <if test="applyAddress != null  and applyAddress != ''">and apply_address = #{applyAddress}</if>
+            <if test="applyContent != null  and applyContent != ''">and apply_content = #{applyContent}</if>
+            <if test="applyType != null ">and apply_type = #{applyType}</if>
+            <if test="applyExpectTime != null ">and apply_expect_time = #{applyExpectTime}</if>
+            <if test="applyDep != null ">and apply_dep = #{applyDep}</if>
+            <if test="applyUserid != null  and applyUserid != ''">and apply_userid = #{apply_userid}</if>
+            <if test="applyUser != null  and applyUser != ''">and apply_user = #{applyUser}</if>
+            <if test="applyRole != null  and applyRole != ''">and apply_role = #{applyRole}</if>
+            <if test="applyCreateTime != null ">and apply_create_time = #{applyCreateTime}</if>
+            <if test="applyIsDelete != null ">and apply_is_delete = #{applyIsDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectRepairApplyById" parameterType="Long" resultMap="RepairApplyResult">
+        <include refid="selectRepairApplyVo"/>
+        where apply_id = #{applyId}
+    </select>
+
+    <insert id="insertRepairApply" parameterType="RepairApply" useGeneratedKeys="true" keyProperty="applyId">
+        insert into repair_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyNo != null">apply_no,</if>
+            <if test="applyAddress != null">apply_address,</if>
+            <if test="applyContent != null">apply_content,</if>
+            <if test="applyType != null">apply_type,</if>
+            <if test="applyExpectTime != null">apply_expect_time,</if>
+            <if test="applyDep != null">apply_dep,</if>
+            <if test="applyUser != null">apply_user,</if>
+            <if test="applyUserid != null">apply_userid,</if>
+            <if test="applyRole != null">apply_role,</if>
+            <if test="applyCreateTime != null">apply_create_time,</if>
+            <if test="applyIsDelete != null">apply_is_delete,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyNo != null">#{applyNo},</if>
+            <if test="applyAddress != null">#{applyAddress},</if>
+            <if test="applyContent != null">#{applyContent},</if>
+            <if test="applyType != null">#{applyType},</if>
+            <if test="applyExpectTime != null">#{applyExpectTime},</if>
+            <if test="applyDep != null">#{applyDep},</if>
+            <if test="applyUser != null">#{applyUser},</if>
+            <if test="applyUserid != null">#{applyUserid},</if>
+            <if test="applyRole != null">#{applyRole},</if>
+            <if test="applyCreateTime != null">#{applyCreateTime},</if>
+            <if test="applyIsDelete != null">#{applyIsDelete},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRepairApply" parameterType="RepairApply">
+        update repair_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyNo != null">apply_no = #{applyNo},</if>
+            <if test="applyAddress != null">apply_address = #{applyAddress},</if>
+            <if test="applyContent != null">apply_content = #{applyContent},</if>
+            <if test="applyType != null">apply_type = #{applyType},</if>
+            <if test="applyExpectTime != null">apply_expect_time = #{applyExpectTime},</if>
+            <if test="applyDep != null">apply_dep = #{applyDep},</if>
+            <if test="applyUserid != null">apply_userid = #{applyUserid},</if>
+            <if test="applyUser != null">apply_user = #{applyUser},</if>
+            <if test="applyRole != null">apply_role = #{applyRole},</if>
+            <if test="applyCreateTime != null">apply_create_time = #{applyCreateTime},</if>
+            <if test="applyIsDelete != null">apply_is_delete = #{applyIsDelete},</if>
+        </trim>
+        where apply_id = #{applyId}
+    </update>
+
+    <delete id="deleteRepairApplyById" parameterType="Long">
+        delete
+        from repair_apply
+        where apply_id = #{applyId}
+    </delete>
+
+    <delete id="deleteRepairApplyByIds" parameterType="String">
+        delete from repair_apply where apply_id in
+        <foreach item="applyId" collection="array" open="(" separator="," close=")">
+            #{applyId}
+        </foreach>
+    </delete>
+</mapper>

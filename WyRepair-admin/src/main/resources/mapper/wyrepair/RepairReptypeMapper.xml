@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairReptypeMapper">
+
+    <resultMap type="RepairReptype" id="RepairReptypeResult">
+        <result property="repairTypeId" column="repair_type_id"/>
+        <result property="repairDep" column="repair_dep"/>
+        <result property="repairType" column="repair_type"/>
+        <association property="sysDept" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysDept">
+            <id property="deptId" column="dept_id"/>
+            <result property="parentId" column="parent_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectRepairReptypeVo">
+        select repair_type_id, repair_type, repair_dep
+        from repair_reptype
+    </sql>
+
+    <select id="selectRepairReptypeList" parameterType="RepairReptype" resultMap="RepairReptypeResult">
+        select t.repair_type_id, t.repair_type,
+        d.dept_id, d.parent_id,d.dept_name
+        from repair_reptype as t
+        left join sys_dept as d on t.repair_dep = d.dept_id
+        <where>
+            <if test="repairDep != null  and repairDep != ''">and t.repair_dep = #{repairDep}</if>
+            <if test="repairType != null  and repairType != ''">and t.repair_type = #{repairType}</if>
+        </where>
+    </select>
+
+    <select id="selectRepairReptypeById" parameterType="Long" resultMap="RepairReptypeResult">
+        <include refid="selectRepairReptypeVo"/>
+        where repair_type_id = #{repairTypeId}
+    </select>
+
+    <insert id="insertRepairReptype" parameterType="RepairReptype" useGeneratedKeys="true" keyProperty="repairTypeId">
+        insert into repair_reptype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repairType != null and repairType != ''">repair_type,</if>
+            <if test="repairDep != null and repairDep != ''">repair_dep,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repairType != null and repairType != ''">#{repairType},</if>
+            <if test="repairDep != null and repairDep != ''">#{repairDep},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRepairReptype" parameterType="RepairReptype">
+        update repair_reptype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repairType != null and repairType != ''">repair_type = #{repairType},</if>
+            <if test="repairDep != null and repairDep != ''">repair_dep = #{repairDep},</if>
+        </trim>
+        where repair_type_id = #{repairTypeId}
+    </update>
+
+    <delete id="deleteRepairReptypeById" parameterType="Long">
+        delete
+        from repair_reptype
+        where repair_type_id = #{repairTypeId}
+    </delete>
+
+    <delete id="deleteRepairReptypeByIds" parameterType="String">
+        delete from repair_reptype where repair_type_id in
+        <foreach item="repairTypeId" collection="array" open="(" separator="," close=")">
+            #{repairTypeId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairRepTbMapper">
+
+    <resultMap type="RepairRepTb" id="RepairRepTbResult">
+        <result property="repairId" column="repair_id"/>
+        <result property="repairNo" column="repair_no"/>
+        <result property="repairAddress" column="repair_address"/>
+        <result property="repairContent" column="repair_content"/>
+        <result property="repairType" column="repair_type"/>
+        <result property="repairExpectTime" column="repair_expect_time"/>
+        <result property="repairState" column="repair_state"/>
+        <result property="repairedState" column="repaired_state"/>
+        <result property="repairDestory" column="repair_destory"/>
+        <result property="repairTransfer" column="repair_transfer"/>
+        <result property="repairComment" column="repair_comment"/>
+        <result property="curWork" column="cur_work"/>
+        <result property="repairDep" column="repair_dep"/>
+        <result property="applyId" column="apply_id"/>
+        <result property="repairDestoryTime" column="repair_destory_time"/>
+        <result property="repairCreateTime" column="repair_create_time"/>
+        <result property="repairIsDelete" column="repair_is_delete"/>
+        <!-- 维修类型 -->
+        <association property="repType" javaType="com.gxuwz.wyrepair.domain.RepairReptype">
+            <result property="repairType" column="repairtype"/>
+        </association>
+        <!--报修单与申请单一对一关系-->
+        <association property="apply" javaType="com.gxuwz.wyrepair.domain.RepairApply">
+            <result property="applyUserid" column="apply_userid"/>
+            <result property="applyUser" column="apply_user"/>
+            <result property="applyRole" column="apply_role"/>
+        </association>
+        <!--报修单与评论一对一关系-->
+        <association property="repcomment" javaType="com.gxuwz.wyrepair.domain.RepairRepcomment">
+            <result property="repcommentId" column="repcomment_id"/>
+            <result property="repcommentContent" column="repcomment_content"/>
+            <result property="repcommentService" column="repcomment_service"/>
+            <result property="repcommenCrteateTime" column="repcommen_crteate_time"/>
+        </association>
+        <!--报修单与报修图片图片一对多关系-->
+        <collection property="repImgList" ofType="com.gxuwz.wyrepair.domain.RepairRepImg">
+            <result property="repimgId" column="repimg_id"/>
+            <result property="repiId" column="repi_id"/>
+            <result property="repimgName" column="repimg_name"/>
+            <result property="repimgPath" column="repimg_path"/>
+            <result property="repimgCreateTime" column="repimg_create_time"/>
+            <result property="repimgIsDeleted" column="repimg_is_deleted"/>
+        </collection>
+        <collection property="appImgList" ofType="com.gxuwz.wyrepair.domain.RepairAppImg">
+            <result property="appimgId" column="appimg_id"/>
+            <result property="appId" column="app_id"/>
+            <result property="appimgName" column="appimg_name"/>
+            <result property="appimgPath" column="appimg_path"/>
+            <result property="appimgCreateTime" column="appimg_create_time"/>
+            <result property="appimgIsDeleted" column="appimg_is_deleted"/>
+        </collection>
+        <!--报修单与维修过程一对多关系-->
+        <collection property="processList" ofType="com.gxuwz.wyrepair.domain.RepairProcess">
+            <result property="processId" column="p_process_id"/>
+            <result property="repaireId" column="p_repaire_id"/>
+            <result property="repaireNo" column="p_repaire_no"/>
+            <result property="applyId" column="p_p_apply_id"/>
+            <result property="applyNo" column="p_apply_no"/>
+            <result property="repaireUserid" column="p_repair_userid"/>
+            <result property="repaireName" column="p_repaire_name"/>
+            <result property="repaireDep" column="p_repaire_dep"/>
+            <result property="workFinish" column="p_work_finish"/>
+            <result property="processDescribe" column="p_process_describe"/>
+            <result property="createTime" column="p_create_time"/>
+            <result property="processIsDelete" column="process_is_delete"/>
+        </collection>
+    </resultMap>
+
+    <sql id="selectRepairRepTbVo">
+        select repair_id,
+               repair_no,
+               repair_address,
+               repair_content,
+               repair_type,
+               repair_expect_time,
+               repair_state,
+               repaired_state,
+               repair_destory,
+               repair_transfer,
+               repair_comment,
+               cur_work,
+               repair_dep,
+               apply_id,
+               repair_destory_time,
+               repair_create_time,
+               repair_is_delete
+        from repair_rep_tb
+    </sql>
+
+    <select id="selectRepairRepTbList" resultMap="RepairRepTbResult">
+        select
+        tb.repair_id,
+        tb.repair_no,
+        tb.repair_address,
+        tb.repair_content,
+        tb.repair_type,
+        tb.repair_expect_time,
+        tb.repair_state,
+        tb.repaired_state,
+        tb.repair_destory,
+        tb.repair_transfer,
+        tb.repair_comment,
+        tb.cur_work,
+        tb.repair_dep,
+        tb.apply_id,
+        tb.repair_destory_time,
+        tb.repair_create_time,
+        tb.repair_is_delete,
+        /*维修专员查询不连维修过程表*/
+        <if test="repairUserid != null ">
+            process.process_id as p_process_id,
+            process.repaire_id as p_repaire_id,
+            process.apply_id as p_apply_id,
+            process.repaire_no as p_repaire_no,
+            process.apply_no as p_apply_no,
+            process.repaire_name as p_repaire_name,
+            process.repaire_dep as p_repaire_dep,
+            process.work_finish as p_work_finish,
+            process.process_describe as p_process_describe,
+            process.create_time as p_create_time,
+        </if>
+        c.repcomment_id,
+        c.repcomment_content,
+        c.repcomment_service,
+        c.repcommen_crteate_time,
+        appImg.*,
+        rtype.repair_type as repairtype,
+        apply.apply_user
+        from repair_rep_tb as tb
+        left join repair_app_img as appImg on tb.apply_id = appImg.app_id
+        left join repair_apply as apply on tb.apply_id = apply.apply_id
+        left join repair_reptype as rtype on tb.repair_type = rtype.repair_type_id
+        <if test="repairUserid != null ">
+            left join repair_process as process on tb.repair_id = process.repaire_id
+        </if>
+        left join repair_repcomment as c on tb.repair_id=c.repc_id
+        <where>
+            <if test="repTb.repairNo != null  and repTb.repairNo != ''">
+                and tb.repair_no = #{repTb.repairNo}
+            </if>
+            <if test="repTb.repairAddress != null  and repTb.repairAddress != ''">
+                and tb.repair_address =#{repTb.repairAddress}
+            </if>
+            <if test="repTb.repairContent != null  and repTb.repairContent != ''">
+                and tb.repair_content =#{repTb.repairContent}
+            </if>
+            <if test="repTb.repairType != null ">
+                and tb.repair_type = #{repTb.repairType}
+            </if>
+            <if test="repTb.repairExpectTime != null ">
+                and tb.repair_expect_time = #{repTb.repairExpectTime}
+            </if>
+            <if test="repTb.repairState != null ">
+                and tb.repair_state = #{repTb.repairState}
+            </if>
+            <if test="repTb.repairedState != null ">
+                and tb.repaired_state = #{repTb.repairedState}
+            </if>
+            <if test="repTb.repairDestory != null ">
+                and tb.repair_destory = #{repTb.repairDestory}
+            </if>
+            <if test="repTb.repairTransfer != null ">
+                and tb.repair_transfer = #{repTb.repairTransfer}
+            </if>
+            <if test="repTb.curWork != null ">
+                and tb.cur_work = #{repTb.curWork}
+            </if>
+            <if test="repTb.repairDep != null ">
+                and tb.repair_dep = #{repTb.repairDep}
+            </if>
+            <if test="repTb.applyId != null ">
+                and tb.apply_id = #{repTb.applyId}
+            </if>
+            <if test="repTb.repairDestoryTime != null ">
+                and tb.repair_destory_time = #{repTb.repairDestoryTime}
+            </if>
+            <if test="repTb.repairCreateTime != null ">
+                and tb.repair_create_time = #{repTb.repairCreateTime}
+            </if>
+            <if test="repTb.repairIsDelete != null ">
+                and tb.repair_is_delete = #{repTb.repairIsDelete}
+            </if>
+            <if test="repairUserid != null ">
+                and process.repaire_userid = #{repairUserid}
+            </if>
+        </where>
+        order by tb.repair_id desc
+    </select>
+
+    <select id="selectRepairTbListOfOthers" resultMap="RepairRepTbResult">
+        select
+        tb.repair_id,
+        tb.repair_no,
+        tb.repair_address,
+        tb.repair_content,
+        tb.repair_type,
+        tb.repair_expect_time,
+        tb.repair_state,
+        tb.repaired_state,
+        tb.repair_destory,
+        tb.repair_transfer,
+        tb.repair_comment,
+        tb.cur_work,
+        tb.repair_dep,
+        tb.apply_id,
+        tb.repair_destory_time,
+        tb.repair_create_time,
+        tb.repair_is_delete,
+        appImg.*,
+        c.repcomment_content,
+        c.repcomment_service,
+        c.repcommen_userid,
+        c.repcommen_crteate_time,
+        rtype.repair_type as repairtype,
+        apply.apply_userid,
+        apply.apply_user,
+        apply.apply_role
+        from repair_rep_tb as tb
+        left join repair_app_img as appImg on tb.apply_id = appImg.app_id
+        left join repair_apply as apply on tb.apply_id = apply.apply_id
+        left join repair_reptype as rtype on tb.repair_type = rtype.repair_type_id
+        left join repair_repcomment as c on tb.repair_id = c.repc_id
+        <where>
+            <if test="applyUserId != null  and applyUserId != ''">
+                and apply.apply_userid = #{applyUserId}
+            </if>
+            <if test="repTb.repairNo != null  and repTb.repairNo != ''">
+                and tb.repair_no = #{repTb.repairNo}
+            </if>
+            <if test="repTb.repairAddress != null  and repTb.repairAddress != ''">
+                and tb.repair_address =#{repTb.repairAddress}
+            </if>
+            <if test="repTb.repairContent != null  and repTb.repairContent != ''">
+                and tb.repair_content =#{repTb.repairContent}
+            </if>
+            <if test="repTb.repairType != null ">
+                and tb.repair_type = #{repTb.repairType}
+            </if>
+            <if test="repTb.repairExpectTime != null ">
+                and tb.repair_expect_time = #{repTb.repairExpectTime}
+            </if>
+            <if test="repTb.repairState != null ">
+                and tb.repair_state = #{repTb.repairState}
+            </if>
+            <if test="repTb.repairedState != null ">
+                and tb.repaired_state = #{repTb.repairedState}
+            </if>
+            <if test="repTb.repairDestory != null ">
+                and tb.repair_destory = #{repTb.repairDestory}
+            </if>
+            <if test="repTb.repairTransfer != null ">
+                and tb.repair_transfer = #{repTb.repairTransfer}
+            </if>
+            <if test="repTb.curWork != null ">
+                and tb.cur_work = #{repTb.curWork}
+            </if>
+            <if test="repTb.repairDep != null ">
+                and tb.repair_dep = #{repTb.repairDep}
+            </if>
+            <if test="repTb.applyId != null ">
+                and tb.apply_id = #{repTb.applyId}
+            </if>
+            <if test="repTb.repairDestoryTime != null ">
+                and tb.repair_destory_time = #{repTb.repairDestoryTime}
+            </if>
+            <if test="repTb.repairCreateTime != null ">
+                and tb.repair_create_time = #{repTb.repairCreateTime}
+            </if>
+            <if test="repTb.repairIsDelete != null ">
+                and tb.repair_is_delete = #{repTb.repairIsDelete}
+            </if>
+        </where>
+        order by tb.repair_id desc
+    </select>
+
+    <select id="selectRepairRepTbById" parameterType="Long" resultMap="RepairRepTbResult">
+        <include refid="selectRepairRepTbVo"/>
+        where repair_id = #{repairId}
+    </select>
+
+    <insert id="insertRepairRepTb" parameterType="RepairRepTb" useGeneratedKeys="true" keyProperty="repairId">
+        insert into repair_rep_tb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repairNo != null">repair_no,</if>
+            <if test="repairAddress != null">repair_address,</if>
+            <if test="repairContent != null">repair_content,</if>
+            <if test="repairType != null">repair_type,</if>
+            <if test="repairExpectTime != null">repair_expect_time,</if>
+            <if test="repairState != null">repair_state,</if>
+            <if test="repairedState != null">repaired_state,</if>
+            <if test="repairDestory != null">repair_destory,</if>
+            <if test="repairTransfer != null">repair_transfer,</if>
+            <if test="repairComment != null">repair_comment,</if>
+            <if test="curWork != null">cur_work,</if>
+            <if test="repairDep != null">repair_dep,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="repairDestoryTime != null">repair_destory_time,</if>
+            <if test="repairCreateTime != null">repair_create_time,</if>
+            <if test="repairIsDelete != null">repair_is_delete,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repairNo != null">#{repairNo},</if>
+            <if test="repairAddress != null">#{repairAddress},</if>
+            <if test="repairContent != null">#{repairContent},</if>
+            <if test="repairType != null">#{repairType},</if>
+            <if test="repairExpectTime != null">#{repairExpectTime},</if>
+            <if test="repairState != null">#{repairState},</if>
+            <if test="repairedState != null">#{repairedState},</if>
+            <if test="repairDestory != null">#{repairDestory},</if>
+            <if test="repairTransfer != null">#{repairTransfer},</if>
+            <if test="repairComment != null">#{repairComment},</if>
+            <if test="curWork != null">#{curWork},</if>
+            <if test="repairDep != null">#{repairDep},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="repairDestoryTime != null">#{repairDestoryTime},</if>
+            <if test="repairCreateTime != null">#{repairCreateTime},</if>
+            <if test="repairIsDelete != null">#{repairIsDelete},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRepairRepTb" parameterType="RepairRepTb">
+        update repair_rep_tb
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repairNo != null">repair_no = #{repairNo},</if>
+            <if test="repairAddress != null">repair_address = #{repairAddress},</if>
+            <if test="repairContent != null">repair_content = #{repairContent},</if>
+            <if test="repairType != null">repair_type = #{repairType},</if>
+            <if test="repairExpectTime != null">repair_expect_time = #{repairExpectTime},</if>
+            <if test="repairState != null">repair_state = #{repairState},</if>
+            <if test="repairedState != null">repaired_state = #{repairedState},</if>
+            <if test="repairDestory != null">repair_destory = #{repairDestory},</if>
+            <if test="repairTransfer != null">repair_transfer = #{repairTransfer},</if>
+            <if test="repairComment != null">repair_comment = #{repairComment},</if>
+            <if test="curWork != null">cur_work = #{curWork},</if>
+            <if test="repairDep != null">repair_dep = #{repairDep},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="repairDestoryTime != null">repair_destory_time = #{repairDestoryTime},</if>
+            <if test="repairCreateTime != null">repair_create_time = #{repairCreateTime},</if>
+            <if test="repairIsDelete != null">repair_is_delete = #{repairIsDelete},</if>
+        </trim>
+        where repair_id = #{repairId}
+    </update>
+
+    <delete id="deleteRepairRepTbById" parameterType="Long">
+        delete
+        from repair_rep_tb
+        where repair_id = #{repairId}
+    </delete>
+
+    <delete id="deleteRepairRepTbByIds" parameterType="String">
+        delete from repair_rep_tb where repair_id in
+        <foreach item="repairId" collection="array" open="(" separator="," close=")">
+            #{repairId}
+        </foreach>
+    </delete>
+</mapper>

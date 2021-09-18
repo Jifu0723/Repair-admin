@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairAppImgMapper">
+
+    <resultMap type="RepairAppImg" id="RepairAppImgResult">
+        <result property="appimgId" column="appimg_id"/>
+        <result property="appId" column="app_id"/>
+        <result property="appimgName" column="appimg_name"/>
+        <result property="appimgPath" column="appimg_path"/>
+        <result property="appimgCreateTime" column="appimg_create_time"/>
+        <result property="appimgIsDeleted" column="appimg_is_deleted"/>
+    </resultMap>
+
+    <sql id="selectRepairAppImgVo">
+        select appimg_id, app_id, appimg_name, appimg_path, appimg_create_time, appimg_is_deleted
+        from repair_app_img
+    </sql>
+
+    <select id="selectRepairAppImgList" parameterType="RepairAppImg" resultMap="RepairAppImgResult">
+        <include refid="selectRepairAppImgVo"/>
+        <where>
+            <if test="appId != null ">and app_id = #{appId}</if>
+            <if test="appimgName != null  and appimgName != ''">and appimg_name like concat('%', #{appimgName}, '%')
+            </if>
+            <if test="appimgPath != null  and appimgPath != ''">and appimg_path = #{appimgPath}</if>
+            <if test="appimgCreateTime != null ">and appimg_create_time = #{appimgCreateTime}</if>
+            <if test="appimgIsDeleted != null ">and appimg_is_deleted = #{appimgIsDeleted}</if>
+        </where>
+    </select>
+
+    <select id="selectRepairAppImgById" parameterType="Long" resultMap="RepairAppImgResult">
+        <include refid="selectRepairAppImgVo"/>
+        where appimg_id = #{appimgId}
+    </select>
+
+    <insert id="insertRepairAppImg" parameterType="RepairAppImg" useGeneratedKeys="true" keyProperty="appimgId">
+        insert into repair_app_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appId != null">app_id,</if>
+            <if test="appimgName != null">appimg_name,</if>
+            <if test="appimgPath != null">appimg_path,</if>
+            <if test="appimgCreateTime != null">appimg_create_time,</if>
+            <if test="appimgIsDeleted != null">appimg_is_deleted,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appId != null">#{appId},</if>
+            <if test="appimgName != null">#{appimgName},</if>
+            <if test="appimgPath != null">#{appimgPath},</if>
+            <if test="appimgCreateTime != null">#{appimgCreateTime},</if>
+            <if test="appimgIsDeleted != null">#{appimgIsDeleted},</if>
+        </trim>
+    </insert>
+    <insert id="insertRepairAppImgBatch" parameterType="RepairAppImg" useGeneratedKeys="true" keyProperty="appimgId">
+        insert into repair_app_img (app_id, appimg_name, appimg_path)
+        values
+        <foreach collection="imgList" separator="," item="item">
+            (#{item.appId},#{item.appimgName},#{item.appimgPath})
+        </foreach>
+    </insert>
+
+    <update id="updateRepairAppImg" parameterType="RepairAppImg">
+        update repair_app_img
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="appimgName != null">appimg_name = #{appimgName},</if>
+            <if test="appimgPath != null">appimg_path = #{appimgPath},</if>
+            <if test="appimgCreateTime != null">appimg_create_time = #{appimgCreateTime},</if>
+            <if test="appimgIsDeleted != null">appimg_is_deleted = #{appimgIsDeleted},</if>
+        </trim>
+        where appimg_id = #{appimgId}
+    </update>
+
+    <delete id="deleteRepairAppImgById" parameterType="Long">
+        delete
+        from repair_app_img
+        where appimg_id = #{appimgId}
+    </delete>
+
+    <delete id="deleteRepairAppImgByIds" parameterType="String">
+        delete from repair_app_img where appimg_id in
+        <foreach item="appimgId" collection="array" open="(" separator="," close=")">
+            #{appimgId}
+        </foreach>
+    </delete>
+</mapper>
