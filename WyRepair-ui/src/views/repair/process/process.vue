@@ -1,43 +1,27 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="报修单id" prop="repaireId">
-        <el-input
-          v-model="queryParams.repaireId"
-          placeholder="请输入报修单id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="报修单编号" prop="repaireNo">
-        <el-input
-          v-model="queryParams.repaireNo"
-          placeholder="请输入报修单编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="申请单id" prop="applyId">
-        <el-input
-          v-model="queryParams.applyId"
-          placeholder="请输入申请单id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="申请单编号" prop="applyNo">
-        <el-input
-          v-model="queryParams.applyNo"
-          placeholder="请输入申请单编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="维修人员工号" prop="repaireUserid">
+
+<!--      <el-form-item label="报修单编号" prop="repaireNo">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.repaireNo"-->
+<!--          placeholder="请输入报修单编号"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
+<!--      <el-form-item label="申请单编号" prop="applyNo">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.applyNo"-->
+<!--          placeholder="请输入申请单编号"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="维修人员工号" prop="repaireUserid" label-width="100px">
         <el-input
           v-model="queryParams.repaireUserid"
           placeholder="请输入维修人员工号"
@@ -46,7 +30,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="维修人员姓名" prop="repaireName">
+      <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
         <el-input
           v-model="queryParams.repaireName"
           placeholder="请输入维修人员姓名"
@@ -55,33 +39,33 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="维修人员所属部门" prop="repaireDep">
-        <el-input
-          v-model="queryParams.repaireDep"
-          placeholder="请输入维修人员所属部门"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="工作量" prop="workFinish">
-        <el-input
-          v-model="queryParams.workFinish"
-          placeholder="请输入工作量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="逻辑删除" prop="processIsDelete">
-        <el-input
-          v-model="queryParams.processIsDelete"
-          placeholder="请输入逻辑删除"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="维修人员所属部门" prop="repaireDep">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.repaireDep"-->
+<!--          placeholder="请输入维修人员所属部门"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="工作量" prop="workFinish">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.workFinish"-->
+<!--          placeholder="请输入工作量"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="逻辑删除" prop="processIsDelete">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.processIsDelete"-->
+<!--          placeholder="请输入逻辑删除"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -137,17 +121,17 @@
 
     <el-table v-loading="loading" :data="processList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增主键" align="center" prop="processId" />
-      <el-table-column label="报修单id" align="center" prop="repaireId" />
+<!--      <el-table-column label="自增主键" align="center" prop="processId" />-->
+<!--      <el-table-column label="报修单id" align="center" prop="repaireId" />-->
       <el-table-column label="报修单编号" align="center" prop="repaireNo" />
-      <el-table-column label="申请单id" align="center" prop="applyId" />
+<!--      <el-table-column label="申请单id" align="center" prop="applyId" />-->
       <el-table-column label="申请单编号" align="center" prop="applyNo" />
       <el-table-column label="维修人员工号" align="center" prop="repaireUserid" />
       <el-table-column label="维修人员姓名" align="center" prop="repaireName" />
       <el-table-column label="维修人员所属部门" align="center" prop="repaireDep" />
       <el-table-column label="工作量" align="center" prop="workFinish" />
       <el-table-column label="维修过程描述" align="center" prop="processDescribe" />
-      <el-table-column label="逻辑删除" align="center" prop="processIsDelete" />
+<!--      <el-table-column label="逻辑删除" align="center" prop="processIsDelete" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

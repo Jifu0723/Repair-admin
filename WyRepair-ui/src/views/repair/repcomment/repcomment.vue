@@ -1,49 +1,27 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="报修主键id" prop="appId">
+      <el-form-item label="报修单编号" prop="repcNo" label-width="100px">
         <el-input
-          v-model="queryParams.appId"
-          placeholder="请输入报修主键id"
+          v-model="queryParams.repcNo"
+          placeholder="请输入报修单编号"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="图片名称" prop="appimgName">
-        <el-input
-          v-model="queryParams.appimgName"
-          placeholder="请输入图片名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="维修类型" prop="repairType">
+        <el-select v-model="queryParams.repairType" placeholder="请选择维修类型" clearable size="small">
+          <el-option label="请选择字典生成" value="" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="图片相对路径" prop="appimgPath">
-        <el-input
-          v-model="queryParams.appimgPath"
-          placeholder="请输入图片相对路径"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片上传时间" prop="appimgCreateTime">
+      <el-form-item label="评论时间" prop="repcommenCrteateTime">
         <el-date-picker clearable size="small"
-          v-model="queryParams.appimgCreateTime"
+          v-model="queryParams.repcommenCrteateTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="选择图片上传时间">
+          placeholder="选择评论时间">
         </el-date-picker>
-      </el-form-item>
-      <el-form-item label="逻辑删除标识" prop="appimgIsDeleted">
-        <el-input
-          v-model="queryParams.appimgIsDeleted"
-          placeholder="请输入逻辑删除标识"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -59,7 +37,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['repair:appimg:add']"
+          v-hasPermi="['repair:repcomment:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -70,7 +48,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['repair:appimg:edit']"
+          v-hasPermi="['repair:repcomment:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -81,7 +59,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['repair:appimg:remove']"
+          v-hasPermi="['repair:repcomment:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -92,24 +70,24 @@
           size="mini"
           :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['repair:appimg:export']"
+          v-hasPermi="['repair:repcomment:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="imgList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="repcommentList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增主键" align="center" prop="appimgId" />
-      <el-table-column label="报修主键id" align="center" prop="appId" />
-      <el-table-column label="图片名称" align="center" prop="appimgName" />
-      <el-table-column label="图片相对路径" align="center" prop="appimgPath" />
-      <el-table-column label="图片上传时间" align="center" prop="appimgCreateTime" width="180">
+      <el-table-column label="报修单编号" align="center" prop="repcNo" />
+      <el-table-column label="申请单编号" align="center" prop="applyNo" />
+      <el-table-column label="维修类型" align="center" prop="repairType" />
+      <el-table-column label="评论内容" align="center" prop="repcommentContent" />
+      <el-table-column label="服务评星级" align="center" prop="repcommentService" />
+      <el-table-column label="评论时间" align="center" prop="repcommenCrteateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.appimgCreateTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.repcommenCrteateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="逻辑删除标识" align="center" prop="repimgIsDeleted" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -117,14 +95,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['repair:appimg:edit']"
+            v-hasPermi="['repair:repcomment:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['repair:appimg:remove']"
+            v-hasPermi="['repair:repcomment:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -138,28 +116,36 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改维修单图片对话框 -->
+    <!-- 添加或修改报修单评论对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="报修主键id" prop="appId">
-          <el-input v-model="form.appId" placeholder="请输入报修主键id" />
+        <el-form-item label="报修单编号" prop="repcNo">
+          <el-input v-model="form.repcNo" placeholder="请输入报修单编号" />
         </el-form-item>
-        <el-form-item label="图片名称" prop="appimgName">
-          <el-input v-model="form.appimgName" placeholder="请输入图片名称" />
+        <el-form-item label="申请表id" prop="applyId">
+          <el-input v-model="form.applyId" placeholder="请输入申请表id" />
         </el-form-item>
-        <el-form-item label="图片相对路径" prop="appimgPath">
-          <el-input v-model="form.appimgPath" placeholder="请输入图片相对路径" />
+        <el-form-item label="申请单编号" prop="applyNo">
+          <el-input v-model="form.applyNo" placeholder="请输入申请单编号" />
         </el-form-item>
-        <el-form-item label="图片上传时间" prop="appimgCreateTime">
+        <el-form-item label="维修类型" prop="repairType">
+          <el-select v-model="form.repairType" placeholder="请选择维修类型">
+            <el-option label="请选择字典生成" value="" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="评论内容">
+          <editor v-model="form.repcommentContent" :min-height="192"/>
+        </el-form-item>
+        <el-form-item label="服务评星级" prop="repcommentService">
+          <el-input v-model="form.repcommentService" placeholder="请输入服务评星级" />
+        </el-form-item>
+        <el-form-item label="评论时间" prop="repcommenCrteateTime">
           <el-date-picker clearable size="small"
-            v-model="form.appimgCreateTime"
+            v-model="form.repcommenCrteateTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="选择图片上传时间">
+            placeholder="选择评论时间">
           </el-date-picker>
-        </el-form-item>
-        <el-form-item label="逻辑删除标识" prop="appimgIsDeleted">
-          <el-input v-model="form.appimgIsDeleted" placeholder="请输入逻辑删除标识" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -171,10 +157,10 @@
 </template>
 
 <script>
-import { listImg, getImg, delImg, addImg, updateImg, exportImg } from "@/api/repair/appimg";
+import { listRepcomment, getRepcomment, delRepcomment, addRepcomment, updateRepcomment, exportRepcomment } from "@/api/repair/repcomment";
 
 export default {
-  name: "Img",
+  name: "Repcomment",
   data() {
     return {
       // 遮罩层
@@ -191,8 +177,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 维修单图片表格数据
-      imgList: [],
+      // 报修单评论表格数据
+      repcommentList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -201,11 +187,16 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        appId: null,
-        appimgName: null,
-        appimgPath: null,
-        appimgCreateTime: null,
-        appimgIsDeleted: null
+        repcId: null,
+        repcNo: null,
+        applyId: null,
+        applyNo: null,
+        repairType: null,
+        repcommentContent: null,
+        repcommentService: null,
+        repcommenUserid: null,
+        repcommenCrteateTime: null,
+        repcIsDelete: null
       },
       // 表单参数
       form: {},
@@ -218,11 +209,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询维修单图片列表 */
+    /** 查询报修单评论列表 */
     getList() {
       this.loading = true;
-      listImg(this.queryParams).then(response => {
-        this.imgList = response.rows;
+      listRepcomment(this.queryParams).then(response => {
+        this.repcommentList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -235,12 +226,17 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        appimgId: null,
-        appId: null,
-        appimgName: null,
-        appimgPath: null,
-        appimgCreateTime: null,
-        appimgIsDeleted: null
+        repcommentId: null,
+        repcId: null,
+        repcNo: null,
+        applyId: null,
+        applyNo: null,
+        repairType: null,
+        repcommentContent: null,
+        repcommentService: null,
+        repcommenUserid: null,
+        repcommenCrteateTime: null,
+        repcIsDelete: null
       };
       this.resetForm("form");
     },
@@ -256,7 +252,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.appimgId)
+      this.ids = selection.map(item => item.repcommentId)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -264,30 +260,30 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加维修单图片";
+      this.title = "添加报修单评论";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const repimgId = row.appimgId || this.ids
-      getImg(repimgId).then(response => {
+      const repcommentId = row.repcommentId || this.ids
+      getRepcomment(repcommentId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改维修单图片";
+        this.title = "修改报修单评论";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.appimgId != null) {
-            updateImg(this.form).then(response => {
+          if (this.form.repcommentId != null) {
+            updateRepcomment(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addImg(this.form).then(response => {
+            addRepcomment(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -298,13 +294,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const repimgIds = row.appimgId || this.ids;
-      this.$confirm('是否确认删除维修单图片编号为"' + repimgIds + '"的数据项?', "警告", {
+      const repcommentIds = row.repcommentId || this.ids;
+      this.$confirm('是否确认删除报修单评论编号为"' + repcommentIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delImg(repimgIds);
+          return delRepcomment(repcommentIds);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -313,13 +309,13 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有维修单图片数据项?', "警告", {
+      this.$confirm('是否确认导出所有报修单评论数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           this.exportLoading = true;
-          return exportImg(queryParams);
+          return exportRepcomment(queryParams);
         }).then(response => {
           this.download(response.msg);
           this.exportLoading = false;

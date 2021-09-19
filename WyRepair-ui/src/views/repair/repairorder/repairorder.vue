@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="报修单编号" prop="repairNo">
-        <el-input
-          v-model="queryParams.repairNo"
-          placeholder="请输入报修单编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="报修单编号" prop="repairNo">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.repairNo"-->
+<!--          placeholder="请输入报修单编号"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="报修地点" prop="repairAddress">
         <el-input
           v-model="queryParams.repairAddress"
@@ -24,14 +24,14 @@
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
-      <el-form-item label="期望维修时间" prop="repairExpectTime">
-        <el-date-picker clearable size="small"
-          v-model="queryParams.repairExpectTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择期望维修时间">
-        </el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="期望维修时间" prop="repairExpectTime">-->
+<!--        <el-date-picker clearable size="small"-->
+<!--          v-model="queryParams.repairExpectTime"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="选择期望维修时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
       <el-form-item label="报修状态" prop="repairState">
         <el-input
           v-model="queryParams.repairState"
@@ -41,77 +41,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="维修后设备状态描述" prop="repairedState">
-        <el-input
-          v-model="queryParams.repairedState"
-          placeholder="请输入维修后设备状态描述"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-<!--      <el-form-item label="是否销单" prop="repairDestory">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.repairDestory"-->
-<!--          placeholder="请输入是否销单"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="是否转单" prop="repairTransfer">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.repairTransfer"-->
-<!--          placeholder="请输入是否转单"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="是否评论" prop="repairComment">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.repairComment"-->
-<!--          placeholder="请输入是否评论"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="是否为当前运转单" prop="curWork">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.curWork"-->
-<!--          placeholder="请输入是否为当前运转单"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="初次报修所属部门id" prop="repairDep">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.repairDep"-->
-<!--          placeholder="请输入初次报修所属部门id"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="申请表id" prop="applyId">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.applyId"-->
-<!--          placeholder="请输入申请表id"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="销单时间" prop="repairDestoryTime">-->
-<!--        <el-date-picker clearable size="small"-->
-<!--          v-model="queryParams.repairDestoryTime"-->
-<!--          type="date"-->
-<!--          value-format="yyyy-MM-dd"-->
-<!--          placeholder="选择销单时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

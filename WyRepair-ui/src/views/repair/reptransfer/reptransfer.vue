@@ -1,82 +1,11 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="所属报修单id" prop="reptId">
-        <el-input
-          v-model="queryParams.reptId"
-          placeholder="请输入所属报修单id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="所属报修单编号" prop="reptNo">
-        <el-input
-          v-model="queryParams.reptNo"
-          placeholder="请输入所属报修单编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="所转to报修单id" prop="reptToId">
-        <el-input
-          v-model="queryParams.reptToId"
-          placeholder="请输入所转to报修单id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="所转to报修单编号" prop="reptToNo">
-        <el-input
-          v-model="queryParams.reptToNo"
-          placeholder="请输入所转to报修单编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="申请单id" prop="applyId">
-        <el-input
-          v-model="queryParams.applyId"
-          placeholder="请输入申请单id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="发起转单用户id" prop="reptransfeUser">
-        <el-input
-          v-model="queryParams.reptransfeUser"
-          placeholder="请输入发起转单用户id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="所转用户id" prop="reptransfeToUser">
-        <el-input
-          v-model="queryParams.reptransfeToUser"
-          placeholder="请输入所转用户id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="转单用户类型" prop="reptransfeUserType">
+
+      <el-form-item label="转单用户类型" prop="reptransfeUserType" label-width="100px">
         <el-select v-model="queryParams.reptransfeUserType" placeholder="请选择转单用户类型" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
-      </el-form-item>
-      <el-form-item label="上一次转单记录id" prop="parentId">
-        <el-input
-          v-model="queryParams.parentId"
-          placeholder="请输入上一次转单记录id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item label="转单时间" prop="reptransfeTime">
         <el-date-picker clearable size="small"
@@ -86,15 +15,7 @@
           placeholder="选择转单时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="逻辑删除" prop="reptransfeIsDelete">
-        <el-input
-          v-model="queryParams.reptransfeIsDelete"
-          placeholder="请输入逻辑删除"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -150,23 +71,23 @@
 
     <el-table v-loading="loading" :data="reptransferList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增主键" align="center" prop="reptransferId" />
-      <el-table-column label="所属报修单id" align="center" prop="reptId" />
-      <el-table-column label="所属报修单编号" align="center" prop="reptNo" />
-      <el-table-column label="所转to报修单id" align="center" prop="reptToId" />
-      <el-table-column label="所转to报修单编号" align="center" prop="reptToNo" />
-      <el-table-column label="申请单id" align="center" prop="applyId" />
+<!--      <el-table-column label="自增主键" align="center" prop="reptransferId" />-->
+<!--      <el-table-column label="所属报修单id" align="center" prop="reptId" />-->
+<!--      <el-table-column label="所属报修单编号" align="center" prop="reptNo" />-->
+<!--      <el-table-column label="所转to报修单id" align="center" prop="reptToId" />-->
+<!--      <el-table-column label="所转to报修单编号" align="center" prop="reptToNo" />-->
+<!--      <el-table-column label="申请单id" align="center" prop="applyId" />-->
       <el-table-column label="转单留言维修情况" align="center" prop="reptransfeMessage" />
-      <el-table-column label="发起转单用户id" align="center" prop="reptransfeUser" />
-      <el-table-column label="所转用户id" align="center" prop="reptransfeToUser" />
+<!--      <el-table-column label="发起转单用户id" align="center" prop="reptransfeUser" />-->
+<!--      <el-table-column label="所转用户id" align="center" prop="reptransfeToUser" />-->
       <el-table-column label="转单用户类型" align="center" prop="reptransfeUserType" />
-      <el-table-column label="上一次转单记录id" align="center" prop="parentId" />
+<!--      <el-table-column label="上一次转单记录id" align="center" prop="parentId" />-->
       <el-table-column label="转单时间" align="center" prop="reptransfeTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.reptransfeTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="逻辑删除" align="center" prop="reptransfeIsDelete" />
+<!--      <el-table-column label="逻辑删除" align="center" prop="reptransfeIsDelete" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

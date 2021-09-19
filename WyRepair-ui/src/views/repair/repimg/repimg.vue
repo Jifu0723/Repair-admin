@@ -1,34 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="报修主键id" prop="repiId">
-        <el-input
-          v-model="queryParams.repiId"
-          placeholder="请输入报修主键id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片名称" prop="repimgName">
-        <el-input
-          v-model="queryParams.repimgName"
-          placeholder="请输入图片名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片相对路径" prop="repimgPath">
-        <el-input
-          v-model="queryParams.repimgPath"
-          placeholder="请输入图片相对路径"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片上传时间" prop="repimgCreateTime">
+      <el-form-item label="图片上传时间" prop="repimgCreateTime" label-width="100px">
         <el-date-picker clearable size="small"
           v-model="queryParams.repimgCreateTime"
           type="date"
@@ -36,15 +9,7 @@
           placeholder="选择图片上传时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="逻辑删除标识" prop="repimgIsDeleted">
-        <el-input
-          v-model="queryParams.repimgIsDeleted"
-          placeholder="请输入逻辑删除标识"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -100,8 +65,8 @@
 
     <el-table v-loading="loading" :data="imgList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增主键" align="center" prop="repimgId" />
-      <el-table-column label="报修主键id" align="center" prop="repiId" />
+<!--      <el-table-column label="自增主键" align="center" prop="repimgId" />-->
+<!--      <el-table-column label="报修主键id" align="center" prop="repiId" />-->
       <el-table-column label="图片名称" align="center" prop="repimgName" />
       <el-table-column label="图片相对路径" align="center" prop="repimgPath" />
       <el-table-column label="图片上传时间" align="center" prop="repimgCreateTime" width="180">
@@ -109,7 +74,7 @@
           <span>{{ parseTime(scope.row.repimgCreateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="逻辑删除标识" align="center" prop="repimgIsDeleted" />
+<!--      <el-table-column label="逻辑删除标识" align="center" prop="repimgIsDeleted" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -141,9 +106,9 @@
     <!-- 添加或修改维修单图片对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="报修主键id" prop="repiId">
-          <el-input v-model="form.repiId" placeholder="请输入报修主键id" />
-        </el-form-item>
+<!--        <el-form-item label="报修主键id" prop="repiId">-->
+<!--          <el-input v-model="form.repiId" placeholder="请输入报修主键id" />-->
+<!--        </el-form-item>-->
         <el-form-item label="图片名称" prop="repimgName">
           <el-input v-model="form.repimgName" placeholder="请输入图片名称" />
         </el-form-item>
@@ -158,9 +123,9 @@
             placeholder="选择图片上传时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="逻辑删除标识" prop="repimgIsDeleted">
-          <el-input v-model="form.repimgIsDeleted" placeholder="请输入逻辑删除标识" />
-        </el-form-item>
+<!--        <el-form-item label="逻辑删除标识" prop="repimgIsDeleted">-->
+<!--          <el-input v-model="form.repimgIsDeleted" placeholder="请输入逻辑删除标识" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
