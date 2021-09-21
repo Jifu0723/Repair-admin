@@ -18,7 +18,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="parentId"    column="parent_id"    />
         <result property="reptransfeTime"    column="reptransfe_time"    />
         <result property="reptransfeIsDelete"    column="reptransfe_is_delete"    />
-        <result property="reptToDept"    column="rept_to_dept"    />
         <!--转单记录与所转用户一对一关系-->
         <association property="user" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysUser">
             <result property="userName" column="user_name"/>
@@ -27,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!--转单记录与所转部门一对一关系-->
         <association property="dept" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysDept">
             <result property="deptName" column="dept_name"/>
+            <result property="deptId" column="dept_id"/>
         </association>
         <!--转单记录与申请单一对一关系-->
         <association property="apply" javaType="com.gxuwz.wyrepair.domain.RepairApply">
@@ -44,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             apply.apply_type,
             apply.apply_content,
             apply.apply_address,
+            dept.dept_name,
         </if>
---         dept.dept_name,
         reptransfer_id, rept_id, rept_no, rept_to_id, rept_to_no,
         repair_reptransfer.apply_id, reptransfe_message, reptransfe_user, reptransfe_to_user, reptransfe_user_type,
         repair_reptransfer.parent_id, reptransfe_time, reptransfe_is_delete from repair_reptransfer
@@ -53,7 +53,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             left join repair_apply as apply on repair_reptransfer.apply_id = apply.apply_id
             left join sys_user as user on repair_reptransfer.reptransfe_user = user.user_id
         </if>
---             left join sys_dept as dept on repair_reptransfer.rept_to_dept = dept.dept_id
     </sql>
 
     <select id="selectRepairReptransferList" parameterType="RepairReptransfer" resultMap="RepairReptransferResult">
@@ -94,7 +93,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="parentId != null">parent_id,</if>
             <if test="reptransfeTime != null">reptransfe_time,</if>
             <if test="reptransfeIsDelete != null">reptransfe_is_delete,</if>
-            <if test="reptToDept != null">rept_to_dept,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="reptId != null">#{reptId},</if>
