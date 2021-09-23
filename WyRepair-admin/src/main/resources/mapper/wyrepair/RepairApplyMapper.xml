@@ -10,6 +10,7 @@
         <result property="applyAddress" column="apply_address"/>
         <result property="applyContent" column="apply_content"/>
         <result property="applyType" column="apply_type"/>
+        <result property="applyExpectType" column="apply_expect_type"/>
         <result property="applyExpectTime" column="apply_expect_time"/>
         <result property="applyDep" column="apply_dep"/>
         <result property="applyUserid" column="apply_userid"/>
@@ -37,6 +38,7 @@
                apply_expect_type,
                apply_expect_time,
                apply_dep,
+               apply_userid,
                apply_user,
                apply_role,
                apply_create_time,
@@ -54,6 +56,7 @@
         apply_expect_type,
         apply_expect_time,
         apply_dep,
+        apply_userid,
         apply_user,
         apply_role,
         apply_create_time,
@@ -66,6 +69,7 @@
             <if test="applyAddress != null  and applyAddress != ''">and apply_address = #{applyAddress}</if>
             <if test="applyContent != null  and applyContent != ''">and apply_content = #{applyContent}</if>
             <if test="applyType != null ">and apply_type = #{applyType}</if>
+            <if test="applyExpectType != null ">and apply_expect_type = #{applyExpectType}</if>
             <if test="applyExpectTime != null ">and apply_expect_time = #{applyExpectTime}</if>
             <if test="applyDep != null ">and apply_dep = #{applyDep}</if>
             <if test="applyUserid != null  and applyUserid != ''">and apply_userid = #{apply_userid}</if>
@@ -88,6 +92,7 @@
             <if test="applyAddress != null">apply_address,</if>
             <if test="applyContent != null">apply_content,</if>
             <if test="applyType != null">apply_type,</if>
+            <if test="applyExpectType != null">apply_expect_type,</if>
             <if test="applyExpectTime != null">apply_expect_time,</if>
             <if test="applyDep != null">apply_dep,</if>
             <if test="applyUser != null">apply_user,</if>
@@ -101,6 +106,7 @@
             <if test="applyAddress != null">#{applyAddress},</if>
             <if test="applyContent != null">#{applyContent},</if>
             <if test="applyType != null">#{applyType},</if>
+            <if test="applyExpectType != null">#{applyExpectType},</if>
             <if test="applyExpectTime != null">#{applyExpectTime},</if>
             <if test="applyDep != null">#{applyDep},</if>
             <if test="applyUser != null">#{applyUser},</if>

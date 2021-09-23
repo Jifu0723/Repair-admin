@@ -47,6 +47,10 @@ public class RepairApply extends BaseEntity
     @Excel(name = "维修类型：网络设备、水电类、家具类、办公室设备")
     private Long applyType;
 
+    /** 期望维修类型：换新、换配件、维修 */
+    @ApiModelProperty("期望维修类型")
+    @Excel(name = "期望维修类型：换新、换配件、维修")
+    private Long applyExpectType;
 
     /** 期望维修时间 */
     @ApiModelProperty("期望维修时间")
@@ -89,6 +93,14 @@ public class RepairApply extends BaseEntity
      * 维修过程
      */
     private List<RepairProcess> processList;
+
+    public Long getApplyExpectType() {
+        return applyExpectType;
+    }
+
+    public void setApplyExpectType(Long applyExpectType) {
+        this.applyExpectType = applyExpectType;
+    }
 
     /**
      * 构建申请单基本信息
@@ -249,6 +261,7 @@ public class RepairApply extends BaseEntity
             .append("applyDep", getApplyDep())
             .append("applyUser", getApplyUser())
             .append("applyRole", getApplyRole())
+            .append("applyExpectType", getApplyExpectType())
             .append("applyCreateTime", getApplyCreateTime())
             .append("applyIsDelete", getApplyIsDelete())
             .toString();

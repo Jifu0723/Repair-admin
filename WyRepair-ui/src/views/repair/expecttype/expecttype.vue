@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="期望维修形式(换新、换配件、维修)" prop="repexpectType">
-        <el-select v-model="queryParams.repexpectType" placeholder="请选择期望维修形式(换新、换配件、维修)" clearable size="small">
+      <el-form-item label="期望维修形式" prop="repexpectType" label-width="100px">
+        <el-select v-model="queryParams.repexpectType" placeholder="请选择期望维修形式" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
@@ -62,7 +62,7 @@
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="自增主键" align="center" prop="repexpectTypeId" />
-      <el-table-column label="期望维修形式(换新、换配件、维修)" align="center" prop="repexpectType" />
+      <el-table-column label="期望维修形式" align="center" prop="repexpectType" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -94,8 +94,8 @@
     <!-- 添加或修改期望维修类型对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="期望维修形式(换新、换配件、维修)" prop="repexpectType">
-          <el-select v-model="form.repexpectType" placeholder="请选择期望维修形式(换新、换配件、维修)">
+        <el-form-item label="期望维修形式" prop="repexpectType">
+          <el-select v-model="form.repexpectType" placeholder="请选择期望维修形式">
             <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { listType, getType, delType, addType, updateType, exportType } from "@/api/repair/type";
+import { listType, getType, delType, addType, updateType, exportType } from "@/api/repair/expecttype";
 
 export default {
   name: "Type",

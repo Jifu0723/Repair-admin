@@ -16,14 +16,12 @@
     </resultMap>
 
     <sql id="selectRepairReptypeVo">
-        select repair_type_id, repair_type, repair_dep
-        from repair_reptype
+        select repair_type_id, repair_type, repair_dep from repair_reptype
     </sql>
 
     <select id="selectRepairReptypeList" parameterType="RepairReptype" resultMap="RepairReptypeResult">
         select t.repair_type_id, t.repair_type,
-        d.dept_id, d.parent_id,d.dept_name
-        from repair_reptype as t
+        d.dept_id, d.parent_id,d.dept_name from repair_reptype as t
         left join sys_dept as d on t.repair_dep = d.dept_id
         <where>
             <if test="repairDep != null  and repairDep != ''">and t.repair_dep = #{repairDep}</if>

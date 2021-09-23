@@ -15,7 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectRepairExpectTypeList" parameterType="RepairExpectType" resultMap="RepairExpectTypeResult">
         <include refid="selectRepairExpectTypeVo"/>
-        <where>  
+        <where>
+            <if test="repexpectTypeId != null  and repexpectTypeId != ''"> and repexpect_type_id = #{repexpectTypeId}</if>
             <if test="repexpectType != null  and repexpectType != ''"> and repexpect_type = #{repexpectType}</if>
         </where>
     </select>
