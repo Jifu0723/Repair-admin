@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="配件购买人" prop="partsPerson" label-width="100px">
-        <el-input
-          v-model="queryParams.partsPerson"
-          placeholder="请输入配件购买人"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="配件编号" prop="partsNo">
-        <el-input
-          v-model="queryParams.partsNo"
-          placeholder="请输入配件编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="配件购买人" prop="partsPerson">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsPerson"-->
+<!--          placeholder="请输入配件购买人"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件代码" prop="partsNo">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsNo"-->
+<!--          placeholder="请输入配件代码"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="配件名称" prop="partsName">
         <el-input
           v-model="queryParams.partsName"
@@ -65,9 +65,80 @@
 <!--        />-->
 <!--      </el-form-item>-->
 <!--      <el-form-item label="配件购买时间" prop="partsTime">-->
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.partsTime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择配件购买时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件总价格" prop="partsTotalPrice">-->
 <!--        <el-input-->
-<!--          v-model="queryParams.partsTime"-->
-<!--          placeholder="请输入配件购买时间"-->
+<!--          v-model="queryParams.partsTotalPrice"-->
+<!--          placeholder="请输入配件总价格"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件剩余数量" prop="partsNumber">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsNumber"-->
+<!--          placeholder="请输入配件剩余数量"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件使用率状态" prop="partsState">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsState"-->
+<!--          placeholder="请输入配件使用率状态"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="配件品种" prop="partsVariety">
+        <el-input
+          v-model="queryParams.partsVariety"
+          placeholder="请输入配件品种"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+<!--      <el-form-item label="配件生产机构" prop="partsMechanism">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsMechanism"-->
+<!--          placeholder="请输入配件生产机构"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件售后服务热线" prop="partsPhone">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsPhone"-->
+<!--          placeholder="请输入配件售后服务热线"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件登记机关" prop="partsOffice">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsOffice"-->
+<!--          placeholder="请输入配件登记机关"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="配件维保单位地址" prop="partsAddress">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.partsAddress"-->
+<!--          placeholder="请输入配件维保单位地址"-->
 <!--          clearable-->
 <!--          size="small"-->
 <!--          @keyup.enter.native="handleQuery"-->
@@ -128,17 +199,27 @@
 
     <el-table v-loading="loading" :data="partsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="自增主键" align="center" prop="partsId" />
       <el-table-column label="配件购买人" align="center" prop="partsPerson" />
-      <el-table-column label="配件编号" align="center" prop="partsNo" />
+      <el-table-column label="配件代码" align="center" prop="partsNo" />
       <el-table-column label="配件名称" align="center" prop="partsName" />
       <el-table-column label="配件数量" align="center" prop="partsNumbers" />
       <el-table-column label="配件单价" align="center" prop="partsPrice" />
       <el-table-column label="配件购买数量" align="center" prop="partsPurchase" />
       <el-table-column label="配件购买说明" align="center" prop="partsPurchaseExplain" />
-      <el-table-column label="配件购买时间" align="center" prop="partsTime" />
+      <el-table-column label="配件购买时间" align="center" prop="partsTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.partsTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="配件总价格" align="center" prop="partsTotalPrice" />
       <el-table-column label="配件剩余数量" align="center" prop="partsNumber" />
       <el-table-column label="配件使用率状态" align="center" prop="partsState" />
+      <el-table-column label="配件品种" align="center" prop="partsVariety" />
+      <el-table-column label="配件生产机构" align="center" prop="partsMechanism" />
+      <el-table-column label="配件售后服务热线" align="center" prop="partsPhone" />
+      <el-table-column label="配件登记机关" align="center" prop="partsOffice" />
+      <el-table-column label="配件维保单位地址" align="center" prop="partsAddress" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -173,8 +254,8 @@
         <el-form-item label="配件购买人" prop="partsPerson">
           <el-input v-model="form.partsPerson" placeholder="请输入配件购买人" />
         </el-form-item>
-        <el-form-item label="配件编号" prop="partsNo">
-          <el-input v-model="form.partsNo" placeholder="请输入配件编号" />
+        <el-form-item label="配件代码" prop="partsNo">
+          <el-input v-model="form.partsNo" placeholder="请输入配件代码" />
         </el-form-item>
         <el-form-item label="配件名称" prop="partsName">
           <el-input v-model="form.partsName" placeholder="请输入配件名称" />
@@ -192,7 +273,12 @@
           <el-input v-model="form.partsPurchaseExplain" placeholder="请输入配件购买说明" />
         </el-form-item>
         <el-form-item label="配件购买时间" prop="partsTime">
-          <el-input v-model="form.partsTime" placeholder="请输入配件购买时间" />
+          <el-date-picker clearable size="small"
+                          v-model="form.partsTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择配件购买时间">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="配件总价格" prop="partsTotalPrice">
           <el-input v-model="form.partsTotalPrice" placeholder="请输入配件总价格" />
@@ -202,6 +288,21 @@
         </el-form-item>
         <el-form-item label="配件使用率状态" prop="partsState">
           <el-input v-model="form.partsState" placeholder="请输入配件使用率状态" />
+        </el-form-item>
+        <el-form-item label="配件品种" prop="partsVariety">
+          <el-input v-model="form.partsVariety" placeholder="请输入配件品种" />
+        </el-form-item>
+        <el-form-item label="配件生产机构" prop="partsMechanism">
+          <el-input v-model="form.partsMechanism" placeholder="请输入配件生产机构" />
+        </el-form-item>
+        <el-form-item label="配件售后服务热线" prop="partsPhone">
+          <el-input v-model="form.partsPhone" placeholder="请输入配件售后服务热线" />
+        </el-form-item>
+        <el-form-item label="配件登记机关" prop="partsOffice">
+          <el-input v-model="form.partsOffice" placeholder="请输入配件登记机关" />
+        </el-form-item>
+        <el-form-item label="配件维保单位地址" prop="partsAddress">
+          <el-input v-model="form.partsAddress" placeholder="请输入配件维保单位地址" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -253,7 +354,12 @@ export default {
         partsTime: null,
         partsTotalPrice: null,
         partsNumber: null,
-        partsState: null
+        partsState: null,
+        partsVariety: null,
+        partsMechanism: null,
+        partsPhone: null,
+        partsOffice: null,
+        partsAddress: null
       },
       // 表单参数
       form: {},
@@ -294,7 +400,12 @@ export default {
         partsTime: null,
         partsTotalPrice: null,
         partsNumber: null,
-        partsState: null
+        partsState: null,
+        partsVariety: null,
+        partsMechanism: null,
+        partsPhone: null,
+        partsOffice: null,
+        partsAddress: null
       };
       this.resetForm("form");
     },
@@ -354,30 +465,30 @@ export default {
     handleDelete(row) {
       const partsIds = row.partsId || this.ids;
       this.$confirm('是否确认删除配件信息编号为"' + partsIds + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delParts(partsIds);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        return delParts(partsIds);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有配件信息数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportParts(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportParts(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {});
     }
   }
 };

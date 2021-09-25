@@ -1,7 +1,8 @@
 package com.gxuwz.wyrepair.mapper;
 
-import java.util.List;
 import com.gxuwz.wyrepair.domain.RepeairParts;
+
+import java.util.List;
 
 /**
  * 配件信息Mapper接口

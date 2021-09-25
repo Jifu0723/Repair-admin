@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gxuwz.wyrepair.mapper.RepeairPartsMapper">
-    
+
     <resultMap type="RepeairParts" id="RepeairPartsResult">
         <result property="partsId"    column="parts_id"    />
         <result property="partsPerson"    column="parts_person"    />
@@ -17,15 +17,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="partsTotalPrice"    column="parts_total_price"    />
         <result property="partsNumber"    column="parts_number"    />
         <result property="partsState"    column="parts_state"    />
+        <result property="partsVariety"    column="parts_variety"    />
+        <result property="partsMechanism"    column="parts_mechanism"    />
+        <result property="partsPhone"    column="parts_phone"    />
+        <result property="partsOffice"    column="parts_office"    />
+        <result property="partsAddress"    column="parts_address"    />
     </resultMap>
 
     <sql id="selectRepeairPartsVo">
-        select parts_id, parts_person, parts_no, parts_name, parts_numbers, parts_price, parts_purchase, parts_purchase_explain, parts_time, parts_total_price, parts_number, parts_state from repeair_parts
+        select parts_id, parts_person, parts_no, parts_name, parts_numbers, parts_price, parts_purchase, parts_purchase_explain, parts_time, parts_total_price, parts_number, parts_state, parts_variety, parts_mechanism, parts_phone, parts_office, parts_address from repeair_parts
     </sql>
 
     <select id="selectRepeairPartsList" parameterType="RepeairParts" resultMap="RepeairPartsResult">
         <include refid="selectRepeairPartsVo"/>
-        <where>  
+        <where>
             <if test="partsPerson != null  and partsPerson != ''"> and parts_person = #{partsPerson}</if>
             <if test="partsNo != null  and partsNo != ''"> and parts_no = #{partsNo}</if>
             <if test="partsName != null  and partsName != ''"> and parts_name like concat('%', #{partsName}, '%')</if>
@@ -33,18 +38,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="partsPrice != null "> and parts_price = #{partsPrice}</if>
             <if test="partsPurchase != null "> and parts_purchase = #{partsPurchase}</if>
             <if test="partsPurchaseExplain != null  and partsPurchaseExplain != ''"> and parts_purchase_explain = #{partsPurchaseExplain}</if>
-            <if test="partsTime != null  and partsTime != ''"> and parts_time = #{partsTime}</if>
+            <if test="partsTime != null "> and parts_time = #{partsTime}</if>
             <if test="partsTotalPrice != null "> and parts_total_price = #{partsTotalPrice}</if>
             <if test="partsNumber != null "> and parts_number = #{partsNumber}</if>
             <if test="partsState != null "> and parts_state = #{partsState}</if>
+            <if test="partsVariety != null  and partsVariety != ''"> and parts_variety = #{partsVariety}</if>
+            <if test="partsMechanism != null  and partsMechanism != ''"> and parts_mechanism = #{partsMechanism}</if>
+            <if test="partsPhone != null  and partsPhone != ''"> and parts_phone = #{partsPhone}</if>
+            <if test="partsOffice != null  and partsOffice != ''"> and parts_office = #{partsOffice}</if>
+            <if test="partsAddress != null  and partsAddress != ''"> and parts_address = #{partsAddress}</if>
         </where>
     </select>
-    
+
     <select id="selectRepeairPartsByPartsId" parameterType="Long" resultMap="RepeairPartsResult">
         <include refid="selectRepeairPartsVo"/>
         where parts_id = #{partsId}
     </select>
-        
+
     <insert id="insertRepeairParts" parameterType="RepeairParts" useGeneratedKeys="true" keyProperty="partsId">
         insert into repeair_parts
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -59,7 +69,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="partsTotalPrice != null">parts_total_price,</if>
             <if test="partsNumber != null">parts_number,</if>
             <if test="partsState != null">parts_state,</if>
-         </trim>
+            <if test="partsVariety != null">parts_variety,</if>
+            <if test="partsMechanism != null">parts_mechanism,</if>
+            <if test="partsPhone != null">parts_phone,</if>
+            <if test="partsOffice != null">parts_office,</if>
+            <if test="partsAddress != null">parts_address,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="partsPerson != null">#{partsPerson},</if>
             <if test="partsNo != null">#{partsNo},</if>
@@ -72,7 +87,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="partsTotalPrice != null">#{partsTotalPrice},</if>
             <if test="partsNumber != null">#{partsNumber},</if>
             <if test="partsState != null">#{partsState},</if>
-         </trim>
+            <if test="partsVariety != null">#{partsVariety},</if>
+            <if test="partsMechanism != null">#{partsMechanism},</if>
+            <if test="partsPhone != null">#{partsPhone},</if>
+            <if test="partsOffice != null">#{partsOffice},</if>
+            <if test="partsAddress != null">#{partsAddress},</if>
+        </trim>
     </insert>
 
     <update id="updateRepeairParts" parameterType="RepeairParts">
@@ -89,6 +109,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="partsTotalPrice != null">parts_total_price = #{partsTotalPrice},</if>
             <if test="partsNumber != null">parts_number = #{partsNumber},</if>
             <if test="partsState != null">parts_state = #{partsState},</if>
+            <if test="partsVariety != null">parts_variety = #{partsVariety},</if>
+            <if test="partsMechanism != null">parts_mechanism = #{partsMechanism},</if>
+            <if test="partsPhone != null">parts_phone = #{partsPhone},</if>
+            <if test="partsOffice != null">parts_office = #{partsOffice},</if>
+            <if test="partsAddress != null">parts_address = #{partsAddress},</if>
         </trim>
         where parts_id = #{partsId}
     </update>
@@ -98,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteRepeairPartsByPartsIds" parameterType="String">
-        delete from repeair_parts where parts_id in 
+        delete from repeair_parts where parts_id in
         <foreach item="partsId" collection="array" open="(" separator="," close=")">
             #{partsId}
         </foreach>

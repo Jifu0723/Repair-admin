@@ -1,5 +1,7 @@
 package com.gxuwz.wyrepair.domain;
 
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.gxuwz.wyrepair.common.annotation.Excel;
@@ -9,7 +11,7 @@ import com.gxuwz.wyrepair.common.core.domain.BaseEntity;
  * 配件信息对象 repeair_parts
  * 
  * @author ruoyi
- * @date 2021-09-17
+ * @date 2021-09-25
  */
 public class RepeairParts extends BaseEntity
 {
@@ -22,8 +24,8 @@ public class RepeairParts extends BaseEntity
     @Excel(name = "配件购买人")
     private String partsPerson;
 
-    /** 配件编号 */
-    @Excel(name = "配件编号")
+    /** 配件代码 */
+    @Excel(name = "配件代码")
     private String partsNo;
 
     /** 配件名称 */
@@ -47,8 +49,9 @@ public class RepeairParts extends BaseEntity
     private String partsPurchaseExplain;
 
     /** 配件购买时间 */
-    @Excel(name = "配件购买时间")
-    private String partsTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "配件购买时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date partsTime;
 
     /** 配件总价格 */
     @Excel(name = "配件总价格")
@@ -61,6 +64,26 @@ public class RepeairParts extends BaseEntity
     /** 配件使用率状态 */
     @Excel(name = "配件使用率状态")
     private Long partsState;
+
+    /** 配件品种 */
+    @Excel(name = "配件品种")
+    private String partsVariety;
+
+    /** 配件生产机构 */
+    @Excel(name = "配件生产机构")
+    private String partsMechanism;
+
+    /** 配件售后服务热线 */
+    @Excel(name = "配件售后服务热线")
+    private String partsPhone;
+
+    /** 配件登记机关 */
+    @Excel(name = "配件登记机关")
+    private String partsOffice;
+
+    /** 配件维保单位地址 */
+    @Excel(name = "配件维保单位地址")
+    private String partsAddress;
 
     public void setPartsId(Long partsId) 
     {
@@ -134,12 +157,12 @@ public class RepeairParts extends BaseEntity
     {
         return partsPurchaseExplain;
     }
-    public void setPartsTime(String partsTime) 
+    public void setPartsTime(Date partsTime) 
     {
         this.partsTime = partsTime;
     }
 
-    public String getPartsTime() 
+    public Date getPartsTime() 
     {
         return partsTime;
     }
@@ -170,6 +193,51 @@ public class RepeairParts extends BaseEntity
     {
         return partsState;
     }
+    public void setPartsVariety(String partsVariety) 
+    {
+        this.partsVariety = partsVariety;
+    }
+
+    public String getPartsVariety() 
+    {
+        return partsVariety;
+    }
+    public void setPartsMechanism(String partsMechanism) 
+    {
+        this.partsMechanism = partsMechanism;
+    }
+
+    public String getPartsMechanism() 
+    {
+        return partsMechanism;
+    }
+    public void setPartsPhone(String partsPhone) 
+    {
+        this.partsPhone = partsPhone;
+    }
+
+    public String getPartsPhone() 
+    {
+        return partsPhone;
+    }
+    public void setPartsOffice(String partsOffice) 
+    {
+        this.partsOffice = partsOffice;
+    }
+
+    public String getPartsOffice() 
+    {
+        return partsOffice;
+    }
+    public void setPartsAddress(String partsAddress) 
+    {
+        this.partsAddress = partsAddress;
+    }
+
+    public String getPartsAddress() 
+    {
+        return partsAddress;
+    }
 
     @Override
     public String toString() {
@@ -186,6 +254,11 @@ public class RepeairParts extends BaseEntity
             .append("partsTotalPrice", getPartsTotalPrice())
             .append("partsNumber", getPartsNumber())
             .append("partsState", getPartsState())
+            .append("partsVariety", getPartsVariety())
+            .append("partsMechanism", getPartsMechanism())
+            .append("partsPhone", getPartsPhone())
+            .append("partsOffice", getPartsOffice())
+            .append("partsAddress", getPartsAddress())
             .toString();
     }
 }
