@@ -2,6 +2,10 @@ package com.gxuwz.wyrepair.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.gxuwz.wyrepair.domain.RepairWorker;
+import com.gxuwz.wyrepair.service.IRepairWorkerService;
+import com.gxuwz.wyrepair.system.domain.SysUserRole;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,6 +51,9 @@ public class SysUserController extends BaseController
 
     @Autowired
     private ISysPostService postService;
+
+    @Autowired
+    private IRepairWorkerService repairWorkerService;
 
     /**
      * 获取用户列表
@@ -118,6 +125,8 @@ public class SysUserController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysUser user)
     {
+        int i = 0;
+        int j = 0;
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
         {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
@@ -134,7 +143,30 @@ public class SysUserController extends BaseController
         }
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        return toAjax(userService.insertUser(user));
+        j = userService.insertUser(user);
+        Long[] roles = user.getRoleIds();
+        for (Long roleId : roles)
+        {
+            SysRole sysRole =roleService.selectRoleById(roleId);
+            //SysRole sysRole1 = roleService.selectRoleByRoleName(sysRole.getRoleKey());
+            System.out.println(sysRole.getRoleKey());
+            if ("repair".equals(sysRole.getRoleKey())){
+                RepairWorker repairWorker = new RepairWorker();
+                repairWorker.setUserId(user.getUserId());
+                System.out.println(user.getUserId());
+                i = repairWorkerService.insertRepairWorker(repairWorker);
+            }
+        }
+
+        //SysRole sysRole = roleService.selectRoleByRoleName(roleIds);
+        //System.out.println(sysRole.getRoleName());
+        //SysRole roles = roleService.selectRoleAll();
+        //SysRole sysRole = new SysRole();
+        if ((1>0  ||  j>0 )){
+            return AjaxResult.success();
+        }else {
+            return AjaxResult.error();
+        }
     }
 
     /**

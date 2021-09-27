@@ -237,7 +237,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30" />
+              <el-input v-model="form.userName"  placeholder="请输入用户名称" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -287,7 +287,7 @@
 <!--          </el-col>-->
           <el-col :span="12">
             <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择">
+              <el-select v-model="form.roleIds"  multiple placeholder="请选择">
                 <el-option
                   v-for="item in roleOptions"
                   :key="item.roleId"
@@ -534,7 +534,7 @@ export default {
         status: "0",
         remark: undefined,
         postIds: [],
-        roleIds: []
+        roleIds: null
       };
       this.resetForm("form");
     },
@@ -573,8 +573,10 @@ export default {
       this.reset();
       this.getTreeselect();
       getUser().then(response => {
+        console.log(response)
         this.postOptions = response.posts;
         this.roleOptions = response.roles;
+        this.roleName =
         this.open = true;
         this.title = "添加用户";
         this.form.password = this.initPassword;
@@ -627,6 +629,7 @@ export default {
             });
           } else {
             addUser(this.form).then(response => {
+              //this.roleName = this.form.roleName
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();

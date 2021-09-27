@@ -2,6 +2,9 @@ package com.gxuwz.wyrepair.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import com.gxuwz.wyrepair.common.core.domain.entity.SysDept;
+import com.gxuwz.wyrepair.system.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +37,9 @@ public class SysLoginController
     @Autowired
     private SysPermissionService permissionService;
 
+    @Autowired
+    private ISysDeptService deptService;
+
     /**
      * 登录方法
      * 
@@ -59,12 +65,16 @@ public class SysLoginController
     @GetMapping("getInfo")
     public AjaxResult getInfo()
     {
+
         SysUser user = SecurityUtils.getLoginUser().getUser();
+        SysDept sysDept = deptService.selectDeptById(user.getDeptId());
+        String deptName = sysDept.getDeptName();
         // 角色集合
         Set<String> roles = permissionService.getRolePermission(user);
         // 权限集合
         Set<String> permissions = permissionService.getMenuPermission(user);
         AjaxResult ajax = AjaxResult.success();
+        ajax.put("deptName", deptName);
         ajax.put("user", user);
         ajax.put("roles", roles);
         ajax.put("permissions", permissions);

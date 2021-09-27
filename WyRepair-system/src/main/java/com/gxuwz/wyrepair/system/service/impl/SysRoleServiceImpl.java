@@ -140,6 +140,17 @@ public class SysRoleServiceImpl implements ISysRoleService
     }
 
     /**
+     * 通过角色名称查询角色权限字符串(role_key)
+     *
+     * @param roleName 角色名称
+     * @return 角色对象信息
+     */
+    public SysRole selectRoleByRoleName(String roleName)
+    {
+        return roleMapper.selectRoleByRoleName(roleName);
+    }
+
+    /**
      * 校验角色名称是否唯一
      * 
      * @param role 角色信息

@@ -406,7 +406,7 @@ public class ApiRepairRepTbController extends BaseController {
     /**
      * 通过部门ID查询用户
      *
-     * @param deptId 部门id
+     * @param deptId 部门id(维修专员)
      * @return AjaxResult
      */
     @ApiOperation("通过部门ID查询用户")
@@ -415,10 +415,34 @@ public class ApiRepairRepTbController extends BaseController {
     @GetMapping("/findByDeptIdForUser")
     public AjaxResult findByDeptIdForUser(@ApiParam(name = "deptId", value = "部门ID") Long deptId) {
         SysUser sysUser = new SysUser();
+        //SysRole sysRole = new SysRole()
         sysUser.setDeptId(deptId);
-        Long[] roleIds = {101L};
-        sysUser.setRoleIds(roleIds);
+        //sysUser.setDeptId(deptId);
+        //Long[] roleIds = {101L};
+        //sysUser.setRoleIds(roleIds);
         List<SysUser> list = sysUserService.selectUserList(sysUser);
+        return AjaxResult.success(list);
+    }
+
+    /**
+     * 通过部门ID和用户ID查询维修人员
+     *
+     * @param deptId 部门id(维修人员)
+     * @return AjaxResult
+     */
+    @ApiOperation("通过部门ID查询用户")
+    @ApiImplicitParam(name = "deptId", value = "部门ID", required = true, dataType = "Long", paramType = "path")
+    @PreAuthorize("@ss.hasPermi('repair:tb:transferToPer')")
+    @GetMapping("/findByDeptIdUserIdForUser")
+    public AjaxResult findByDeptIdUserIdForUser(@ApiParam(name = "deptId", value = "部门ID") Long deptId) {
+        SysUser sysUser = new SysUser();
+        //SysRole sysRole = new SysRole()
+        sysUser.setDeptId(deptId);
+        //sysUser.setDeptId(deptId);
+        //Long[] roleIds = {101L};
+        //sysUser.setRoleIds(roleIds);
+        List<SysUser> list = sysUserService.selectWorkerList(sysUser);
+        System.out.println(list);
         return AjaxResult.success(list);
     }
 

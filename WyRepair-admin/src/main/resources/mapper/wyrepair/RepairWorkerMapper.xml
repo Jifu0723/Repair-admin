@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.RepairWorkerMapper">
+    
+    <resultMap type="RepairWorker" id="RepairWorkerResult">
+        <result property="repairWorkerId"    column="repair_worker_id"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectRepairWorkerVo">
+        select repair_worker_id, user_id from repair_worker
+    </sql>
+
+    <select id="selectRepairWorkerList" parameterType="RepairWorker" resultMap="RepairWorkerResult">
+        <include refid="selectRepairWorkerVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRepairWorkerByRepairWorkerId" parameterType="Long" resultMap="RepairWorkerResult">
+        <include refid="selectRepairWorkerVo"/>
+        where repair_worker_id = #{repairWorkerId}
+    </select>
+        
+    <insert id="insertRepairWorker" parameterType="RepairWorker">
+        insert into repair_worker
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="repairWorkerId != null">repair_worker_id,</if>
+            <if test="userId != null">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="repairWorkerId != null">#{repairWorkerId},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRepairWorker" parameterType="RepairWorker">
+        update repair_worker
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+        </trim>
+        where repair_worker_id = #{repairWorkerId}
+    </update>
+
+    <delete id="deleteRepairWorkerByRepairWorkerId" parameterType="Long">
+        delete from repair_worker where repair_worker_id = #{repairWorkerId}
+    </delete>
+
+    <delete id="deleteRepairWorkerByRepairWorkerIds" parameterType="String">
+        delete from repair_worker where repair_worker_id in 
+        <foreach item="repairWorkerId" collection="array" open="(" separator="," close=")">
+            #{repairWorkerId}
+        </foreach>
+    </delete>
+</mapper>

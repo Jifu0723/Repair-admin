@@ -36,6 +36,8 @@ public interface ISysRoleService
      */
     public Set<String> selectRolePermissionByUserId(Long userId);
 
+
+
     /**
      * 查询所有角色
      * 
@@ -51,6 +53,8 @@ public interface ISysRoleService
      */
     public List<Integer> selectRoleListByUserId(Long userId);
 
+
+
     /**
      * 通过角色ID查询角色
      * 
@@ -58,6 +62,14 @@ public interface ISysRoleService
      * @return 角色对象信息
      */
     public SysRole selectRoleById(Long roleId);
+
+    /**
+     * 通过角色名称查询角色权限字符串(role_key)
+     *
+     * @param roleName 角色名称
+     * @return 角色对象信息
+     */
+    public SysRole selectRoleByRoleName(String roleName);
 
     /**
      * 校验角色名称是否唯一
