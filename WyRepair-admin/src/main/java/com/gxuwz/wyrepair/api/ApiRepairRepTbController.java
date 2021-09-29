@@ -59,11 +59,11 @@ public class ApiRepairRepTbController extends BaseController {
     /**
      * 角色【维修专员】
      */
-    private static final Long ROLE_REPAIR_ADMIN = 102L;
+    private static final Long ROLE_REPAIR_ADMIN = 111L;
     /**
      * 角色【维修人员】
      */
-    private static final Long ROLE_REPAIR = 101L;
+    private static final Long ROLE_REPAIR = 110L;
     /**
      * 角色【互联网开发中心管理员】
      */
@@ -144,25 +144,15 @@ public class ApiRepairRepTbController extends BaseController {
     public TableDataInfo waitRepairlist(RepairRepTb repairRepTb) {
 //        startPage();
         // 获取用户信息
+        System.out.println(1111);
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         repairRepTb.setCurWork(1);
         repairRepTb.setRepairState(1);
         repairRepTb.setRepairDep(user.getDeptId());
         List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb, null);
+        System.out.println(list);
         return getDataTable(list);
     }
-
-    /*
-     * 转单{
-     *     1. 维修专员【跨部门转单】
-     *     2. 维修人员【转维修人员、跨部门转部门内部单】
-     *     3. 维修人员【转回部门内部单】
-     *
-     * }
-     * @param repairRepTb
-     * @param transferName 转给的维修人员姓名
-     * @return
-     */
 
     /**
      * 1. 维修专员【跨部门转单】

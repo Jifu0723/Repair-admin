@@ -67,17 +67,32 @@ public class SysLoginController
     {
 
         SysUser user = SecurityUtils.getLoginUser().getUser();
-        SysDept sysDept = deptService.selectDeptById(user.getDeptId());
-        String deptName = sysDept.getDeptName();
-        // 角色集合
-        Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
-        Set<String> permissions = permissionService.getMenuPermission(user);
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("deptName", deptName);
-        ajax.put("user", user);
-        ajax.put("roles", roles);
-        ajax.put("permissions", permissions);
+        //管理员登录
+        if ("admin".equals(user.getUserName()))
+        {
+            // 角色集合
+            Set<String> roles = permissionService.getRolePermission(user);
+            // 权限集合
+            Set<String> permissions = permissionService.getMenuPermission(user);
+            ajax.put("user", user);
+            ajax.put("roles", roles);
+            ajax.put("permissions", permissions);
+        }
+        //其他人员登录
+        if (!"admin".equals(user.getUserName()))
+        {
+            SysDept sysDept = deptService.selectDeptById(user.getDeptId());
+            String deptName = sysDept.getDeptName();
+            ajax.put("deptName", deptName);
+            // 角色集合
+            Set<String> roles = permissionService.getRolePermission(user);
+            // 权限集合
+            Set<String> permissions = permissionService.getMenuPermission(user);
+            ajax.put("user", user);
+            ajax.put("roles", roles);
+            ajax.put("permissions", permissions);
+        }
         return ajax;
     }
 

@@ -44,7 +44,7 @@ public class RepairApplyServiceImpl implements IRepairApplyService
     /**
      * 角色【维修人员】
      */
-    private static final Long ROLE_REPAIR = 101L;
+    private static final Long ROLE_REPAIR = 110L;
 
     /**
      * 查询申请单
