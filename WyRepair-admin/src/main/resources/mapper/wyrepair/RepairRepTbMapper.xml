@@ -10,6 +10,7 @@
         <result property="repairAddress" column="repair_address"/>
         <result property="repairContent" column="repair_content"/>
         <result property="repairType" column="repair_type"/>
+        <result property="repairExpectType" column="repair_expect_type"/>
         <result property="repairExpectTime" column="repair_expect_time"/>
         <result property="repairState" column="repair_state"/>
         <result property="repairedState" column="repaired_state"/>
@@ -79,6 +80,7 @@
                repair_address,
                repair_content,
                repair_type,
+               repair_expect_type,
                repair_expect_time,
                repair_state,
                repaired_state,
@@ -101,6 +103,7 @@
         tb.repair_address,
         tb.repair_content,
         tb.repair_type,
+        tb.repair_expect_type,
         tb.repair_expect_time,
         tb.repair_state,
         tb.repaired_state,
@@ -154,6 +157,9 @@
             <if test="repTb.repairType != null ">
                 and tb.repair_type = #{repTb.repairType}
             </if>
+            <if test="repTb.repairExpectType != null ">
+                and tb.repair_expect_type = #{repTb.repairExpectType}
+            </if>
             <if test="repTb.repairExpectTime != null ">
                 and tb.repair_expect_time = #{repTb.repairExpectTime}
             </if>
@@ -201,6 +207,7 @@
         tb.repair_address,
         tb.repair_content,
         tb.repair_type,
+        tb.repair_expect_type,
         tb.repair_expect_time,
         tb.repair_state,
         tb.repaired_state,
@@ -239,6 +246,9 @@
             </if>
             <if test="repTb.repairContent != null  and repTb.repairContent != ''">
                 and tb.repair_content =#{repTb.repairContent}
+            </if>
+            <if test="repTb.repairExpectType != null ">
+                and tb.repair_expect_type = #{repTb.repairExpectType}
             </if>
             <if test="repTb.repairType != null ">
                 and tb.repair_type = #{repTb.repairType}
@@ -292,6 +302,7 @@
             <if test="repairAddress != null">repair_address,</if>
             <if test="repairContent != null">repair_content,</if>
             <if test="repairType != null">repair_type,</if>
+            <if test="repairExpectType != null">repair_expect_type,</if>
             <if test="repairExpectTime != null">repair_expect_time,</if>
             <if test="repairState != null">repair_state,</if>
             <if test="repairedState != null">repaired_state,</if>
@@ -310,6 +321,7 @@
             <if test="repairAddress != null">#{repairAddress},</if>
             <if test="repairContent != null">#{repairContent},</if>
             <if test="repairType != null">#{repairType},</if>
+            <if test="repairExpectType != null">#{repairExpectType},</if>
             <if test="repairExpectTime != null">#{repairExpectTime},</if>
             <if test="repairState != null">#{repairState},</if>
             <if test="repairedState != null">#{repairedState},</if>
@@ -332,6 +344,7 @@
             <if test="repairAddress != null">repair_address = #{repairAddress},</if>
             <if test="repairContent != null">repair_content = #{repairContent},</if>
             <if test="repairType != null">repair_type = #{repairType},</if>
+            <if test="repairExpectType != null">repair_expect_type = #{repairExpectType},</if>
             <if test="repairExpectTime != null">repair_expect_time = #{repairExpectTime},</if>
             <if test="repairState != null">repair_state = #{repairState},</if>
             <if test="repairedState != null">repaired_state = #{repairedState},</if>

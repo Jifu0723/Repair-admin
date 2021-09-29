@@ -140,17 +140,18 @@ public class RepairReptransfer extends BaseEntity {
      * @param applyId           申请单id
      * @param oUserId           原用户id
      */
-    public void initTransfer(RepairRepTb oldRepair, RepairRepTb newRepair,
+    public void initTransfer(RepairRepTb oldRepair,
+                             RepairRepTb newRepair,
                              Long applyId,
                              Long oUserId,
                              int reptransfeUserType) {
-        this.reptId = oldRepair.getRepairId();
-        this.reptNo = oldRepair.getRepairNo();
-        this.reptToId = newRepair.getRepairId();
-        this.reptToNo = newRepair.getRepairNo();
-        this.applyId = applyId;
-        this.reptransfeUser = oUserId;
-        this.reptransfeUserType = reptransfeUserType;
+        this.reptId = oldRepair.getRepairId();//所属报修单id
+        this.reptNo = oldRepair.getRepairNo();//所属报修单编号
+        this.reptToId = newRepair.getRepairId();//所转to报修单id(新转的报修单id)
+        this.reptToNo = newRepair.getRepairNo();//所转to报修单编号(新转的报修单编号)
+        this.applyId = applyId;//申请单id
+        this.reptransfeUser = oUserId;//发起转单用户id
+        this.reptransfeUserType = reptransfeUserType;//转单用户类型（0维修专员、1维修人员）
 
     }
 

@@ -68,6 +68,7 @@ public class ApiRepairApplyController extends BaseController {
     @PostMapping("/{isOrder}")
     public AjaxResult add(@RequestBody RepairApply repairApply,@PathVariable int isOrder) {
         // 申请报修原件保存
+        System.out.println(1111);
         return repairApplyService.insertRepairApply(repairApply, isOrder);
 
     }

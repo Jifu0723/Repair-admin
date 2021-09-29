@@ -53,6 +53,13 @@ public class RepairRepTb extends BaseEntity {
     private Long repairType;
 
     /**
+     * 期望维修形式：换新、换配件、维修
+     */
+    @ApiModelProperty("维修类型")
+    @Excel(name = "期望维修形式：换新、换配件、维修")
+    private Long repairExpectType;
+
+    /**
      * 期望维修时间
      */
     @ApiModelProperty("期望维修时间")
@@ -169,32 +176,27 @@ public class RepairRepTb extends BaseEntity {
 
     /**
      * 初始化信息
-     * @param apply
-     */
-    public void initRepairApply(RepairApply apply) {
-        this.repairNo = apply.getApplyNo();
-        this.applyId = apply.getApplyId();
-        this.repairType = apply.getApplyType();
-        this.repairDep = apply.getApplyDep();
-        this.repairAddress = apply.getApplyAddress();
-        this.repairContent = apply.getApplyContent();
-        this.repairExpectTime = apply.getApplyExpectTime();
-    }
-
-    /**
-     * 初始化信息
      * @param apply 申请单
      * @param repairNo 编号
      * @param depID 部门id
      */
     public void initRepairApply(RepairApply apply, String repairNo, Long depID) {
-        this.repairNo = repairNo;
-        this.applyId = apply.getApplyId();
-        this.repairDep = depID;
-        this.repairAddress = apply.getApplyAddress();
-        this.repairContent = apply.getApplyContent();
-        this.repairExpectTime = apply.getApplyExpectTime();
-        this.repairType = apply.getApplyType();
+        this.repairNo = repairNo;//新的报修编号
+        this.applyId = apply.getApplyId();//申请单编号
+        this.repairDep = depID;//初次报修所属部门id
+        this.repairAddress = apply.getApplyAddress();//申请单报修地点
+        this.repairContent = apply.getApplyContent();//申请单报修内容
+        this.repairExpectTime = apply.getApplyExpectTime();//申请单期望维修时间
+        this.repairType = apply.getApplyType();//申请单维修类型
+        this.repairExpectType = apply.getApplyExpectType();//申请单期望维修形式
+    }
+
+    public Long getRepairExpectType() {
+        return repairExpectType;
+    }
+
+    public void setRepairExpectType(Long repairExpectType) {
+        this.repairExpectType = repairExpectType;
     }
 
     public RepairRepcomment getRepcomment() {
@@ -388,7 +390,8 @@ public class RepairRepTb extends BaseEntity {
                 ", repairNo='" + repairNo + '\'' +
                 ", repairAddress='" + repairAddress + '\'' +
                 ", repairContent='" + repairContent + '\'' +
-                ", repairType='" + repairType + '\'' +
+                ", repairType=" + repairType +
+                ", repairExpectType=" + repairExpectType +
                 ", repairExpectTime=" + repairExpectTime +
                 ", repairState=" + repairState +
                 ", repairedState=" + repairedState +
@@ -401,8 +404,10 @@ public class RepairRepTb extends BaseEntity {
                 ", repairDestoryTime=" + repairDestoryTime +
                 ", repairCreateTime=" + repairCreateTime +
                 ", repairIsDelete=" + repairIsDelete +
+                ", repType=" + repType +
                 ", apply=" + apply +
                 ", repImgList=" + repImgList +
+                ", appImgList=" + appImgList +
                 ", processList=" + processList +
                 ", repcomment=" + repcomment +
                 '}';

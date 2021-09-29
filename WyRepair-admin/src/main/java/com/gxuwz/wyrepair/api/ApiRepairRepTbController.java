@@ -252,11 +252,13 @@ public class ApiRepairRepTbController extends BaseController {
                                   @ApiParam(name = "transferName", value = "转单对象姓名") String transferName,
                                   @ApiParam(name = "repairUserid", value = "转单对象工号") Long repairUserid) {
         RepairApply apply = applyService.selectRepairApplyById(repairRepTb.getApplyId());
+        //通过用户ID查询用户信息
+        System.out.println(repairUserid);
         SysUser sysUser = sysUserService.selectUserById(repairUserid);
         // 新的维修单
         RepairRepTb newRepair = new RepairRepTb();
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(), repairRepTb.getRepairDep());
-        newRepair.setRepairState(1);
+        newRepair.setRepairState(1);//设置为待接单
         repairRepTbService.insertRepairRepTb(newRepair);
         // 维修单过程信息保存
         RepairProcess process = new RepairProcess();
@@ -264,12 +266,17 @@ public class ApiRepairRepTbController extends BaseController {
         processService.insertRepairProcess(process);
         // 转单记录保存
         RepairReptransfer transferRep = new RepairReptransfer();
+        System.out.println(repairRepTb);
+        System.out.println(newRepair);
         transferRep.initTransfer(repairRepTb, newRepair, apply.getApplyId(), sysUser.getUserId(), 1);
         // 查询上一次转单记录
         RepairReptransfer rt = new RepairReptransfer();
-        rt.setReptToNo(repairRepTbService.selectRepairRepTbById(repairRepTb.getApplyId()).getRepairNo());
+        rt.setReptToNo(repairRepTbService.selectRepairRepTbById(repairRepTb.getApplyId()).getRepairNo()); //通过申请单的id查询报修编号
+        System.out.println(repairRepTbService.selectRepairRepTbById(repairRepTb.getApplyId()).getRepairNo());
         List<RepairReptransfer> repairReptransfers = transferService.selectRepairReptransferList(rt);
+        //判断转单记录是否为空，如果为空，跳过if。
         if (repairReptransfers.size() > 0 && repairReptransfers.get(0) != null) {
+            System.out.println(9999);
             transferRep.setParentId(repairReptransfers.get(0).getReptransferId());
         }
         transferService.insertRepairReptransfer(transferRep);

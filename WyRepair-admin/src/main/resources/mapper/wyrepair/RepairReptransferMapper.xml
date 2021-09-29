@@ -107,7 +107,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="parentId != null">#{parentId},</if>
             <if test="reptransfeTime != null">#{reptransfeTime},</if>
             <if test="reptransfeIsDelete != null">#{reptransfeIsDelete},</if>
-            <if test="reptToDept != null">#{reptToDept},</if>
          </trim>
     </insert>
 

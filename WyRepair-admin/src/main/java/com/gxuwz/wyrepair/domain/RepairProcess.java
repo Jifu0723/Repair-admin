@@ -77,13 +77,13 @@ public class RepairProcess extends BaseEntity
      * @param userName 维修人员姓名
      */
     public void initProcess(RepairApply apply, RepairRepTb repair, String userName,Long userid){
-        this.applyId = apply.getApplyId();
-        this.applyNo = apply.getApplyNo();
-        this.repaireDep = repair.getRepairDep();
-        this.repaireId = repair.getRepairId();
-        this.repaireNo = repair.getRepairNo();
-        this.repaireName = userName;
-        this.repaireUserid = userid;
+        this.applyId = apply.getApplyId();//申请单的报修自增主键
+        this.applyNo = apply.getApplyNo();//申请单的报修编号
+        this.repaireDep = repair.getRepairDep();//报修单的初次报修所属部门id
+        this.repaireId = repair.getRepairId();//报修单的自增主键
+        this.repaireNo = repair.getRepairNo();//报修单的报修编号
+        this.repaireName = userName;//维修人员姓名
+        this.repaireUserid = userid;//维修人员工号
     }
 
 
