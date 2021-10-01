@@ -46,6 +46,13 @@ public class RepairRepTb extends BaseEntity {
     private String repairContent;
 
     /**
+     * 维修单单价
+     */
+    @ApiModelProperty("维修单单价")
+    @Excel(name = "维修单单价")
+    private Integer repairMoney;
+
+    /**
      * 维修类型：网络设备、水电类、家具类、办公室设备
      */
     @ApiModelProperty("维修类型")
@@ -189,6 +196,14 @@ public class RepairRepTb extends BaseEntity {
         this.repairExpectTime = apply.getApplyExpectTime();//申请单期望维修时间
         this.repairType = apply.getApplyType();//申请单维修类型
         this.repairExpectType = apply.getApplyExpectType();//申请单期望维修形式
+    }
+
+    public Integer getRepairMoney() {
+        return repairMoney;
+    }
+
+    public void setRepairMoney(Integer repairMoney) {
+        this.repairMoney = repairMoney;
     }
 
     public Long getRepairExpectType() {
@@ -390,6 +405,7 @@ public class RepairRepTb extends BaseEntity {
                 ", repairNo='" + repairNo + '\'' +
                 ", repairAddress='" + repairAddress + '\'' +
                 ", repairContent='" + repairContent + '\'' +
+                ", repairMoney=" + repairMoney +
                 ", repairType=" + repairType +
                 ", repairExpectType=" + repairExpectType +
                 ", repairExpectTime=" + repairExpectTime +

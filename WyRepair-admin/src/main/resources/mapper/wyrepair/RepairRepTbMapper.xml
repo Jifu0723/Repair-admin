@@ -9,6 +9,7 @@
         <result property="repairNo" column="repair_no"/>
         <result property="repairAddress" column="repair_address"/>
         <result property="repairContent" column="repair_content"/>
+        <result property="repairMoney" column="repair_money"/>
         <result property="repairType" column="repair_type"/>
         <result property="repairExpectType" column="repair_expect_type"/>
         <result property="repairExpectTime" column="repair_expect_time"/>
@@ -79,6 +80,7 @@
                repair_no,
                repair_address,
                repair_content,
+               repair_money,
                repair_type,
                repair_expect_type,
                repair_expect_time,
@@ -96,12 +98,13 @@
         from repair_rep_tb
     </sql>
 
-    <select id="selectRepairRepTbList" resultMap="RepairRepTbResult">
+    <select id="selectRepairPersonRepTbList" resultMap="RepairRepTbResult">
         select
         tb.repair_id,
         tb.repair_no,
         tb.repair_address,
         tb.repair_content,
+        tb.repair_money,
         tb.repair_type,
         tb.repair_expect_type,
         tb.repair_expect_time,
@@ -153,6 +156,9 @@
             </if>
             <if test="repTb.repairContent != null  and repTb.repairContent != ''">
                 and tb.repair_content =#{repTb.repairContent}
+            </if>
+            <if test="repTb.repairMoney != null ">
+                and tb.repair_money = #{repTb.repairMoney}
             </if>
             <if test="repTb.repairType != null ">
                 and tb.repair_type = #{repTb.repairType}
@@ -206,6 +212,7 @@
         tb.repair_no,
         tb.repair_address,
         tb.repair_content,
+        tb.repair_money,
         tb.repair_type,
         tb.repair_expect_type,
         tb.repair_expect_time,
@@ -246,6 +253,9 @@
             </if>
             <if test="repTb.repairContent != null  and repTb.repairContent != ''">
                 and tb.repair_content =#{repTb.repairContent}
+            </if>
+            <if test="repTb.repairMoney != null  and repTb.repairMoney != ''">
+                and tb.repair_money =#{repTb.repairMoney}
             </if>
             <if test="repTb.repairExpectType != null ">
                 and tb.repair_expect_type = #{repTb.repairExpectType}
@@ -301,6 +311,7 @@
             <if test="repairNo != null">repair_no,</if>
             <if test="repairAddress != null">repair_address,</if>
             <if test="repairContent != null">repair_content,</if>
+            <if test="repairMoney != null">repair_money,</if>
             <if test="repairType != null">repair_type,</if>
             <if test="repairExpectType != null">repair_expect_type,</if>
             <if test="repairExpectTime != null">repair_expect_time,</if>
@@ -320,6 +331,7 @@
             <if test="repairNo != null">#{repairNo},</if>
             <if test="repairAddress != null">#{repairAddress},</if>
             <if test="repairContent != null">#{repairContent},</if>
+            <if test="repairMoney != null">#{repairMoney},</if>
             <if test="repairType != null">#{repairType},</if>
             <if test="repairExpectType != null">#{repairExpectType},</if>
             <if test="repairExpectTime != null">#{repairExpectTime},</if>
@@ -343,6 +355,7 @@
             <if test="repairNo != null">repair_no = #{repairNo},</if>
             <if test="repairAddress != null">repair_address = #{repairAddress},</if>
             <if test="repairContent != null">repair_content = #{repairContent},</if>
+            <if test="repairMoney != null">repair_money = #{repairMoney},</if>
             <if test="repairType != null">repair_type = #{repairType},</if>
             <if test="repairExpectType != null">repair_expect_type = #{repairExpectType},</if>
             <if test="repairExpectTime != null">repair_expect_time = #{repairExpectTime},</if>

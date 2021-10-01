@@ -21,13 +21,14 @@ public interface IRepairRepTbService
     public RepairRepTb selectRepairRepTbById(Long repairId);
 
     /**
-     * 查询报修单列表
+     * 查询报修单列表（维修人员查看）
      * 
      * @param repairRepTb 报修单
      * @param repairUserid 报修单所属维修人员
      * @return 报修单集合
      */
-    public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb,Long repairUserid);
+    public List<RepairRepTb> selectRepairPersonRepTbList(RepairRepTb repairRepTb,Long repairUserid);
+
 
     /**
      * 查询除【维修人员】外的其他人员的报修单列表
@@ -37,8 +38,6 @@ public interface IRepairRepTbService
      * @return 报修单集合
      */
     public List<RepairRepTb> selectRepairTbListOfOthers(RepairRepTb repairRepTb,Long applyId);
-
-
 
     /**
      * 新增报修单

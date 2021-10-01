@@ -94,6 +94,16 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         // 生成报修单,设置生成报修单编号
         RepairRepTb repTb = new RepairRepTb();
         repTb.initRepairApply(repairApply,repairApply.getApplyNo(),reptype.getRepairDep());
+        if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
+        {
+            repTb.setRepairMoney(15);//换新、换配件
+            System.out.println(56565);
+        }
+        if (repairApply.getApplyExpectType() == 3 )
+        {
+            System.out.println(7878);
+            repTb.setRepairMoney(25);//维修
+        }
         // 维修人员报修自动接单
         if (ROLE_REPAIR.equals(roleName) && isOrder >0) {
             repTb.setRepairState(2);
@@ -103,6 +113,7 @@ public class RepairApplyServiceImpl implements IRepairApplyService
             process.initProcess(repairApply,repTb,user.getUserName(),user.getUserId());
             processService.insertRepairProcess(process);
         }else{
+            System.out.println(99995);
             repTbService.insertRepairRepTb(repTb);
         }
         AjaxResult ajaxResult = AjaxResult.success();

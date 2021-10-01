@@ -90,7 +90,7 @@ public class ApiRepairRepTbController extends BaseController {
         }else {
             // 设置当前运转单
             repairRepTb.setCurWork(1);
-            List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb, user.getUserId());
+            List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb, user.getUserId());
             return getDataTable(list);
         }
     }
@@ -137,19 +137,18 @@ public class ApiRepairRepTbController extends BaseController {
 
 
     /**
-     * 查询【待修】报修单列表
+     * 查询【待修】报修单列表（维修人员查看）
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
-    @GetMapping("/waitReplist")
-    public TableDataInfo waitRepairlist(RepairRepTb repairRepTb) {
+    @GetMapping("/repairpersonwaitReplist")
+    public TableDataInfo repairpersonwaitReplist(RepairRepTb repairRepTb) {
 //        startPage();
         // 获取用户信息
-        System.out.println(1111);
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         repairRepTb.setCurWork(1);
         repairRepTb.setRepairState(1);
         repairRepTb.setRepairDep(user.getDeptId());
-        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb, null);
+        List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb, null);
         System.out.println(list);
         return getDataTable(list);
     }
@@ -266,17 +265,13 @@ public class ApiRepairRepTbController extends BaseController {
         processService.insertRepairProcess(process);
         // 转单记录保存
         RepairReptransfer transferRep = new RepairReptransfer();
-        System.out.println(repairRepTb);
-        System.out.println(newRepair);
         transferRep.initTransfer(repairRepTb, newRepair, apply.getApplyId(), sysUser.getUserId(), 1);
         // 查询上一次转单记录
         RepairReptransfer rt = new RepairReptransfer();
         rt.setReptToNo(repairRepTbService.selectRepairRepTbById(repairRepTb.getApplyId()).getRepairNo()); //通过申请单的id查询报修编号
-        System.out.println(repairRepTbService.selectRepairRepTbById(repairRepTb.getApplyId()).getRepairNo());
         List<RepairReptransfer> repairReptransfers = transferService.selectRepairReptransferList(rt);
         //判断转单记录是否为空，如果为空，跳过if。
         if (repairReptransfers.size() > 0 && repairReptransfers.get(0) != null) {
-            System.out.println(9999);
             transferRep.setParentId(repairReptransfers.get(0).getReptransferId());
         }
         transferService.insertRepairReptransfer(transferRep);
@@ -370,8 +365,11 @@ public class ApiRepairRepTbController extends BaseController {
     @ApiImplicitParam(name = "RepairRepTb", value = "修改报修单", dataType = "RepairRepTb")
     @PreAuthorize("@ss.hasPermi('repair:tb:edit')")
     @Log(title = "报修单", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @RequestMapping("/updateRepairTb")
     public AjaxResult edit(@RequestBody RepairRepTb repairRepTb) {
+
+        RepairRepTb tb = repairRepTbService.selectRepairRepTbById(repairRepTb.getRepairId());
+        System.out.println(tb.getRepairMoney());
         return toAjax(repairRepTbService.updateRepairRepTb(repairRepTb));
     }
 
@@ -395,7 +393,7 @@ public class ApiRepairRepTbController extends BaseController {
     @Log(title = "报修单", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(RepairRepTb repairRepTb) {
-        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb, null);
+        List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb, null);
         ExcelUtil<RepairRepTb> util = new ExcelUtil<RepairRepTb>(RepairRepTb.class);
         return util.exportExcel(list, "报修单数据");
     }
@@ -412,11 +410,7 @@ public class ApiRepairRepTbController extends BaseController {
     @GetMapping("/findByDeptIdForUser")
     public AjaxResult findByDeptIdForUser(@ApiParam(name = "deptId", value = "部门ID") Long deptId) {
         SysUser sysUser = new SysUser();
-        //SysRole sysRole = new SysRole()
         sysUser.setDeptId(deptId);
-        //sysUser.setDeptId(deptId);
-        //Long[] roleIds = {101L};
-        //sysUser.setRoleIds(roleIds);
         List<SysUser> list = sysUserService.selectUserList(sysUser);
         return AjaxResult.success(list);
     }

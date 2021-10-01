@@ -65,11 +65,11 @@ public class RepairRepTbController extends BaseController {
         List<RepairRepTb> list = new ArrayList<>();
         if ("维修专员".equals(sysRole.getRoleName())) {
             repairRepTb.setRepairDep(user.getDeptId());
-            list = repairRepTbService.selectRepairRepTbList(repairRepTb,null);
+            list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         } else if ("维修人员".equals(sysRole.getRoleName())) {
-            list = repairRepTbService.selectRepairRepTbList(repairRepTb,user.getUserId());
+            list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,user.getUserId());
         }else{
-            list = repairRepTbService.selectRepairRepTbList(repairRepTb,null);
+            list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         }
         return getDataTable(list);
     }
@@ -86,7 +86,8 @@ public class RepairRepTbController extends BaseController {
         repairRepTb.setCurWork(1);
         repairRepTb.setRepairState(1);
         repairRepTb.setRepairDep(user.getDeptId());
-        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb,null);
+
+        List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         return getDataTable(list);
     }
 
@@ -115,10 +116,6 @@ public class RepairRepTbController extends BaseController {
         }
         return AjaxResult.error("很抱歉，该维修单已被其他维修人员接单！");
     }
-
-
-
-
 
 
     /*
@@ -346,7 +343,7 @@ public class RepairRepTbController extends BaseController {
     @Log(title = "报修单", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(RepairRepTb repairRepTb) {
-        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb,null);
+        List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         ExcelUtil<RepairRepTb> util = new ExcelUtil<RepairRepTb>(RepairRepTb.class);
         return util.exportExcel(list, "报修单数据");
     }

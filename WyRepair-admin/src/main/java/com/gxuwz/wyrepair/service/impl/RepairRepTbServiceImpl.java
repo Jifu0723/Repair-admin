@@ -33,16 +33,16 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     }
 
     /**
-     * 查询报修单列表
-     * 
+     * 查询报修单列表（维修人员查看）
+     *
      * @param repairRepTb 报修单
      * @param repairUserid 报修单所属维修人员
      * @return 报修单
      */
     @Override
-    public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb,Long repairUserid)
+    public List<RepairRepTb> selectRepairPersonRepTbList(RepairRepTb repairRepTb,Long repairUserid)
     {
-        return repairRepTbMapper.selectRepairRepTbList(repairRepTb,repairUserid);
+        return repairRepTbMapper.selectRepairPersonRepTbList(repairRepTb,repairUserid);
     }
 
     /**

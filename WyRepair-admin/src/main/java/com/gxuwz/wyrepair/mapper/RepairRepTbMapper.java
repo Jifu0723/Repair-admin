@@ -22,13 +22,14 @@ public interface RepairRepTbMapper
     public RepairRepTb selectRepairRepTbById(Long repairId);
 
     /**
-     * 查询报修单列表
+     * 查询报修单列表（维修人员查看）
      * 
      * @param repairRepTb 报修单
      * @param repairUserid 报修单所属维修人员
      * @return 报修单集合
      */
-    public List<RepairRepTb> selectRepairRepTbList(@Param("repTb") RepairRepTb repairRepTb,@Param("repairUserid") Long repairUserid);
+    public List<RepairRepTb> selectRepairPersonRepTbList(@Param("repTb") RepairRepTb repairRepTb,@Param("repairUserid") Long repairUserid);
+
 
     /**
      * 新增报修单
