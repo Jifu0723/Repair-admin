@@ -24,6 +24,9 @@
         <result property="repairDestoryTime" column="repair_destory_time"/>
         <result property="repairCreateTime" column="repair_create_time"/>
         <result property="repairIsDelete" column="repair_is_delete"/>
+        <result property="repairYear"    column="repair_year"    />
+        <result property="repairMonth"    column="repair_month"    />
+        <result property="repairDay"    column="repair_day"    />
         <!-- 维修类型 -->
         <association property="repType" javaType="com.gxuwz.wyrepair.domain.RepairReptype">
             <result property="repairType" column="repairtype"/>
@@ -94,9 +97,39 @@
                apply_id,
                repair_destory_time,
                repair_create_time,
-               repair_is_delete
+               repair_is_delete,
+               repair_year,
+               repair_month,
+               repair_day
         from repair_rep_tb
     </sql>
+
+    <select id="selectRepairRepTbList" parameterType="RepairRepTb" resultMap="RepairRepTbResult">
+        <include refid="selectRepairRepTbVo"/>
+        <where>
+            <if test="repairNo != null  and repairNo != ''"> and repair_no = #{repairNo}</if>
+            <if test="repairAddress != null  and repairAddress != ''"> and repair_address = #{repairAddress}</if>
+            <if test="repairContent != null  and repairContent != ''"> and repair_content = #{repairContent}</if>
+            <if test="repairType != null "> and repair_type = #{repairType}</if>
+            <if test="repairMoney != null  and repairMoney != ''"> and repair_money = #{repairMoney}</if>
+            <if test="repairExpectType != null "> and repair_expect_type = #{repairExpectType}</if>
+            <if test="repairExpectTime != null "> and repair_expect_time = #{repairExpectTime}</if>
+            <if test="repairState != null "> and repair_state = #{repairState}</if>
+            <if test="repairedState != null "> and repaired_state = #{repairedState}</if>
+            <if test="repairDestory != null "> and repair_destory = #{repairDestory}</if>
+            <if test="repairTransfer != null "> and repair_transfer = #{repairTransfer}</if>
+            <if test="repairDep != null "> and repair_dep = #{repairDep}</if>
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+            <if test="repairComment != null "> and repair_comment = #{repairComment}</if>
+            <if test="repairDestoryTime != null "> and repair_destory_time = #{repairDestoryTime}</if>
+            <if test="curWork != null "> and cur_work = #{curWork}</if>
+            <if test="repairCreateTime != null "> and repair_create_time = #{repairCreateTime}</if>
+            <if test="repairIsDelete != null "> and repair_is_delete = #{repairIsDelete}</if>
+            <if test="repairYear != null "> and repair_year = #{repairYear}</if>
+            <if test="repairMonth != null "> and repair_month = #{repairMonth}</if>
+            <if test="repairDay != null "> and repair_day = #{repairDay}</if>
+        </where>
+    </select>
 
     <select id="selectRepairPersonRepTbList" resultMap="RepairRepTbResult">
         select
@@ -119,6 +152,9 @@
         tb.repair_destory_time,
         tb.repair_create_time,
         tb.repair_is_delete,
+        tb.repair_year,
+        tb.repair_month,
+        tb.repair_day
         /*维修专员查询不连维修过程表*/
         <if test="repairUserid != null ">
             process.process_id as p_process_id,
@@ -199,6 +235,15 @@
             <if test="repTb.repairIsDelete != null ">
                 and tb.repair_is_delete = #{repTb.repairIsDelete}
             </if>
+            <if test="repTb.repairYear != null ">
+                and tb.repair_year = #{repTb.repairYear}
+            </if>
+            <if test="repTb.repairMonth != null ">
+                and tb.repair_month = #{repTb.repairMonth}
+            </if>
+            <if test="repTb.repairDay != null ">
+                and tb.repair_day = #{repTb.repairDay}
+            </if>
             <if test="repairUserid != null ">
                 and process.repaire_userid = #{repairUserid}
             </if>
@@ -227,6 +272,9 @@
         tb.repair_destory_time,
         tb.repair_create_time,
         tb.repair_is_delete,
+        tb.repair_year,
+        tb.repair_month,
+        tb.repair_day,
         appImg.*,
         c.repcomment_content,
         c.repcomment_service,
@@ -296,6 +344,15 @@
             <if test="repTb.repairIsDelete != null ">
                 and tb.repair_is_delete = #{repTb.repairIsDelete}
             </if>
+            <if test="repTb.repairYear != null ">
+                and tb.repair_year = #{repTb.repairYear}
+            </if>
+            <if test="repTb.repairMonth != null ">
+                and tb.repair_month = #{repTb.repairMonth}
+            </if>
+            <if test="repTb.repairDay != null ">
+                and tb.repair_day = #{repTb.repairDay}
+            </if>
         </where>
         order by tb.repair_id desc
     </select>
@@ -326,6 +383,9 @@
             <if test="repairDestoryTime != null">repair_destory_time,</if>
             <if test="repairCreateTime != null">repair_create_time,</if>
             <if test="repairIsDelete != null">repair_is_delete,</if>
+            <if test="repairYear != null">repair_year,</if>
+            <if test="repairMonth != null">repair_month,</if>
+            <if test="repairDay != null">repair_day,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="repairNo != null">#{repairNo},</if>
@@ -346,6 +406,9 @@
             <if test="repairDestoryTime != null">#{repairDestoryTime},</if>
             <if test="repairCreateTime != null">#{repairCreateTime},</if>
             <if test="repairIsDelete != null">#{repairIsDelete},</if>
+            <if test="repairYear != null">#{repairYear},</if>
+            <if test="repairMonth != null">#{repairMonth},</if>
+            <if test="repairDay != null">#{repairDay},</if>
         </trim>
     </insert>
 
@@ -370,6 +433,9 @@
             <if test="repairDestoryTime != null">repair_destory_time = #{repairDestoryTime},</if>
             <if test="repairCreateTime != null">repair_create_time = #{repairCreateTime},</if>
             <if test="repairIsDelete != null">repair_is_delete = #{repairIsDelete},</if>
+            <if test="repairYear != null">repair_year = #{repairYear},</if>
+            <if test="repairMonth != null">repair_month = #{repairMonth},</if>
+            <if test="repairDay != null">repair_day = #{repairDay},</if>
         </trim>
         where repair_id = #{repairId}
     </update>
@@ -386,4 +452,38 @@
             #{repairId}
         </foreach>
     </delete>
+
+
+    <!-- 按时间统计报修信息输出日、周、月报表-->
+    <select id="countrepairOrderByType" parameterType="String" resultType="map">
+        select
+        SUM(to_days(repair_create_time) = to_days(#{queryTime})) as dayRepairTotal,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 1) as dnetRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 2) as dHyRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 3) as dFaRepairFoodNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 4) as dOfRepairFoodNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 6) as dTeaeleRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 7) as dEleRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 8) as dWoodRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1)) as weekRepairTotal,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 1) as wnetRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 2) as wHyRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 3) as wFaRepairFoodNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 4) as wOfRepairFoodNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 6) as wTeaeleRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 7) as wEleRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 8) as wWoodRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime})) as monthRepairTotal,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 1) as mnetRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 2) as mHyRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 3) as mFaRepairFoodNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 4) as mOfRepairFoodNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 6) as mTeaeleRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 7) as mEleRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 8) as mWoodRepairNumber
+        from repair_rep_tb
+        <where>
+            <if test="repairType != null and repairType != ''">and repair_type = #{repairType}</if>
+        </where>
+    </select>
 </mapper>

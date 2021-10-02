@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报修单Service业务层处理
@@ -30,6 +31,29 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     public RepairRepTb selectRepairRepTbById(Long repairId)
     {
         return repairRepTbMapper.selectRepairRepTbById(repairId);
+    }
+
+    /**
+     * 查询报修单列表
+     *
+     * @param params 报修单
+     * @return 报修单
+     */
+    @Override
+    public Map countrepairOrderByType(Map<String, Object> params) {
+        return repairRepTbMapper.countrepairOrderByType(params);
+    }
+
+    /**
+     * 查询报修单列表
+     *
+     * @param repairRepTb 报修单
+     * @return 报修单
+     */
+    @Override
+    public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb)
+    {
+        return repairRepTbMapper.selectRepairRepTbList(repairRepTb);
     }
 
     /**

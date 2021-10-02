@@ -4,6 +4,7 @@ import com.gxuwz.wyrepair.domain.RepairRepTb;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报修单Mapper接口
@@ -22,6 +23,14 @@ public interface RepairRepTbMapper
     public RepairRepTb selectRepairRepTbById(Long repairId);
 
     /**
+     * 查询报修单列表
+     *
+     * @param repairRepTb 报修单
+     * @return 报修单集合
+     */
+    public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb);
+
+    /**
      * 查询报修单列表（维修人员查看）
      * 
      * @param repairRepTb 报修单
@@ -30,6 +39,12 @@ public interface RepairRepTbMapper
      */
     public List<RepairRepTb> selectRepairPersonRepTbList(@Param("repTb") RepairRepTb repairRepTb,@Param("repairUserid") Long repairUserid);
 
+    /**
+     * 通过报修类型统计统计
+     * @param params {}
+     * @return
+     */
+    Map countrepairOrderByType(Map<String, Object> params);
 
     /**
      * 新增报修单

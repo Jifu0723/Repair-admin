@@ -3,6 +3,7 @@ package com.gxuwz.wyrepair.service;
 import com.gxuwz.wyrepair.domain.RepairRepTb;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报修单Service接口
@@ -29,6 +30,21 @@ public interface IRepairRepTbService
      */
     public List<RepairRepTb> selectRepairPersonRepTbList(RepairRepTb repairRepTb,Long repairUserid);
 
+    /**
+     * 查询报修单列表
+     *
+     * @param repairRepTb 报修单
+     * @return 报修单集合
+     */
+    public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb);
+
+    /**
+     * 查询报修单列表
+     *
+     * @param params 报修单
+     * @return 报修单集合
+     */
+    Map countrepairOrderByType(Map<String, Object> params);
 
     /**
      * 查询除【维修人员】外的其他人员的报修单列表

@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -91,17 +94,25 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         repairApplyMapper.insertRepairApply(repairApply);
         // 申请单id保存
         Long applyId = repairApply.getApplyId();
+
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);//年份
+        int month = cal.get(Calendar.MONTH) + 1;//月份
+        int day = cal.get(Calendar.DATE);//日份
+
         // 生成报修单,设置生成报修单编号
         RepairRepTb repTb = new RepairRepTb();
+        repTb.setRepairYear(year);//年份
+        repTb.setRepairMonth(month);//月份
+        repTb.setRepairDay(day);//日份
         repTb.initRepairApply(repairApply,repairApply.getApplyNo(),reptype.getRepairDep());
         if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
         {
             repTb.setRepairMoney(15);//换新、换配件
-            System.out.println(56565);
         }
         if (repairApply.getApplyExpectType() == 3 )
         {
-            System.out.println(7878);
             repTb.setRepairMoney(25);//维修
         }
         // 维修人员报修自动接单

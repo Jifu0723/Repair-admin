@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报修单Controller
@@ -61,18 +62,31 @@ public class RepairRepTbController extends BaseController {
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         List<SysRole> roles = user.getRoles();
         SysRole sysRole = roles.get(0);
+        System.out.println(sysRole);
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
-        if ("维修专员".equals(sysRole.getRoleName())) {
+        if ("repairadmin".equals(sysRole.getRoleKey())) {
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
-        } else if ("维修人员".equals(sysRole.getRoleName())) {
+        } else if ("repair".equals(sysRole.getRoleKey())) {
+            repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,user.getUserId());
-        }else{
-            list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
+        }else if ("SuperAdmin".equals(sysRole.getRoleKey())){
+            list = repairRepTbService.selectRepairRepTbList(repairRepTb);
         }
         return getDataTable(list);
     }
+
+    /**
+     * 按时间统计报修信息输出日、周、月报表
+     */
+    @PreAuthorize("@ss.hasPermi('repair:tb:list')")
+    @GetMapping("/countrepairOrderByType")
+    public AjaxResult countrepairOrderByType(@RequestParam Map<String, Object> params) {
+        Map map = repairRepTbService.countrepairOrderByType(params);
+        return AjaxResult.success(map);
+    }
+
 
     /**
      * 查询【待修】报修单列表

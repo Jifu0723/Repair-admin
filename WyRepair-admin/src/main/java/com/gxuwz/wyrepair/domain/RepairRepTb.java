@@ -152,6 +152,42 @@ public class RepairRepTb extends BaseEntity {
     private Integer repairIsDelete;
 
 
+    /** 报修年份 */
+    @Excel(name = "报修年份")
+    private Integer repairYear;
+
+    /** 报修月份 */
+    @Excel(name = "报修月份")
+    private Integer repairMonth;
+
+    /** 报修日份 */
+    @Excel(name = "报修日份")
+    private Integer repairDay;
+
+    public Integer getRepairYear() {
+        return repairYear;
+    }
+
+    public void setRepairYear(Integer repairYear) {
+        this.repairYear = repairYear;
+    }
+
+    public Integer getRepairMonth() {
+        return repairMonth;
+    }
+
+    public void setRepairMonth(Integer repairMonth) {
+        this.repairMonth = repairMonth;
+    }
+
+    public Integer getRepairDay() {
+        return repairDay;
+    }
+
+    public void setRepairDay(Integer repairDay) {
+        this.repairDay = repairDay;
+    }
+
     /**
      * 维修类型
      */
@@ -420,6 +456,9 @@ public class RepairRepTb extends BaseEntity {
                 ", repairDestoryTime=" + repairDestoryTime +
                 ", repairCreateTime=" + repairCreateTime +
                 ", repairIsDelete=" + repairIsDelete +
+                ", repairYear=" + repairYear +
+                ", repairMonth=" + repairMonth +
+                ", repairDay=" + repairDay +
                 ", repType=" + repType +
                 ", apply=" + apply +
                 ", repImgList=" + repImgList +
