@@ -21,6 +21,8 @@ public interface IRepairRepTbService
      */
     public RepairRepTb selectRepairRepTbById(Long repairId);
 
+    List<RepairRepTb> queryRepairOrderList(Map<String,Object> params);
+
     /**
      * 查询报修单列表（维修人员查看）
      * 

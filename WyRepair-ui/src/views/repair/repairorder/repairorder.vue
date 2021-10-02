@@ -1,34 +1,52 @@
 <template>
   <div class="app-container">
 
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="维修类型" prop="repairType">
-        <el-select v-model="queryParams.repairType" placeholder="请选择维修类型" clearable size="small">
-          <el-option label="请选择字典生成" value=""/>
-        </el-select>
-      </el-form-item>
+    <el-collapse v-model="activeNames">
+      <el-collapse-item title="展开/闭合搜索条件界面" name="1">
+        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+          <el-form-item label="维修类型" prop="repairType">
+            <el-select v-model="queryParams.repairType" placeholder="请选择维修类型" clearable size="small">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-      <el-form-item label="报修时间" prop="repairCreateTime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.repairCreateTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择创建时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+          <el-form-item label="报修者姓名" prop="repairName">
+            <el-input
+              v-model="queryParams.repairName"
+              placeholder="请输入报修者姓名"
+              clearable
+              size="small"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
 
-        <!--报餐统计分析-->
-        <el-row style="margin-top: 20px" >
-          <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-          <div>
-            <div id="main" style="width: 90%;height:500px;margin: auto"></div>
-          </div>
-        </el-row>
+          <el-form-item label="报修时间" prop="repairCreateTime">
+            <el-date-picker clearable size="small"
+                            v-model="queryParams.repairCreateTime"
+                            type="date"
+                            placeholder="选择报修时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-collapse-item>
+    </el-collapse>
+
+    <!--报餐统计分析-->
+    <el-row style="margin-top: 20px">
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div>
+        <div id="main" style="width: 90%;height:500px;margin: auto"></div>
+      </div>
+    </el-row>
 
     <el-collapse v-model="activeNames">
       <el-collapse-item title="展开/闭合搜索条件界面" name="1">
@@ -59,10 +77,9 @@
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
-
-
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
+          <el-table-column label="报修者姓名" align="center" prop="repairName"/>
           <el-table-column label="报修地点" align="center" prop="repairAddress"/>
           <el-table-column label="报修内容" align="center" prop="repairContent"/>
           <el-table-column label="维修类型" align="center" prop="repairType"/>
@@ -73,6 +90,7 @@
               <span>{{ parseTime(scope.row.repairDestoryTime, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
+
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
@@ -111,6 +129,7 @@
 import {addTb, delTb, exportTb, getTb, listTb, updateTb} from "@/api/repair/tb";
 import echarts from 'echarts'
 import {countrepairOrderByType} from "@/api/repair/repairordertotal";
+
 export default {
   name: "Tb",
   data() {
@@ -140,6 +159,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         repairNo: null,
+        repairName: null,
         repairAddress: null,
         repairContent: null,
         repairType: null,
@@ -156,7 +176,7 @@ export default {
         repairDestoryTime: null,
         countType: null, // 查询类别 1按日查询 2按周 3按月
         repairCreateTime: new Date(),// 默认查询当天记录
-        queryTime: null, // 查询订餐时间
+        repairTime: null, // 查询报修时间
         repairIsDelete: null,
         repairYear: null,
         repairMonth: null,
@@ -169,28 +189,27 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
-      },
+      rules: {},
       options: [{
-        value: 0,
-        label: '网络设备'
-      },{
         value: 1,
-        label: '水电类'
+        label: '网络设备'
       }, {
         value: 2,
-        label: '家具类'
+        label: '水电类'
       }, {
         value: 3,
-        label: '办公室设备'
+        label: '家具类'
       }, {
         value: 4,
-        label: '教学电子'
+        label: '办公室设备'
       }, {
         value: 5,
+        label: '教学电子'
+      }, {
+        value: 7,
         label: '电器类'
       }, {
-        value: 6,
+        value: 8,
         label: '木材类'
       }],
       chartBar: null,
@@ -198,8 +217,6 @@ export default {
       chartLine: null,
       chartPie: null,
       activeNames: ["0"],//闭合
-      //countOrder: null, // 个人按时间段统计用餐信息
-      //perOrderData: [], // 个人按时间段统计用餐信息
       TimeByType: {}, // 按时间统计用餐信息输出日、周、月报表
       netRepairNumber: [], // 网络设备量
       HyRepairNumber: [], // 水电类量
@@ -296,7 +313,7 @@ export default {
         },
         calculable: true,
         legend: {
-          data: ['网络设备','水电类', '家具类', '办公室设备','教学电子', '电器类', '木材类','总报修']
+          data: ['网络设备', '水电类', '家具类', '办公室设备', '教学电子', '电器类', '木材类', '总报修']
         },
         grid: {
           top: '20%',
@@ -381,7 +398,7 @@ export default {
               }
             },
           }, {
-            name: '办公室设备类',
+            name: '办公室设备',
             type: 'bar',
             data: this.OfRepairNumber,
             barWidth: 30,
@@ -401,8 +418,8 @@ export default {
                 }]),
               }
             },
-          },{
-            name: '教学电子类',
+          }, {
+            name: '教学电子',
             type: 'bar',
             data: this.TeaeleRepairNumber,
             barWidth: 30,
@@ -422,7 +439,7 @@ export default {
                 }]),
               }
             },
-          },{
+          }, {
             name: '电器类',
             type: 'bar',
             data: this.EleRepairNumber,
@@ -443,7 +460,7 @@ export default {
                 }]),
               }
             },
-          },{
+          }, {
             name: '木材类',
             type: 'bar',
             data: this.WoodRepairNumber,
@@ -464,7 +481,7 @@ export default {
                 }]),
               }
             },
-          },{
+          }, {
             name: '总报修量',
             type: 'bar',
             data: this.RepairOrderData,
@@ -508,7 +525,7 @@ export default {
         }
         // that.$nextTick(() => {
         listTb(that.queryParams).then(response => {
-          that.orderingList = response.rows;
+          that.tbList = response.rows;
           that.total = response.total;
           that.msgSuccess("报修信息渲染成功");
         }).catch(err => {
@@ -552,6 +569,7 @@ export default {
         repairTransfer: null,
         repairComment: null,
         curWork: null,
+        repairName: null,
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
@@ -563,6 +581,7 @@ export default {
         pageSize: 10,
         repairId: null,
         repairNo: null,
+        repairName: null,
         repairAddress: null,
         repairContent: null,
         repairType: null,
@@ -579,12 +598,11 @@ export default {
         repairCreateTime: null,
         repairIsDelete: null,
         countType: null,
-        queryTime: null,
+        repairTime: null,
         timeSlot: null,
         startTime: null,
         endTime: null
       };
-      this.countOrder = null
       this.resetForm("form");
     },
 
@@ -600,15 +618,17 @@ export default {
       return year + "-" + month + "-" + day + " " + h + ":" + m + ":" + s;
     },
 
-
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.countOrder = null
-      var name = this.queryParams.oUsername
-        if (this.queryParams.repairCreateTime != null) {
-          this.queryParams.queryTime = this.timeFormat(this.queryParams.repairCreateTime)
-
+      var repairname = this.queryParams.repairName
+      if (repairname != null && repairname !== '' && this.queryParams.repairCreateTime == null) {
+        this.msgError("查询职员订餐信息至少需输入姓名和订餐日期！")
+        return false
+      }
+      if (this.queryParams.repairCreateTime != null) {
+        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         countrepairOrderByType(this.queryParams).then(response => {
           this.TimeByType = response.data
           this.$nextTick(() => {
@@ -616,10 +636,6 @@ export default {
           })
           this.getList()
         });
-      } else { // 日期范围查询
-        // 只输入名字不允许点击第二个搜索按钮
-        var time = this.queryParams.timeSlot
-
       }
     },
     /** 重置按钮操作 */
@@ -632,12 +648,6 @@ export default {
       this.ids = selection.map(item => item.repairId)
       this.single = selection.length !== 1
       this.multiple = !selection.length
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加报修单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

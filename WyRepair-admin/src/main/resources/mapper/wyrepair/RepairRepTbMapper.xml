@@ -27,6 +27,7 @@
         <result property="repairYear"    column="repair_year"    />
         <result property="repairMonth"    column="repair_month"    />
         <result property="repairDay"    column="repair_day"    />
+        <result property="repairName"    column="repair_name"    />
         <!-- 维修类型 -->
         <association property="repType" javaType="com.gxuwz.wyrepair.domain.RepairReptype">
             <result property="repairType" column="repairtype"/>
@@ -100,7 +101,8 @@
                repair_is_delete,
                repair_year,
                repair_month,
-               repair_day
+               repair_day,
+               repair_name
         from repair_rep_tb
     </sql>
 
@@ -128,6 +130,7 @@
             <if test="repairYear != null "> and repair_year = #{repairYear}</if>
             <if test="repairMonth != null "> and repair_month = #{repairMonth}</if>
             <if test="repairDay != null "> and repair_day = #{repairDay}</if>
+            <if test="repairName != null "> and repair_name = #{repairName}</if>
         </where>
     </select>
 
@@ -154,7 +157,8 @@
         tb.repair_is_delete,
         tb.repair_year,
         tb.repair_month,
-        tb.repair_day
+        tb.repair_day,
+        tb.repair_name
         /*维修专员查询不连维修过程表*/
         <if test="repairUserid != null ">
             process.process_id as p_process_id,
@@ -244,6 +248,9 @@
             <if test="repTb.repairDay != null ">
                 and tb.repair_day = #{repTb.repairDay}
             </if>
+            <if test="repTb.repairName != null ">
+                and tb.repair_name = #{repTb.repairName}
+            </if>
             <if test="repairUserid != null ">
                 and process.repaire_userid = #{repairUserid}
             </if>
@@ -275,6 +282,7 @@
         tb.repair_year,
         tb.repair_month,
         tb.repair_day,
+        tb.repair_name,
         appImg.*,
         c.repcomment_content,
         c.repcomment_service,
@@ -353,6 +361,9 @@
             <if test="repTb.repairDay != null ">
                 and tb.repair_day = #{repTb.repairDay}
             </if>
+            <if test="repTb.repairName != null ">
+                and tb.repair_name = #{repTb.repairName}
+            </if>
         </where>
         order by tb.repair_id desc
     </select>
@@ -386,6 +397,7 @@
             <if test="repairYear != null">repair_year,</if>
             <if test="repairMonth != null">repair_month,</if>
             <if test="repairDay != null">repair_day,</if>
+            <if test="repairName != null">repair_name,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="repairNo != null">#{repairNo},</if>
@@ -409,6 +421,7 @@
             <if test="repairYear != null">#{repairYear},</if>
             <if test="repairMonth != null">#{repairMonth},</if>
             <if test="repairDay != null">#{repairDay},</if>
+            <if test="repairName != null">#{repairName},</if>
         </trim>
     </insert>
 
@@ -436,6 +449,7 @@
             <if test="repairYear != null">repair_year = #{repairYear},</if>
             <if test="repairMonth != null">repair_month = #{repairMonth},</if>
             <if test="repairDay != null">repair_day = #{repairDay},</if>
+            <if test="repairName != null">repair_name = #{repairName},</if>
         </trim>
         where repair_id = #{repairId}
     </update>
@@ -453,34 +467,55 @@
         </foreach>
     </delete>
 
+    <!-- 按时间统计报修信息输出日、周、月报表-->
+    <select id="queryRepairOrderList" parameterType="map" resultMap="RepairRepTbResult">
+        <include refid="selectRepairRepTbVo"/>
+        <where>
+            <if test="repairName != null  and repairName != ''"> and repair_name like concat('%', #{repairName}, '%')</if>
+            <if test="repairYear != null  and repairYear != ''"> and repair_year = #{repairYear}</if>
+            <if test="repairMonth != null  and repairMonth != ''"> and repair_month = #{repairMonth}</if>
+            <if test="repairDay != null  and repairDay != ''"> and repair_day = #{repairDay}</if>
+            <if test="repaiTtype != null and repaiTtype != ''"> and repair_type = #{repaiTtype}</if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and repair_create_time BETWEEN #{startTime} AND #{endTime}  </if>
+            <!--查询当天的报餐数据-->
+            <if test="countType == 1 and repairTime != null"> and to_days(repair_create_time) = to_days(#{repairTime})</if>
+            <if test="repairTime != null and countType == null "> and to_days(repair_create_time) = to_days(#{repairTime})</if>
+            <!--查询当周的报餐数据-->
+            <if test="countType == 2 and repairTime != null"> and YEARWEEK(date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1)</if>
+            <!--查询当月的报餐数据-->
+            <if test="countType == 3 and repairTime != null"> and MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime})</if>
+        </where>
+    </select>
+
+
 
     <!-- 按时间统计报修信息输出日、周、月报表-->
     <select id="countrepairOrderByType" parameterType="String" resultType="map">
         select
-        SUM(to_days(repair_create_time) = to_days(#{queryTime})) as dayRepairTotal,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 1) as dnetRepairNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 2) as dHyRepairNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 3) as dFaRepairFoodNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 4) as dOfRepairFoodNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 6) as dTeaeleRepairNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 7) as dEleRepairNumber,
-        SUM(to_days(repair_create_time) = to_days(#{queryTime}) and repair_type = 8) as dWoodRepairNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1)) as weekRepairTotal,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 1) as wnetRepairNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 2) as wHyRepairNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 3) as wFaRepairFoodNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 4) as wOfRepairFoodNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 6) as wTeaeleRepairNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 7) as wEleRepairNumber,
-        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{queryTime} ,1) and repair_type = 8) as wWoodRepairNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime})) as monthRepairTotal,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 1) as mnetRepairNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 2) as mHyRepairNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 3) as mFaRepairFoodNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 4) as mOfRepairFoodNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 6) as mTeaeleRepairNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 7) as mEleRepairNumber,
-        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{queryTime}) and repair_type = 8) as mWoodRepairNumber
+        SUM(to_days(repair_create_time) = to_days(#{repairTime})) as dayRepairTotal,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 1) as dnetRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 2) as dHyRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 3) as dFaRepairFoodNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 4) as dOfRepairFoodNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 6) as dTeaeleRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 7) as dEleRepairNumber,
+        SUM(to_days(repair_create_time) = to_days(#{repairTime}) and repair_type = 8) as dWoodRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1)) as weekRepairTotal,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 1) as wnetRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 2) as wHyRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 3) as wFaRepairFoodNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 4) as wOfRepairFoodNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 6) as wTeaeleRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 7) as wEleRepairNumber,
+        SUM(YEARWEEK( date_format( repair_create_time,'%Y-%m-%d %H:%i:%s') ,1) = YEARWEEK( #{repairTime} ,1) and repair_type = 8) as wWoodRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime})) as monthRepairTotal,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 1) as mnetRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 2) as mHyRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 3) as mFaRepairFoodNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 4) as mOfRepairFoodNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 6) as mTeaeleRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTime}) and repair_type = 7) as mEleRepairNumber,
+        SUM(MONTHNAME(repair_create_time)=MONTHNAME(#{repairTimequeryTime}) and repair_type = 8) as mWoodRepairNumber
         from repair_rep_tb
         <where>
             <if test="repairType != null and repairType != ''">and repair_type = #{repairType}</if>

@@ -1,6 +1,7 @@
 package com.gxuwz.wyrepair.mapper;
 
 import com.gxuwz.wyrepair.domain.RepairRepTb;
+import com.gxuwz.wyrepair.domain.RepairReptype;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -86,4 +87,6 @@ public interface RepairRepTbMapper
      * @return 报修单集合
      */
     List<RepairRepTb> selectRepairTbListOfOthers(@Param("repTb")RepairRepTb repairRepTb,@Param("applyUserId") Long applyUserId);
+
+    List<RepairRepTb> queryRepairOrderList(Map<String, Object> params);
 }

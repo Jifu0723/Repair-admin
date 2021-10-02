@@ -100,12 +100,13 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         int year = cal.get(Calendar.YEAR);//年份
         int month = cal.get(Calendar.MONTH) + 1;//月份
         int day = cal.get(Calendar.DATE);//日份
-
+        String nickname = user.getNickName();
         // 生成报修单,设置生成报修单编号
         RepairRepTb repTb = new RepairRepTb();
         repTb.setRepairYear(year);//年份
         repTb.setRepairMonth(month);//月份
         repTb.setRepairDay(day);//日份
+        repTb.setRepairName(nickname);//报修者的姓名
         repTb.initRepairApply(repairApply,repairApply.getApplyNo(),reptype.getRepairDep());
         if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
         {

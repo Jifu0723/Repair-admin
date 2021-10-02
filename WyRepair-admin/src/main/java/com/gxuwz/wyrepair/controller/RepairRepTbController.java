@@ -20,11 +20,13 @@ import com.gxuwz.wyrepair.service.IRepairProcessService;
 import com.gxuwz.wyrepair.service.IRepairRepTbService;
 import com.gxuwz.wyrepair.service.IRepairReptransferService;
 import com.gxuwz.wyrepair.util.RepairCodeGen;
+import com.gxuwz.wyrepair.util.DateUtil;
 import com.gxuwz.wyrepair.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +58,10 @@ public class RepairRepTbController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/list")
-    public TableDataInfo list(RepairRepTb repairRepTb) {
+    public TableDataInfo list(@RequestParam Map<String, Object> params,RepairRepTb repairRepTb) {
         startPage();
+        // 获取报修时间
+        String repairTime = (String) params.get("repairTime");
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         List<SysRole> roles = user.getRoles();
@@ -65,15 +69,24 @@ public class RepairRepTbController extends BaseController {
         System.out.println(sysRole);
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
-        if ("repairadmin".equals(sysRole.getRoleKey())) {
+        if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
+            LocalDateTime localDateTime = DateUtil.parseToLocaDateTime(repairTime, "yyyy-MM-dd HH:mm:ss");
+            System.out.println(localDateTime);
+            params.put("repairYear",localDateTime.getYear());
+            System.out.println(localDateTime.getYear());
+            params.put("repairMonth",localDateTime.getMonthValue());
+            System.out.println(localDateTime.getMonthValue());
+            params.put("repairDay",localDateTime.getDayOfMonth());
+            System.out.println(localDateTime.getDayOfMonth());
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
-        } else if ("repair".equals(sysRole.getRoleKey())) {
+        } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,user.getUserId());
-        }else if ("SuperAdmin".equals(sysRole.getRoleKey())){
-            list = repairRepTbService.selectRepairRepTbList(repairRepTb);
+        }else if ("SuperAdmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))){
+            list = repairRepTbService.queryRepairOrderList(params);
         }
+        params.remove("repairTime");
         return getDataTable(list);
     }
 

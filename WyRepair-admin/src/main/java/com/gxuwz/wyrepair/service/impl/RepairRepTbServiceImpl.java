@@ -33,6 +33,11 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
         return repairRepTbMapper.selectRepairRepTbById(repairId);
     }
 
+    @Override
+    public List<RepairRepTb> queryRepairOrderList(Map<String, Object> params) {
+        return repairRepTbMapper.queryRepairOrderList(params);
+    }
+
     /**
      * 查询报修单列表
      *
