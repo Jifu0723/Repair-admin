@@ -168,6 +168,10 @@ public class RepairRepTb extends BaseEntity {
     @Excel(name = "报修者姓名")
     private String repairName;
 
+    /** 维修人员姓名 */
+    @Excel(name = "维修人员姓名")
+    private String repaireName;
+
     public Integer getRepairYear() {
         return repairYear;
     }
@@ -198,6 +202,14 @@ public class RepairRepTb extends BaseEntity {
 
     public void setRepairDay(Integer repairDay) {
         this.repairDay = repairDay;
+    }
+
+    public String getRepaireName() {
+        return repaireName;
+    }
+
+    public void setRepaireName(String repaireName) {
+        this.repaireName = repaireName;
     }
 
     /**
@@ -472,6 +484,7 @@ public class RepairRepTb extends BaseEntity {
                 ", repairMonth=" + repairMonth +
                 ", repairDay=" + repairDay +
                 ", repairName='" + repairName + '\'' +
+                ", repaireName='" + repaireName + '\'' +
                 ", repType=" + repType +
                 ", apply=" + apply +
                 ", repImgList=" + repImgList +

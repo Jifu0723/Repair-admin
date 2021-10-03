@@ -54,7 +54,8 @@ public class RepairRepTbController extends BaseController {
     private ISysUserService sysUserService;
 
     /**
-     * 查询报修单列表
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 列表(查询)
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/list")
@@ -66,18 +67,13 @@ public class RepairRepTbController extends BaseController {
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         List<SysRole> roles = user.getRoles();
         SysRole sysRole = roles.get(0);
-        System.out.println(sysRole);
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             LocalDateTime localDateTime = DateUtil.parseToLocaDateTime(repairTime, "yyyy-MM-dd HH:mm:ss");
-            System.out.println(localDateTime);
             params.put("repairYear",localDateTime.getYear());
-            System.out.println(localDateTime.getYear());
             params.put("repairMonth",localDateTime.getMonthValue());
-            System.out.println(localDateTime.getMonthValue());
             params.put("repairDay",localDateTime.getDayOfMonth());
-            System.out.println(localDateTime.getDayOfMonth());
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
@@ -91,12 +87,13 @@ public class RepairRepTbController extends BaseController {
     }
 
     /**
-     * 按时间统计报修信息输出日、周、月报表
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
-    @GetMapping("/countrepairOrderByType")
-    public AjaxResult countrepairOrderByType(@RequestParam Map<String, Object> params) {
-        Map map = repairRepTbService.countrepairOrderByType(params);
+    @GetMapping("/countrepairTimeByrepairType")
+    public AjaxResult countrepairTimeByrepairType(@RequestParam Map<String, Object> params) {
+        Map map = repairRepTbService.countrepairTimeByrepairType(params);
         return AjaxResult.success(map);
     }
 

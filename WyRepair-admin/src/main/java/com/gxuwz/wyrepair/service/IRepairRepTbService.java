@@ -21,7 +21,17 @@ public interface IRepairRepTbService
      */
     public RepairRepTb selectRepairRepTbById(Long repairId);
 
+    /**
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 列表(查询)
+     */
     List<RepairRepTb> queryRepairOrderList(Map<String,Object> params);
+
+    /**
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    Map countrepairTimeByrepairType(Map<String,Object> params);
 
     /**
      * 查询报修单列表（维修人员查看）
@@ -39,14 +49,6 @@ public interface IRepairRepTbService
      * @return 报修单集合
      */
     public List<RepairRepTb> selectRepairRepTbList(RepairRepTb repairRepTb);
-
-    /**
-     * 查询报修单列表
-     *
-     * @param params 报修单
-     * @return 报修单集合
-     */
-    Map countrepairOrderByType(Map<String, Object> params);
 
     /**
      * 查询除【维修人员】外的其他人员的报修单列表

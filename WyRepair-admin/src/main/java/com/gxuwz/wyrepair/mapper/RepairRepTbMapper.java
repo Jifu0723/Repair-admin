@@ -1,7 +1,6 @@
 package com.gxuwz.wyrepair.mapper;
 
 import com.gxuwz.wyrepair.domain.RepairRepTb;
-import com.gxuwz.wyrepair.domain.RepairReptype;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -39,13 +38,6 @@ public interface RepairRepTbMapper
      * @return 报修单集合
      */
     public List<RepairRepTb> selectRepairPersonRepTbList(@Param("repTb") RepairRepTb repairRepTb,@Param("repairUserid") Long repairUserid);
-
-    /**
-     * 通过报修类型统计统计
-     * @param params {}
-     * @return
-     */
-    Map countrepairOrderByType(Map<String, Object> params);
 
     /**
      * 新增报修单
@@ -88,5 +80,14 @@ public interface RepairRepTbMapper
      */
     List<RepairRepTb> selectRepairTbListOfOthers(@Param("repTb")RepairRepTb repairRepTb,@Param("applyUserId") Long applyUserId);
 
+    /**
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 列表(查询)
+     */
     List<RepairRepTb> queryRepairOrderList(Map<String, Object> params);
+    /**
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    Map countrepairTimeByrepairType(Map<String, Object> params);
 }

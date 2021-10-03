@@ -33,20 +33,22 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
         return repairRepTbMapper.selectRepairRepTbById(repairId);
     }
 
+    /**
+     *   按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     *   列表(查询)
+     */
     @Override
     public List<RepairRepTb> queryRepairOrderList(Map<String, Object> params) {
         return repairRepTbMapper.queryRepairOrderList(params);
     }
 
     /**
-     * 查询报修单列表
-     *
-     * @param params 报修单
-     * @return 报修单
+     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
      */
     @Override
-    public Map countrepairOrderByType(Map<String, Object> params) {
-        return repairRepTbMapper.countrepairOrderByType(params);
+    public Map countrepairTimeByrepairType(Map<String, Object> params) {
+        return repairRepTbMapper.countrepairTimeByrepairType(params);
     }
 
     /**

@@ -474,6 +474,10 @@ public class ApiRepairRepTbController extends BaseController {
         repairRepTb.setRepairDestoryTime(new Date());
         //标记维修后状态
         repairRepTb.setRepairedState(repairedState);
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        //标记维修人员姓名
+        repairRepTb.setRepaireName(user.getNickName());
         int i = repairRepTbService.updateRepairRepTb(repairRepTb);
 
         // 维修过程表记录
