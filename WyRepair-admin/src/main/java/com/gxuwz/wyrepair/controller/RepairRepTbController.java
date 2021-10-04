@@ -54,7 +54,7 @@ public class RepairRepTbController extends BaseController {
     private ISysUserService sysUserService;
 
     /**
-     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 列表(查询)
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
@@ -62,6 +62,7 @@ public class RepairRepTbController extends BaseController {
     public TableDataInfo list(@RequestParam Map<String, Object> params,RepairRepTb repairRepTb) {
         startPage();
         // 获取报修时间
+        System.out.println(params);
         String repairTime = (String) params.get("repairTime");
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
@@ -70,16 +71,14 @@ public class RepairRepTbController extends BaseController {
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
-            LocalDateTime localDateTime = DateUtil.parseToLocaDateTime(repairTime, "yyyy-MM-dd HH:mm:ss");
-            params.put("repairYear",localDateTime.getYear());
-            params.put("repairMonth",localDateTime.getMonthValue());
-            params.put("repairDay",localDateTime.getDayOfMonth());
+            System.out.println(9999);
+            list = repairRepTbService.queryRepairAdminOrderList(params,user.getDeptId());
             repairRepTb.setRepairDep(user.getDeptId());
-            list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,null);
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,user.getUserId());
         }else if ("SuperAdmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))){
+            System.out.println(8888);
             list = repairRepTbService.queryRepairOrderList(params);
         }
         params.remove("repairTime");
@@ -87,13 +86,35 @@ public class RepairRepTbController extends BaseController {
     }
 
     /**
-     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    @PreAuthorize("@ss.hasPermi('repair:tb:list')")
+    @GetMapping("/CountCollegeByRepairOrder")
+    public AjaxResult CountCollegeByRepairOrder(@RequestParam Map<String, Object> params) {
+        Map map = repairRepTbService.CountCollegeByRepairOrder(params);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 后勤部门管理员按二级学院id、报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/countrepairTimeByrepairType")
     public AjaxResult countrepairTimeByrepairType(@RequestParam Map<String, Object> params) {
         Map map = repairRepTbService.countrepairTimeByrepairType(params);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    @PreAuthorize("@ss.hasPermi('repair:tb:list')")
+    @GetMapping("/countrepairAdminTimeByrepairType")
+    public AjaxResult countrepairAdminTimeByrepairType(@RequestParam Map<String, Object> params) {
+        Map map = repairRepTbService.countrepairAdminTimeByrepairType(params);
         return AjaxResult.success(map);
     }
 

@@ -20,18 +20,34 @@ public interface IRepairRepTbService
      * @return 报修单
      */
     public RepairRepTb selectRepairRepTbById(Long repairId);
-
     /**
-     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按二级学院id、报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    Map CountCollegeByRepairOrder(Map<String, Object> params);
+    /**
+     * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 列表(查询)
      */
     List<RepairRepTb> queryRepairOrderList(Map<String,Object> params);
 
     /**
-     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
      */
     Map countrepairTimeByrepairType(Map<String,Object> params);
+
+    /**
+     * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 列表(查询)
+     */
+    List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params, Long deptId);
+
+    /**
+     * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    Map countrepairAdminTimeByrepairType(Map<String, Object> params);
 
     /**
      * 查询报修单列表（维修人员查看）
@@ -90,4 +106,5 @@ public interface IRepairRepTbService
      * @return 结果
      */
     public int deleteRepairRepTbById(Long repairId);
+
 }

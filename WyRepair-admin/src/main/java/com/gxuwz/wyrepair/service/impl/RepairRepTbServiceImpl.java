@@ -32,9 +32,16 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     {
         return repairRepTbMapper.selectRepairRepTbById(repairId);
     }
-
     /**
-     *   按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按二级学院id、报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    @Override
+    public Map CountCollegeByRepairOrder(Map<String, Object> params) {
+        return repairRepTbMapper.CountCollegeByRepairOrder(params);
+    }
+    /**
+     *   后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      *   列表(查询)
      */
     @Override
@@ -43,12 +50,30 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     }
 
     /**
-     * 按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
      */
     @Override
     public Map countrepairTimeByrepairType(Map<String, Object> params) {
         return repairRepTbMapper.countrepairTimeByrepairType(params);
+    }
+
+    /**
+     *   维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     *   列表(查询)
+     */
+    @Override
+    public List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params, Long deptId) {
+        return repairRepTbMapper.queryRepairAdminOrderList(params);
+    }
+
+    /**
+     * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
+     * 报表(查询)
+     */
+    @Override
+    public Map countrepairAdminTimeByrepairType(Map<String, Object> params) {
+        return repairRepTbMapper.countrepairAdminTimeByrepairType(params);
     }
 
     /**

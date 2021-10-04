@@ -86,10 +86,11 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         Long roleName = user.getRoles().get(0).getRoleId();
-        // 获取部门id
-        RepairReptype reptype = reptypeService.selectRepairReptypeById(repairApply.getApplyType());
+        //// 获取部门id
+        //System.out.println(user.getDeptId());
+        //RepairReptype reptype = reptypeService.selectRepairReptypeById(repairApply.getApplyType());
         // 设置申请单基础信息
-        repairApply.initBaseApply(user,reptype.getRepairDep());
+        repairApply.initBaseApply(user,user.getDeptId());
         // 申请单保存
         repairApplyMapper.insertRepairApply(repairApply);
         // 申请单id保存
@@ -107,7 +108,7 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         repTb.setRepairMonth(month);//月份
         repTb.setRepairDay(day);//日份
         repTb.setRepairName(nickname);//报修者的姓名
-        repTb.initRepairApply(repairApply,repairApply.getApplyNo(),reptype.getRepairDep());
+        repTb.initRepairApply(repairApply,repairApply.getApplyNo(),user.getDeptId());
         if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
         {
             repTb.setRepairMoney(15);//换新、换配件

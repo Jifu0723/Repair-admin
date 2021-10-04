@@ -26,39 +26,39 @@
             />
           </el-form-item>
 
-            <el-form-item label="设备维修后状态" prop="repairedState" label-width="120px">
-              <el-select v-model="queryParams.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
-                <el-option
-                  v-for="item in repaireTypeList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
+          <el-form-item label="设备维修后状态" prop="repairedState" label-width="120px">
+            <el-select v-model="queryParams.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
+              <el-option
+                v-for="item in repaireTypeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-            <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
-              <el-input
-                v-model="queryParams.repaireName"
-                placeholder="请输入维修人员姓名"
-                clearable
-                size="small"
-                @keyup.enter.native="handleQuery"
-              />
-            </el-form-item>
+          <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
+            <el-input
+              v-model="queryParams.repaireName"
+              placeholder="请输入维修人员姓名"
+              clearable
+              size="small"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
 
-            <el-form-item label="报修时间" prop="repairCreateTime">
-              <el-date-picker clearable size="small"
-                              v-model="queryParams.repairCreateTime"
-                              type="date"
-                              placeholder="选择报修时间">
-              </el-date-picker>
-            </el-form-item>
+          <el-form-item label="报修时间" prop="repairCreateTime">
+            <el-date-picker clearable size="small"
+                            v-model="queryParams.repairCreateTime"
+                            type="date"
+                            placeholder="选择报修时间">
+            </el-date-picker>
+          </el-form-item>
 
-            <el-form-item>
-              <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
-              <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-            </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
         </el-form>
       </el-collapse-item>
     </el-collapse>
@@ -178,7 +178,7 @@
 <script>
 import {addTb, delTb, exportTb, getTb, listTb, updateTb} from "@/api/repair/tb";
 import echarts from 'echarts'
-import {countrepairTimeByrepairType} from "@/api/repair/repairadminordertotal";
+import {countrepairAdminTimeByrepairType} from "@/api/repair/repairadminordertotal";
 
 export default {
   name: "Tb",
@@ -692,7 +692,7 @@ export default {
       if (this.queryParams.repairCreateTime != null && repairtype == null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairType = this.queryParams.repairType
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
@@ -701,12 +701,12 @@ export default {
           this.getList()
         });
       }
-    //按报修时间和报修类型统计报修信息输出日、周、月报表
+      //按报修时间和报修类型统计报修信息输出日、周、月报表
       var repairtype = this.queryParams.repairType
       if (this.queryParams.repairCreateTime != null && repairtype != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairType = this.queryParams.repairType
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
@@ -720,7 +720,7 @@ export default {
       if (repairename != null && this.queryParams.repairCreateTime != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repaireName = this.queryParams.repaireName
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
           this.repairTime = response.data//报修时间
           this.$nextTick(() => {
             this.initOrderMealData()
