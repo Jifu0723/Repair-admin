@@ -37,34 +37,34 @@
             </el-select>
           </el-form-item>
 
-            <el-form-item label="维修人员姓名" prop="repaireName" label-width="120px">
-              <el-input
-                v-model="queryParams.repaireName"
-                placeholder="请输入维修人员姓名"
-                clearable
-                size="small"
-                @keyup.enter.native="handleQuery"
-              />
-            </el-form-item>
+          <el-form-item label="维修人员姓名" prop="repaireName" label-width="120px">
+            <el-input
+              v-model="queryParams.repaireName"
+              placeholder="请输入维修人员姓名"
+              clearable
+              size="small"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
 
-            <el-form-item label="二级学院" prop="repairDep" label-width="100px">
-              <el-select v-model="queryParams.repairDep" placeholder="请选择二级学院" clearable size="small">
-                <el-option
-                  v-for="item in depList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
+          <el-form-item label="二级学院" prop="repairDep" label-width="100px">
+            <el-select v-model="queryParams.repairDep" placeholder="请选择二级学院" clearable size="small">
+              <el-option
+                v-for="item in depList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-            <el-form-item label="报修时间" prop="repairCreateTime" label-width="120px">
-              <el-date-picker clearable size="small"
-                              v-model="queryParams.repairCreateTime"
-                              type="date"
-                              placeholder="选择报修时间">
-              </el-date-picker>
-            </el-form-item>
+          <el-form-item label="报修时间" prop="repairCreateTime" label-width="120px">
+            <el-date-picker clearable size="small"
+                            v-model="queryParams.repairCreateTime"
+                            type="date"
+                            placeholder="选择报修时间">
+            </el-date-picker>
+          </el-form-item>
 
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
@@ -79,7 +79,44 @@
     <el-row style="margin-top: 20px">
       <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
       <div>
-        <div id="main" style="width: 90%;height:500px;margin: auto"></div>
+        <div style="width: 100%;height:150px;">
+            <div class="card-panel"
+                 style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 15%">
+              <count-to :end-val="WaitOrderTotal" :duration="3600" class="card-panel-num"/>
+              <div class="card-panel-text">
+                未处理
+              </div>
+            </div>
+
+            <div class="card-panel"
+                 style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+              <count-to :end-val="ReceivedOrderTotal" :duration="3600" class="card-panel-num"/>
+              <div class="card-panel-text">
+                处理中
+              </div>
+            </div>
+
+            <div class="card-panel"
+                 style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+              <count-to :end-val="FinishOrderTotal" :duration="3600" class="card-panel-num"/>
+              <div class="card-panel-text">
+                已完成
+              </div>
+            </div>
+
+            <div class="card-panel"
+                 style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+              <count-to :end-val="RepairOrderTotal" :duration="3600" class="card-panel-num"/>
+              <div class="card-panel-text">
+                全部
+              </div>
+            </div>
+          </div>
+
+        <div id="main" style="width: 90%;height:500px;float: right">
+        </div>
+
+
       </div>
     </el-row>
 
@@ -116,19 +153,19 @@
           <el-table-column type="selection" width="55" align="center"/>
           <el-table-column label="报修单位" align="center" prop="repairDep">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.repairDep == 200" >大数据与软件工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 200">大数据与软件工程学院</el-tag>
               <el-tag v-if="scope.row.repairDep == 201">商学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 204" >电子与信息工程学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 205" >外国语学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 206" >教师教育学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 207" >机械与材料工程学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 208" >宝石与艺术设计学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 209" >文学与传媒学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 210" >法学与公共管理学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 211" >马克思主义学院</el-tag>
-              <el-tag v-if="scope.row.repairDep == 212" >图书馆</el-tag>
-              <el-tag v-if="scope.row.repairDep == 213" >体育教学部</el-tag>
-              <el-tag v-if="scope.row.repairDep == 214" >网络信息化管理办公室</el-tag>
+              <el-tag v-if="scope.row.repairDep == 204">电子与信息工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 205">外国语学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 206">教师教育学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 207">机械与材料工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 208">宝石与艺术设计学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 209">文学与传媒学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 210">法学与公共管理学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 211">马克思主义学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 212">图书馆</el-tag>
+              <el-tag v-if="scope.row.repairDep == 213">体育教学部</el-tag>
+              <el-tag v-if="scope.row.repairDep == 214">网络信息化管理办公室</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="报修者姓名" align="center" prop="repairName"/>
@@ -138,7 +175,7 @@
           <el-table-column label="报修类型" align="center" prop="repairType">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairType == 1" type="success">网络设备</el-tag>
-              <el-tag v-if="scope.row.repairType == 2" >水电类</el-tag>
+              <el-tag v-if="scope.row.repairType == 2">水电类</el-tag>
               <el-tag v-if="scope.row.repairType == 3" type="primary">家具类</el-tag>
               <el-tag v-if="scope.row.repairType == 4" type="info">办公室设备</el-tag>
               <el-tag v-if="scope.row.repairType == 6" type="warning">教学电子</el-tag>
@@ -204,17 +241,29 @@
 </template>
 
 <script>
-import {addTb, delTb, exportTb, getTb, listTb, updateTb} from "@/api/repair/tb";
+import {addTb, delTb, exportTb, getTb, listTb, reptbList, updateTb} from "@/api/repair/tb";
+import {listApply} from "@/api/repair/apply";
 import echarts from 'echarts'
 import {CountCollegeByRepairOrder, countrepairTimeByrepairType} from "@/api/repair/repairsuperadminordertotal";
+import countTo from 'vue-count-to';
+
 export default {
   name: "repairsuperadminorder",
+  components: {countTo},
   data() {
     return {
       // 遮罩层
       loading: true,
       // 导出遮罩层
       exportLoading: false,
+      // 完成订单的总数
+      FinishOrderTotal: 0,
+      //待接单(待处理,处理中)
+      WaitOrderTotal: 0,
+      //已接单
+      ReceivedOrderTotal: 0,
+      //维修订单总数
+      RepairOrderTotal: 0,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -233,8 +282,6 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
         repairNo: null,
         repaireName: null,
         repairName: null,
@@ -259,10 +306,6 @@ export default {
         repairYear: null,
         repairMonth: null,
         repairDay: null,
-        timeSlot: null, // 时间段查询参数
-        startTime: null, // 时间段查询开始时间
-        endTime: null // 时间段查询结束时间
-
       },
       // 表单参数
       form: {},
@@ -369,6 +412,10 @@ export default {
   created() {
     this.handleQuery(0);
     this.getList();
+    this.getWairOrderTotal();//等待接的维修单数量(未处理)
+    this.getReceivedOrder();//已经接维修单的数量(处理中)
+    this.getFinishOrderTotal();//已经完成的维修单数量(已完成)
+    this.getRepairOrderTotal();//全部维修单数量
   },
   activated() {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -454,7 +501,7 @@ export default {
           data: ['网络设备', '水电类', '家具类', '办公室设备', '教学电子', '电器类', '木材类', '总报修']
         },
         grid: {
-          top: '20%',
+          top: '25%',
           left: '1%',
           right: '4%',
           containLabel: true
@@ -637,6 +684,7 @@ export default {
         ],
       }
       this.chartBar = echarts.init(document.getElementById('main'))
+
       this.chartBar.clear()
       // 接触点击绑定时间，避免多次绑定点击事件
       this.chartBar.off('click');
@@ -672,8 +720,35 @@ export default {
       this.loading = true;
       listTb(this.queryParams).then(response => {
         this.tbList = response.rows;
-        this.total = response.total;
+        this.total = response.rows.length;
         this.loading = false;
+      });
+    },
+    //查询等待接的维修单总数
+    getWairOrderTotal() {
+      this.queryParams.repairState = 1 //待接的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.WaitOrderTotal = response.rows.length;
+      });
+    },
+    //查询已接单维修单总数
+    getReceivedOrder() {
+      this.queryParams.repairState = 2 //已接单维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.ReceivedOrderTotal = response.rows.length
+      });
+    },
+    //查询完成的维修单总数
+    getFinishOrderTotal() {
+      this.queryParams.repairState = 4 //已完成的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.FinishOrderTotal = response.rows.length
+      });
+    },
+    //查询全部维修单总数
+    getRepairOrderTotal() {
+      listApply(this.queryParams).then(response => {
+        this.RepairOrderTotal = response.rows.length
       });
     },
     // 取消按钮
@@ -757,26 +832,23 @@ export default {
       var repairtype = this.queryParams.repairType//报修类型
       var repairedstate = this.queryParams.repairedState//维修后设备的状态类型
 
- // <-----------------------二级学院报修信息查询，只能同时有三个查询条件--------------------->
+      // <-----------------------二级学院报修信息查询，只能同时有三个查询条件--------------------->
 
       if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairename != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      }
-      else if(repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairname != null) {
+      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairname != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      }
-      else if(repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairtype != null) {
+      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairtype != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      }
-      else if(repairdep != null && this.queryParams.repairCreateTime != null && repairname != null && repairename != null) {
+      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairname != null && repairename != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
       }
       //按照二级学院id和报修时间和维修后设备的状态类型查询  3个查询条件 ----1
-      else if(repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null){
+      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairdep = this.queryParams.repairDep
         CountCollegeByRepairOrder(this.queryParams).then(response => {
@@ -788,7 +860,7 @@ export default {
         });
       }
       //按照二级学院id和报修时间和报修者姓名查询    3个查询条件 ----2
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairname != null){
+      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairname != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairdep = this.queryParams.repairDep
         CountCollegeByRepairOrder(this.queryParams).then(response => {
@@ -800,7 +872,7 @@ export default {
         });
       }
       //按照二级学院id和报修时间和维修人员姓名查询   3个查询条件 ----3
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairename != null){
+      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairename != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairdep = this.queryParams.repairDep
         CountCollegeByRepairOrder(this.queryParams).then(response => {
@@ -812,7 +884,7 @@ export default {
         });
       }
       //按照二级学院id和报修时间和报修类型查询 ----4
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairtype != null){
+      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairtype != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairdep = this.queryParams.repairDep
         CountCollegeByRepairOrder(this.queryParams).then(response => {
@@ -823,9 +895,9 @@ export default {
           })
         });
       }
- // <-----------------------报修信息查询，可以同时有多个查询条件--------------------->
+        // <-----------------------报修信息查询，可以同时有多个查询条件--------------------->
       //按照二级学院id和报修时间查询
-      else if (repairdep != null && this.queryParams.repairCreateTime != null){
+      else if (repairdep != null && this.queryParams.repairCreateTime != null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairdep = this.queryParams.repairDep
         CountCollegeByRepairOrder(this.queryParams).then(response => {
@@ -837,7 +909,7 @@ export default {
         });
       }
       //按报修时间和报修类型统计报修信息输出日、周、月报表
-      else if (this.queryParams.repairCreateTime != null && repairtype != null && repairdep == null){
+      else if (this.queryParams.repairCreateTime != null && repairtype != null && repairdep == null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repairType = this.queryParams.repairType
         countrepairTimeByrepairType(this.queryParams).then(response => {
@@ -850,7 +922,7 @@ export default {
         });
       }
       //按照维修人员姓名和报修时间查询
-      else if (repairename != null && this.queryParams.repairCreateTime != null && repairdep == null){
+      else if (repairename != null && this.queryParams.repairCreateTime != null && repairdep == null) {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         this.queryParams.repaireName = this.queryParams.repaireName
         countrepairTimeByrepairType(this.queryParams).then(response => {
@@ -864,7 +936,7 @@ export default {
         });
       }
       //查询某一天报修数据统计报修信息输出日、周、月报表
-      else{
+      else {
         this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
         countrepairTimeByrepairType(this.queryParams).then(response => {
           this.repairTime = response.data
@@ -950,3 +1022,4 @@ export default {
   }
 };
 </script>
+

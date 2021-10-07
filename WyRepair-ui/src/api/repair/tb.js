@@ -9,6 +9,15 @@ export function listTb(query) {
   })
 }
 
+// 查询报修单列表
+export function reptbList(query) {
+  return request({
+    url: '/repair/tb/reptbList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询报修单详细
 export function getTb(repairId) {
   return request({

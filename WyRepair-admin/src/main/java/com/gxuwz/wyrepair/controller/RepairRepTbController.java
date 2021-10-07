@@ -86,6 +86,17 @@ public class RepairRepTbController extends BaseController {
     }
 
     /**
+     * 查询报修单列表
+     */
+    @PreAuthorize("@ss.hasPermi('repair:tb:list')")
+    @GetMapping("/reptbList")
+    public TableDataInfo list(RepairRepTb repairRepTb)
+    {
+        startPage();
+        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb);
+        return getDataTable(list);
+    }
+    /**
      * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
      */
@@ -104,6 +115,7 @@ public class RepairRepTbController extends BaseController {
     @GetMapping("/countrepairTimeByrepairType")
     public AjaxResult countrepairTimeByrepairType(@RequestParam Map<String, Object> params) {
         Map map = repairRepTbService.countrepairTimeByrepairType(params);
+        System.out.println(map);
         return AjaxResult.success(map);
     }
 
