@@ -64,7 +64,7 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
      */
     @Override
     public List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params, Long deptId) {
-        return repairRepTbMapper.queryRepairAdminOrderList(params);
+        return repairRepTbMapper.queryRepairAdminOrderList(params,deptId);
     }
 
     /**

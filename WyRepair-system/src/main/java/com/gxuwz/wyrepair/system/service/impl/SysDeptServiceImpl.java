@@ -49,6 +49,18 @@ public class SysDeptServiceImpl implements ISysDeptService
     }
 
     /**
+     * 查询部门管理数据
+     *
+     * @param dept 部门信息
+     * @return 部门信息集合
+     */
+    public List<SysDept> selectdeptList(SysDept dept){
+        {
+            return deptMapper.selectdeptList(dept);
+        }
+    }
+
+    /**
      * 构建前端所需要树结构
      * 
      * @param depts 部门列表

@@ -29,6 +29,14 @@
         </where>
     </select>
 
+    <select id="selectRepairRepTypeList" parameterType="RepairReptype" resultMap="RepairReptypeResult">
+        <include refid="selectRepairReptypeVo"/>
+        <where>
+            <if test="repairDep != null  and repairDep != ''"> and repair_dep = #{repairDep}</if>
+            <if test="repairType != null  and repairType != ''"> and repair_type = #{repairType}</if>
+        </where>
+    </select>
+
     <select id="selectRepairReptypeById" parameterType="Long" resultMap="RepairReptypeResult">
         <include refid="selectRepairReptypeVo"/>
         where repair_type_id = #{repairTypeId}

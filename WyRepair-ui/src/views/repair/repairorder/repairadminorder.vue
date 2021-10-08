@@ -102,11 +102,27 @@
         </el-row>
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
+          <el-table-column label="报修单位" align="center" prop="repairDep">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.repairDep == 200">大数据与软件工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 201">商学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 204">电子与信息工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 205">外国语学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 206">教师教育学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 207">机械与材料工程学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 208">宝石与艺术设计学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 209">文学与传媒学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 210">法学与公共管理学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 211">马克思主义学院</el-tag>
+              <el-tag v-if="scope.row.repairDep == 212">图书馆</el-tag>
+              <el-tag v-if="scope.row.repairDep == 213">体育教学部</el-tag>
+              <el-tag v-if="scope.row.repairDep == 214">网络信息化管理办公室</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="报修者姓名" align="center" prop="repairName"/>
           <el-table-column label="维修人员姓名" align="center" prop="repaireName"/>
           <el-table-column label="报修地点" align="center" prop="repairAddress"/>
           <el-table-column label="报修内容" align="center" prop="repairContent"/>
-
           <el-table-column label="报修类型" align="center" prop="repairType">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairType == 1" type="success">网络设备</el-tag>
@@ -381,7 +397,7 @@ export default {
           data: ['网络设备', '水电类', '家具类', '办公室设备', '教学电子', '电器类', '木材类', '总报修']
         },
         grid: {
-          top: '20%',
+          top: '25%',
           left: '1%',
           right: '4%',
           containLabel: true
@@ -409,14 +425,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#f1dd2b'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#f44'
+                  color: '#f15a22',
                 }, {
                   offset: 1,
-                  color: '#f44'
+                  color: '#f15a22'
                 }]),
               }
             },
@@ -430,14 +445,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#f1dd2b'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#5CACEE'
+                  color: '#ffc20e'
                 }, {
                   offset: 1,
-                  color: '#5CACEE'
+                  color: '#ffc20e'
                 }]),
               }
             },
@@ -451,14 +465,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#1ec141'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#1C86EE'
+                  color: '#78cdd1'
                 }, {
                   offset: 1,
-                  color: '#1C86EE'
+                  color: '#78cdd1'
                 }]),
               }
             },
@@ -472,14 +485,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#1ec141'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#1C86EE'
+                  color: '#c77eb5'
                 }, {
                   offset: 1,
-                  color: '#1C86EE'
+                  color: '#c77eb5'
                 }]),
               }
             },
@@ -493,14 +505,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#1ec141'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#1C86EE'
+                  color: '#afdfe4'
                 }, {
                   offset: 1,
-                  color: '#1C86EE'
+                  color: '#afdfe4'
                 }]),
               }
             },
@@ -514,14 +525,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#1ec141'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#1C86EE'
+                  color: '#2585a6'
                 }, {
                   offset: 1,
-                  color: '#1C86EE'
+                  color: '#2585a6'
                 }]),
               }
             },
@@ -535,14 +545,13 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color: '#1ec141'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#1C86EE'
+                  color: '#c99979'
                 }, {
                   offset: 1,
-                  color: '#1C86EE'
+                  color: '#c99979'
                 }]),
               }
             },
@@ -556,7 +565,6 @@ export default {
               position: 'top'
             },
             itemStyle: {
-              // color:  'rgba(92, 123, 217)'
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,

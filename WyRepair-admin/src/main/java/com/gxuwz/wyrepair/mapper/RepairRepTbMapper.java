@@ -99,7 +99,7 @@ public interface RepairRepTbMapper
      * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 列表(查询)
      */
-    List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params);
+    List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params,@Param("deptId")Long deptId);
 
     /**
      * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月

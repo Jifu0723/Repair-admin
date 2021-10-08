@@ -9,6 +9,15 @@ export function listDept(query) {
   })
 }
 
+// 查询部门列表
+export function listdept(query) {
+  return request({
+    url: '/system/dept/listdept',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询部门列表（排除节点）
 export function listDeptExcludeChild(deptId) {
   return request({

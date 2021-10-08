@@ -1,24 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-<!--      <el-form-item label="配件购买人" prop="partsPerson">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsPerson"-->
-<!--          placeholder="请输入配件购买人"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件代码" prop="partsNo">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsNo"-->
-<!--          placeholder="请输入配件代码"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
       <el-form-item label="配件名称" prop="partsName">
         <el-input
           v-model="queryParams.partsName"
@@ -28,77 +10,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label="配件数量" prop="partsNumbers">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsNumbers"-->
-<!--          placeholder="请输入配件数量"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件单价" prop="partsPrice">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsPrice"-->
-<!--          placeholder="请输入配件单价"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件购买数量" prop="partsPurchase">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsPurchase"-->
-<!--          placeholder="请输入配件购买数量"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件购买说明" prop="partsPurchaseExplain">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsPurchaseExplain"-->
-<!--          placeholder="请输入配件购买说明"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件购买时间" prop="partsTime">-->
-<!--        <el-date-picker clearable size="small"-->
-<!--                        v-model="queryParams.partsTime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="选择配件购买时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件总价格" prop="partsTotalPrice">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsTotalPrice"-->
-<!--          placeholder="请输入配件总价格"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件剩余数量" prop="partsNumber">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsNumber"-->
-<!--          placeholder="请输入配件剩余数量"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件使用率状态" prop="partsState">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsState"-->
-<!--          placeholder="请输入配件使用率状态"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+
       <el-form-item label="配件品种" prop="partsVariety">
         <el-input
           v-model="queryParams.partsVariety"
@@ -108,48 +20,11 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label="配件生产机构" prop="partsMechanism">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsMechanism"-->
-<!--          placeholder="请输入配件生产机构"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件售后服务热线" prop="partsPhone">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsPhone"-->
-<!--          placeholder="请输入配件售后服务热线"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件登记机关" prop="partsOffice">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsOffice"-->
-<!--          placeholder="请输入配件登记机关"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="配件维保单位地址" prop="partsAddress">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.partsAddress"-->
-<!--          placeholder="请输入配件维保单位地址"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -159,7 +34,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['repair:parts:add']"
-        >新增</el-button>
+        >配件购买申请</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -199,9 +74,8 @@
 
     <el-table v-loading="loading" :data="partsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增主键" align="center" prop="partsId" />
       <el-table-column label="配件购买人" align="center" prop="partsPerson" />
-      <el-table-column label="配件代码" align="center" prop="partsNo" />
+
       <el-table-column label="配件名称" align="center" prop="partsName" />
       <el-table-column label="配件数量" align="center" prop="partsNumbers" />
       <el-table-column label="配件单价" align="center" prop="partsPrice" />
@@ -215,11 +89,12 @@
       <el-table-column label="配件总价格" align="center" prop="partsTotalPrice" />
       <el-table-column label="配件剩余数量" align="center" prop="partsNumber" />
       <el-table-column label="配件使用率状态" align="center" prop="partsState" />
-      <el-table-column label="配件品种" align="center" prop="partsVariety" />
-      <el-table-column label="配件生产机构" align="center" prop="partsMechanism" />
-      <el-table-column label="配件售后服务热线" align="center" prop="partsPhone" />
-      <el-table-column label="配件登记机关" align="center" prop="partsOffice" />
-      <el-table-column label="配件维保单位地址" align="center" prop="partsAddress" />
+<!--      <el-table-column label="配件代码" align="center" prop="partsNo" />-->
+<!--      <el-table-column label="配件品种" align="center" prop="partsVariety" />-->
+<!--      <el-table-column label="配件生产机构" align="center" prop="partsMechanism" />-->
+<!--      <el-table-column label="配件售后服务热线" align="center" prop="partsPhone" />-->
+<!--      <el-table-column label="配件登记机关" align="center" prop="partsOffice" />-->
+<!--      <el-table-column label="配件维保单位地址" align="center" prop="partsAddress" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -251,27 +126,27 @@
     <!-- 添加或修改配件信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="配件购买人" prop="partsPerson">
-          <el-input v-model="form.partsPerson" placeholder="请输入配件购买人" />
-        </el-form-item>
-        <el-form-item label="配件代码" prop="partsNo">
-          <el-input v-model="form.partsNo" placeholder="请输入配件代码" />
-        </el-form-item>
+
         <el-form-item label="配件名称" prop="partsName">
           <el-input v-model="form.partsName" placeholder="请输入配件名称" />
         </el-form-item>
+
         <el-form-item label="配件数量" prop="partsNumbers">
           <el-input v-model="form.partsNumbers" placeholder="请输入配件数量" />
         </el-form-item>
+
         <el-form-item label="配件单价" prop="partsPrice">
           <el-input v-model="form.partsPrice" placeholder="请输入配件单价" />
         </el-form-item>
+
         <el-form-item label="配件购买数量" prop="partsPurchase">
           <el-input v-model="form.partsPurchase" placeholder="请输入配件购买数量" />
         </el-form-item>
+
         <el-form-item label="配件购买说明" prop="partsPurchaseExplain">
           <el-input v-model="form.partsPurchaseExplain" placeholder="请输入配件购买说明" />
         </el-form-item>
+
         <el-form-item label="配件购买时间" prop="partsTime">
           <el-date-picker clearable size="small"
                           v-model="form.partsTime"
@@ -280,31 +155,40 @@
                           placeholder="选择配件购买时间">
           </el-date-picker>
         </el-form-item>
+
         <el-form-item label="配件总价格" prop="partsTotalPrice">
           <el-input v-model="form.partsTotalPrice" placeholder="请输入配件总价格" />
         </el-form-item>
+
         <el-form-item label="配件剩余数量" prop="partsNumber">
           <el-input v-model="form.partsNumber" placeholder="请输入配件剩余数量" />
         </el-form-item>
+
         <el-form-item label="配件使用率状态" prop="partsState">
           <el-input v-model="form.partsState" placeholder="请输入配件使用率状态" />
         </el-form-item>
+
         <el-form-item label="配件品种" prop="partsVariety">
           <el-input v-model="form.partsVariety" placeholder="请输入配件品种" />
         </el-form-item>
+
         <el-form-item label="配件生产机构" prop="partsMechanism">
           <el-input v-model="form.partsMechanism" placeholder="请输入配件生产机构" />
         </el-form-item>
+
         <el-form-item label="配件售后服务热线" prop="partsPhone">
           <el-input v-model="form.partsPhone" placeholder="请输入配件售后服务热线" />
         </el-form-item>
+
         <el-form-item label="配件登记机关" prop="partsOffice">
           <el-input v-model="form.partsOffice" placeholder="请输入配件登记机关" />
         </el-form-item>
+
         <el-form-item label="配件维保单位地址" prop="partsAddress">
           <el-input v-model="form.partsAddress" placeholder="请输入配件维保单位地址" />
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>

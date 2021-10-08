@@ -40,6 +40,18 @@ public class RepairReptypeController extends BaseController
     }
 
     /**
+     * 查询维修类型列表
+     */
+    @PreAuthorize("@ss.hasPermi('repair:reptype:list')")
+    @GetMapping("/reptypelist")
+    public TableDataInfo reptypelist(RepairReptype repairReptype)
+    {
+        startPage();
+        List<RepairReptype> list = repairReptypeService.selectRepairRepTypeList(repairReptype);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出维修类型列表
      */
     @PreAuthorize("@ss.hasPermi('repair:reptype:export')")

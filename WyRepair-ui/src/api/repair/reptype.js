@@ -9,6 +9,15 @@ export function listReptype(query) {
   })
 }
 
+// 查询维修类型列表
+export function listRepType(query) {
+  return request({
+    url: '/repair/reptype/reptypelist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询维修类型详细
 export function getReptype(repairTypeId) {
   return request({

@@ -71,14 +71,12 @@ public class RepairRepTbController extends BaseController {
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
-            System.out.println(9999);
-            list = repairRepTbService.queryRepairAdminOrderList(params,user.getDeptId());
+            list = repairRepTbService.queryRepairAdminOrderList(params,null);
             repairRepTb.setRepairDep(user.getDeptId());
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());
             list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb,user.getUserId());
         }else if ("SuperAdmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))){
-            System.out.println(8888);
             list = repairRepTbService.queryRepairOrderList(params);
         }
         params.remove("repairTime");

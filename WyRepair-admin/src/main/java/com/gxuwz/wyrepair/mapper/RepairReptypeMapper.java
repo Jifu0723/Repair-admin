@@ -59,4 +59,12 @@ public interface RepairReptypeMapper
      * @return 结果
      */
     public int deleteRepairReptypeByIds(Long[] repairTypeIds);
+
+    /**
+     * 查询维修类型列表
+     *
+     * @param repairReptype 维修类型
+     * @return 维修类型集合
+     */
+    List<RepairReptype> selectRepairRepTypeList(RepairReptype repairReptype);
 }

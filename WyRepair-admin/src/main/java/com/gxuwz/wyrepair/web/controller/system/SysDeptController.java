@@ -2,6 +2,9 @@ package com.gxuwz.wyrepair.web.controller.system;
 
 import java.util.Iterator;
 import java.util.List;
+
+import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
+import com.gxuwz.wyrepair.domain.RepairReptype;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +48,18 @@ public class SysDeptController extends BaseController
         List<SysDept> depts = deptService.selectDeptList(dept);
         return AjaxResult.success(depts);
     }
+
+    /**
+     * 获取部门列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:dept:list')")
+    @GetMapping("/listdept")
+    public TableDataInfo listdept(SysDept dept)
+    {
+        List<SysDept> list = deptService.selectdeptList(dept);
+        return getDataTable(list);
+    }
+
 
     /**
      * 查询部门列表（排除节点）

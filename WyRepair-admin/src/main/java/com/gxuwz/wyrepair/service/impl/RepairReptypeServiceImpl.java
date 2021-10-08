@@ -45,6 +45,18 @@ public class RepairReptypeServiceImpl implements IRepairReptypeService
     }
 
     /**
+     * 查询维修类型列表
+     *
+     * @param repairReptype 维修类型
+     * @return 维修类型
+     */
+    @Override
+    public List<RepairReptype> selectRepairRepTypeList(RepairReptype repairReptype)
+    {
+        return repairReptypeMapper.selectRepairRepTypeList(repairReptype);
+    }
+
+    /**
      * 新增维修类型
      * 
      * @param repairReptype 维修类型
