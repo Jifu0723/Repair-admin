@@ -169,11 +169,20 @@ public class ApiRepairRepTbController extends BaseController {
         // 获取用户信息
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         RepairApply apply = applyService.selectRepairApplyById(repairRepTb.getApplyId());
+        //获取报修单信息
+        RepairRepTb repairReptb = repairRepTbService.selectRepairRepTbById(repairRepTb.getRepairId());
+
         SysUser sysUser = loginUser.getUser();
         // 新的维修单
         RepairRepTb newRepair = new RepairRepTb();
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(), deptId);
         newRepair.setRepairType(repairType);
+        newRepair.setRepairState(3);//报修状态为转单中
+        newRepair.setRepairName(repairReptb.getRepairName());//报修者姓名
+        newRepair.setRepairMoney(repairReptb.getRepairMoney());//维修单价格
+        newRepair.setRepairDay(repairReptb.getRepairDay());//报修单日期
+        newRepair.setRepairYear(repairReptb.getRepairYear());//报修单年份
+        newRepair.setRepairMonth(repairReptb.getRepairMonth());//报修单月份
         repairRepTbService.insertRepairRepTb(newRepair);
         // 转单记录保存
         RepairReptransfer transferRep = new RepairReptransfer();
@@ -203,7 +212,9 @@ public class ApiRepairRepTbController extends BaseController {
             @ApiParam(name = "repairRepTb", value = "维修单实体") RepairRepTb repairRepTb,
             @ApiParam(name = "transferName", value = "转单对象") SysUser tUser) {
 
-        Long repairDep = repairRepTb.getRepairDep();
+        Long repairDep = repairRepTb.getRepairDep();//获取初次报修所属部门id
+        //获取报修单信息
+        RepairRepTb repairReptb = repairRepTbService.selectRepairRepTbById(repairRepTb.getRepairId());
         // 获取用户信息
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser sysUser = loginUser.getUser();
@@ -215,7 +226,14 @@ public class ApiRepairRepTbController extends BaseController {
         repairRepTbService.updateRepairRepTb(repairRepTb);
         // 新的维修单
         RepairRepTb newRepair = new RepairRepTb();
+
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(),repairDep);
+        newRepair.setRepairState(3);//报修状态为转单中
+        newRepair.setRepairName(repairReptb.getRepairName());//报修者姓名
+        newRepair.setRepairMoney(repairReptb.getRepairMoney());//维修单价格
+        newRepair.setRepairDay(repairReptb.getRepairDay());//报修单日期
+        newRepair.setRepairYear(repairReptb.getRepairYear());//报修单年份
+        newRepair.setRepairMonth(repairReptb.getRepairMonth());//报修单月份
         repairRepTbService.insertRepairRepTb(newRepair);
         // 维修单过程信息保存
         RepairProcess process = new RepairProcess();

@@ -89,6 +89,14 @@ public class RepairApply extends BaseEntity
     /** 申请图片*/
     private List<RepairAppImg> appImgList;
 
+    public List<RepairAppImg> getAppImgList() {
+        return appImgList;
+    }
+
+    public void setAppImgList(List<RepairAppImg> appImgList) {
+        this.appImgList = appImgList;
+    }
+
     /**
      * 维修过程
      */

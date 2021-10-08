@@ -82,7 +82,7 @@
       <div>
         <div style="width: 100%;height:150px;">
           <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 15%">
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 8%">
             <i class="el-icon-pear"></i>
             <count-to :end-val="WaitOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
@@ -91,7 +91,7 @@
           </div>
 
           <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
             <i class="el-icon-grape"></i>
             <count-to :end-val="ReceivedOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
@@ -100,7 +100,16 @@
           </div>
 
           <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+            <i class="el-icon-grape"></i>
+            <count-to :end-val="TransferOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              转单中
+            </div>
+          </div>
+
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
             <i class="el-icon-apple"></i>
             <count-to :end-val="FinishOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
@@ -109,7 +118,7 @@
           </div>
 
           <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:50px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
             <i class="el-icon-potato-strips"></i>
             <count-to :end-val="RepairOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
@@ -152,7 +161,7 @@
             >删除
             </el-button>
           </el-col>
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+
         </el-row>
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
@@ -210,7 +219,6 @@
           <el-table-column label="报修者姓名" align="center" prop="repairName"/>
           <el-table-column label="维修人员姓名" align="center" prop="repaireName"/>
           <el-table-column label="报修地点" align="center" prop="repairAddress"/>
-          <el-table-column label="报修内容" align="center" prop="repairContent"/>
           <el-table-column label="报修类型" align="center" prop="repairType">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairType == 1" type="success">网络设备</el-tag>
@@ -377,7 +385,6 @@
             </el-form-item>
           </el-col>
 
-
           <el-col :span="6">
             <el-form-item label="报修地点" prop="repairAddress" label-width="100px">
               <el-input v-model="form.repairAddress" placeholder="" clearable :style="{width: '100%'}">
@@ -397,7 +404,6 @@
           </el-col>
         </el-row>
 
-
         <el-divider><i class="el-icon-edit"></i></el-divider>
 
         <el-row :gutter="0">
@@ -409,16 +415,8 @@
             </el-form-item>
           </el-col>
 
-
-
-
         </el-row>
       </el-form>
-
-
-
-
-
 
       <el-form-item label="报修状态" prop="repairState">
         <el-input v-model="form.repairState" placeholder="请输入报修状态"/>
@@ -445,7 +443,6 @@
       <el-form-item label="是否为当前运转单" prop="curWork">
         <el-input v-model="form.curWork" placeholder="请输入是否为当前运转单"/>
       </el-form-item>
-
 
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -481,6 +478,8 @@ export default {
       WaitOrderTotal: 0,
       //已接单
       ReceivedOrderTotal: 0,
+      //转单数量
+      TransferOrderTotal: 0,
       //维修订单总数
       RepairOrderTotal: 0,
       //期望维修形式
@@ -581,6 +580,7 @@ export default {
     this.getRepairexpectType();//查看期望维修形式
     this.getRepairTypeList();//获取报修类型
     this.getDepList();//获取二级学院信息
+    this.getTransferOrder();//获取转单的维修单数量
   },
   activated() {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -893,7 +893,6 @@ export default {
     getDepList() {
       listdept(this.queryParams).then(response => {
         this.depList = response.rows
-        console.log(response)
       })
     },
     //获取报修类型
@@ -907,7 +906,6 @@ export default {
     getRepairexpectType() {
       listType(this.queryParams).then(response => {
         this.repairexpectTypeList = response.rows
-        console.log(response)
       })
     },
     //查询等待接的维修单总数
@@ -922,6 +920,13 @@ export default {
       this.queryParams.repairState = 2 //已接单维修单数量
       reptbList(this.queryParams).then(response => {
         this.ReceivedOrderTotal = response.rows.length
+      });
+    },
+    //查询转单的维修单总数
+    getTransferOrder() {
+      this.queryParams.repairState = 3 //转单的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.TransferOrderTotal = response.rows.length
       });
     },
     //查询完成的维修单总数

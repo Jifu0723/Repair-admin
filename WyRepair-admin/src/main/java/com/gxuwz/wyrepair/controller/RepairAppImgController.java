@@ -12,11 +12,13 @@ import com.gxuwz.wyrepair.domain.RepairAppImg;
 import com.gxuwz.wyrepair.domain.RepairRepImg;
 import com.gxuwz.wyrepair.service.IRepairAppImgService;
 import com.gxuwz.wyrepair.service.IRepairRepImgService;
+import com.gxuwz.wyrepair.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,6 +45,21 @@ public class RepairAppImgController extends BaseController {
         startPage();
         List<RepairAppImg> list = repairAppImgService.selectRepairAppImgList(repairAppImg);
         return getDataTable(list);
+    }
+
+    /**
+     * 下载申请单图片
+     */
+    @GetMapping("/downloadRepairImg")
+    public void downloadRepairImg(RepairAppImg repairAppImg, HttpServletResponse response) throws IOException {
+
+        RepairAppImg repairAppImg1 = repairAppImgService.selectRepairAppImgById(repairAppImg.getAppId());
+        String appimgPath = repairAppImg1.getAppimgPath();
+        String appimgName = repairAppImg1.getAppimgName();
+        System.out.println(RuoYiConfig.getProfile()+appimgPath);
+        System.out.println(appimgPath);
+        System.out.println(appimgName);
+        FileUtils.downloadUtil(response,RuoYiConfig.getProfile()+appimgPath,appimgName);
     }
 
     /**

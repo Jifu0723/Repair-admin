@@ -370,8 +370,9 @@ public class RepairRepTb extends BaseEntity {
         return repairExpectTime;
     }
 
-    public void setRepairState(Integer repairState) {
+    public Integer setRepairState(Integer repairState) {
         this.repairState = repairState;
+        return repairState;
     }
 
     public Integer getRepairState() {
