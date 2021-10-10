@@ -17,9 +17,25 @@ public interface IRepairAppImgService
      * 查询申请单图片
      * 
      * @param appimgId 申请单图片ID
-     * @return 申请单图片
+     * @return 申请单图片selectRepairAppImgById
      */
     public RepairAppImg selectRepairAppImgById(Long appimgId);
+
+    /**
+     * 查询申请单图片
+     *
+     * @param appId 申请单图片ID
+     * @return 申请单图片
+     */
+    public List<RepairAppImg> selectRepairAppById(Long appId);
+
+    /**
+     * 查询申请单图片
+     *
+     * @param appId 申请单图片ID
+     * @return 申请单图片
+     */
+    public RepairAppImg selectRepairAppId(Long appId);
 
     /**
      * 查询申请单图片列表

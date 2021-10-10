@@ -35,6 +35,16 @@
         where appimg_id = #{appimgId}
     </select>
 
+    <select id="selectRepairAppById" parameterType="Long" resultMap="RepairAppImgResult">
+        <include refid="selectRepairAppImgVo"/>
+        where app_id = #{appId}
+    </select>
+
+    <select id="selectRepairAppId" parameterType="Long" resultMap="RepairAppImgResult">
+        <include refid="selectRepairAppImgVo"/>
+        where app_id = #{appId}
+    </select>
+
     <insert id="insertRepairAppImg" parameterType="RepairAppImg" useGeneratedKeys="true" keyProperty="appimgId">
         insert into repair_app_img
         <trim prefix="(" suffix=")" suffixOverrides=",">

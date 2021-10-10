@@ -172,6 +172,7 @@ public class RepairRepTb extends BaseEntity {
     @Excel(name = "维修人员姓名")
     private String repaireName;
 
+
     public Integer getRepairYear() {
         return repairYear;
     }

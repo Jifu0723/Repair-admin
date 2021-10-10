@@ -165,37 +165,37 @@
         </el-row>
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
-          <el-table-column  sortable
-                            hidden
-                            type="expand"
-                            header-align="center"
-                            align="center"
-                            width="120"
-                            label="展开报修流程进度">
+          <el-table-column sortable
+                           hidden
+                           type="expand"
+                           header-align="center"
+                           align="center"
+                           width="120"
+                           label="展开报修流程进度">
             <template slot-scope="scope">
               <el-steps v-if="scope.row.repairState === 1" :active="scope.row.repairState" finish-status="success">
-                <el-step title="待接单" ></el-step>
-                <el-step title="已接单" ></el-step>
-                <el-step title="转单中" ></el-step>
-                <el-step title="已完成" ></el-step>
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
               </el-steps>
               <el-steps v-if="scope.row.repairState === 2" :active="scope.row.repairState" finish-status="success">
-                <el-step title="待接单" ></el-step>
-                <el-step title="已接单" ></el-step>
-                <el-step title="转单中" ></el-step>
-                <el-step title="已完成" ></el-step>
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
               </el-steps>
               <el-steps v-if="scope.row.repairState === 3" :active="scope.row.repairState" finish-status="success">
-                <el-step title="待接单" ></el-step>
-                <el-step title="已接单" ></el-step>
-                <el-step title="转单中" ></el-step>
-                <el-step title="已完成" ></el-step>
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
               </el-steps>
               <el-steps v-if="scope.row.repairState === 4" :active="scope.row.repairState" finish-status="success">
-                <el-step title="待接单" ></el-step>
-                <el-step title="已接单" ></el-step>
-                <el-step title="转单中" ></el-step>
-                <el-step title="已完成" ></el-step>
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
               </el-steps>
             </template>
           </el-table-column>
@@ -230,15 +230,15 @@
               <el-tag v-if="scope.row.repairType == 8" type="danger">木材类</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="设备维修后的状态" align="center" prop="repairedState">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.repairedState == 0" type="warning">等待维修</el-tag>
-              <el-tag v-if="scope.row.repairedState == 1" type="success">已修复</el-tag>
-              <el-tag v-if="scope.row.repairedState == 2" type="primary">已换新</el-tag>
-              <el-tag v-if="scope.row.repairedState == 3" type="info">无法修复</el-tag>
-              <el-tag v-if="scope.row.repairedState == 4" type="danger">未修复</el-tag>
-            </template>
-          </el-table-column>
+          <!--          <el-table-column label="设备维修后的状态" align="center" prop="repairedState">-->
+          <!--            <template slot-scope="scope">-->
+          <!--              <el-tag v-if="scope.row.repairedState == 0" type="warning">等待维修</el-tag>-->
+          <!--              <el-tag v-if="scope.row.repairedState == 1" type="success">已修复</el-tag>-->
+          <!--              <el-tag v-if="scope.row.repairedState == 2" type="primary">已换新</el-tag>-->
+          <!--              <el-tag v-if="scope.row.repairedState == 3" type="info">无法修复</el-tag>-->
+          <!--              <el-tag v-if="scope.row.repairedState == 4" type="danger">未修复</el-tag>-->
+          <!--            </template>-->
+          <!--          </el-table-column>-->
 
           <el-table-column v-if="form.repairDestory === 1" label="销单时间" align="center" prop="repairDestoryTime"
                            width="180">
@@ -303,7 +303,8 @@
           <el-col :span="4">
             <el-form-item label="维修单单价" prop="repairMoney" label-width="110px">
               <el-input v-model="form.repairMoney" placeholder="" type="text" clearable :style="{width: '80%'}">
-              </el-input>元
+              </el-input>
+              元
             </el-form-item>
           </el-col>
 
@@ -407,14 +408,33 @@
         <el-divider><i class="el-icon-edit"></i></el-divider>
 
         <el-row :gutter="0">
-
           <el-col :span="10">
             <el-form-item label="报修内容" prop="repairContent" label-width="80px">
               <el-input v-model="form.repairContent" placeholder="" type="textarea"
-                        ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
 
+          <el-col :span="16">
+            <el-form-item label="报修图片预览" prop="incomeSource" label-width="160px">
+            <el-upload
+              action=""
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :auto-upload="false"
+              accept="image/*"
+              multiple
+              :before-upload="beforeAvatarUpload"
+              :file-list="upload.fileList">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible" append-to-body>
+              <img width="100%"
+                   :src="dialogImageUrl"
+              />
+            </el-dialog>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
 
@@ -468,6 +488,18 @@ export default {
   components: {countTo},
   data() {
     return {
+      baseUrl: null,
+      //图片上传
+      dialogImageUrl: '',
+      dialogVisible: false,
+      upload: {
+        // 是否禁用上传
+        isUploading: false,
+        // // 设置上传的请求头部
+        // headers: {Authorization: "Bearer " + getToken()},
+        // 上传的文件列表
+        fileList: []
+      },
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -571,8 +603,8 @@ export default {
     };
   },
   created() {
+    this.baseUrl = process.env.VUE_APP_BASE_API
     this.handleQuery(0);
-    this.getList();
     this.getWairOrderTotal();//等待接的维修单数量(未处理)
     this.getReceivedOrder();//已经接维修单的数量(处理中)
     this.getFinishOrderTotal();//已经完成的维修单数量(已完成)
@@ -581,6 +613,7 @@ export default {
     this.getRepairTypeList();//获取报修类型
     this.getDepList();//获取二级学院信息
     this.getTransferOrder();//获取转单的维修单数量
+    this.getList();
   },
   activated() {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -598,6 +631,24 @@ export default {
     }
   },
   methods: {
+    /** 图片预上传格式限制 */
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    /** 图片预览 */
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
     // echart图表
     initOrderMealData() {
       const that = this;
@@ -668,7 +719,7 @@ export default {
         grid: {
           top: '25%',
           left: '1%',
-          right: '4%',
+          right: '2%',
           containLabel: true
         },
         xAxis: {
@@ -950,6 +1001,8 @@ export default {
     // 表单重置
     reset() {
       this.form = {
+        pageNum: 1,
+        pageSize: 10,
         repairExpectType: null,
         repairId: null,
         repairNo: null,
@@ -969,8 +1022,9 @@ export default {
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
-        repairCreateTime: null,
-        repairIsDelete: null
+        repairCreateTime: new Date(),// 默认查询当天记录
+        repairIsDelete: null,
+        appImgList: null
       };
       this.queryParams = {
         pageNum: 1,
@@ -992,7 +1046,7 @@ export default {
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
-        repairCreateTime: null,
+        repairCreateTime: new Date(),// 默认查询当天记录
         repairIsDelete: null,
         countType: null,
         repairTime: null,
@@ -1154,9 +1208,16 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.upload.fileList = [];
       const repairId = row.repairId || this.ids
       getTb(repairId).then(response => {
         this.form = response.data;
+        //报修申请图片
+        this.upload.fileList = this.form.appImgList
+        this.upload.fileList.forEach(item => {
+          console.log(item.appimgId)
+          item.url = this.baseUrl + '/repair/appimg/downloadRepairImg?appimgId=' + item.appimgId
+        })
         this.open = true;
       });
     },
@@ -1214,4 +1275,5 @@ export default {
   }
 };
 </script>
+
 

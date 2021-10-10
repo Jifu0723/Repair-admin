@@ -12,6 +12,7 @@ import com.gxuwz.wyrepair.domain.RepairAppImg;
 import com.gxuwz.wyrepair.domain.RepairRepImg;
 import com.gxuwz.wyrepair.service.IRepairAppImgService;
 import com.gxuwz.wyrepair.service.IRepairRepImgService;
+import com.gxuwz.wyrepair.util.CommonFileUtils;
 import com.gxuwz.wyrepair.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,19 +48,17 @@ public class RepairAppImgController extends BaseController {
         return getDataTable(list);
     }
 
-    /**
-     * 下载申请单图片
+    /**downloadRepairImg
+     * 下载报修图片
      */
     @GetMapping("/downloadRepairImg")
     public void downloadRepairImg(RepairAppImg repairAppImg, HttpServletResponse response) throws IOException {
 
-        RepairAppImg repairAppImg1 = repairAppImgService.selectRepairAppImgById(repairAppImg.getAppId());
+        RepairAppImg repairAppImg1 = repairAppImgService.selectRepairAppImgById(repairAppImg.getAppimgId());
         String appimgPath = repairAppImg1.getAppimgPath();
         String appimgName = repairAppImg1.getAppimgName();
-        System.out.println(RuoYiConfig.getProfile()+appimgPath);
-        System.out.println(appimgPath);
-        System.out.println(appimgName);
-        FileUtils.downloadUtil(response,RuoYiConfig.getProfile()+appimgPath,appimgName);
+        CommonFileUtils.downloadUtil(response,RuoYiConfig.getProfile()+appimgPath+appimgName,appimgName);
+
     }
 
     /**

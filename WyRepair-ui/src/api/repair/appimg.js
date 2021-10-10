@@ -51,3 +51,13 @@ export function exportImg(query) {
     params: query
   })
 }
+
+// 导出维修单图片
+export function downloadRepairImg(data) {
+  return request({
+    url: '/repair/appimg/downloadRepairImg',
+    method: 'get',
+    params: data
+  })
+}
+

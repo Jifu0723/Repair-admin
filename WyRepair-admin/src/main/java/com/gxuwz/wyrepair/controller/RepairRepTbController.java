@@ -10,15 +10,9 @@ import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
 import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
+import com.gxuwz.wyrepair.domain.*;
 import com.gxuwz.wyrepair.framework.web.service.TokenService;
-import com.gxuwz.wyrepair.domain.RepairApply;
-import com.gxuwz.wyrepair.domain.RepairProcess;
-import com.gxuwz.wyrepair.domain.RepairRepTb;
-import com.gxuwz.wyrepair.domain.RepairReptransfer;
-import com.gxuwz.wyrepair.service.IRepairApplyService;
-import com.gxuwz.wyrepair.service.IRepairProcessService;
-import com.gxuwz.wyrepair.service.IRepairRepTbService;
-import com.gxuwz.wyrepair.service.IRepairReptransferService;
+import com.gxuwz.wyrepair.service.*;
 import com.gxuwz.wyrepair.util.RepairCodeGen;
 import com.gxuwz.wyrepair.util.DateUtil;
 import com.gxuwz.wyrepair.system.service.ISysUserService;
@@ -52,6 +46,8 @@ public class RepairRepTbController extends BaseController {
     private IRepairReptransferService transferService;
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private IRepairAppImgService repairAppImgService;
 
     /**
      * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
@@ -358,7 +354,14 @@ public class RepairRepTbController extends BaseController {
     @PreAuthorize("@ss.hasPermi('repair:tb:query')")
     @GetMapping(value = "/{repairId}")
     public AjaxResult getInfo(@PathVariable("repairId") Long repairId) {
-        return AjaxResult.success(repairRepTbService.selectRepairRepTbById(repairId));
+
+        RepairRepTb repairRepTb = repairRepTbService.selectRepairRepTbById(repairId);
+
+        //获取报修图片信息
+        List<RepairAppImg> repairAppImgs = repairAppImgService.selectRepairAppById(repairRepTb.getApplyId());
+        System.out.println(repairAppImgs);
+        repairRepTb.setAppImgList(repairAppImgs);
+        return AjaxResult.success(repairRepTb);
     }
 
     /**

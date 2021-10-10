@@ -132,7 +132,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
-                .antMatchers("/api/repair/repimg/loadImg/**").anonymous() //报修图片路径
+                .antMatchers("/api/repair/repimg/loadImg/**").anonymous()
+                .antMatchers("/repair/appimg/downloadRepairImg/**").anonymous()//报修图片路径
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()

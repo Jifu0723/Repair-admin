@@ -34,6 +34,30 @@ public class RepairAppImgServiceImpl implements IRepairAppImgService
     }
 
     /**
+     * 查询申请单图片
+     *
+     * @param appId 申请单图片ID
+     * @return 申请单图片
+     */
+    @Override
+    public RepairAppImg selectRepairAppId(Long appId)
+    {
+        return repairAppImgMapper.selectRepairAppId(appId);
+    }
+
+    /**
+     * 查询申请单图片
+     *
+     * @param appId 申请单图片ID
+     * @return 申请单图片
+     */
+    @Override
+    public List<RepairAppImg> selectRepairAppById(Long appId)
+    {
+        return repairAppImgMapper.selectRepairAppById(appId);
+    }
+
+    /**
      * 查询申请单图片列表
      * 
      * @param repairAppImg 申请单图片
