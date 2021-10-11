@@ -3,10 +3,10 @@
 
     <el-collapse v-model="activeNames">
       <el-collapse-item title="展开/闭合搜索条件界面" name="1">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams1" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
 
           <el-form-item label="报修类型" label-width="110px" prop="repairType">
-            <el-select v-model="queryParams.repairType" filterable
+            <el-select v-model="queryParams1.repairType" filterable
                        clearable placeholder="请选择报修类型">
               <el-option
                 v-for="item in repairTypeList"
@@ -19,7 +19,7 @@
 
           <el-form-item label="报修者姓名" prop="repairName" label-width="100px">
             <el-input
-              v-model="queryParams.repairName"
+              v-model="queryParams1.repairName"
               placeholder="请输入报修者姓名"
               clearable
               size="small"
@@ -28,7 +28,7 @@
           </el-form-item>
 
           <el-form-item label="设备维修后状态" prop="repairedState" label-width="120px">
-            <el-select v-model="queryParams.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
+            <el-select v-model="queryParams1.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
               <el-option
                 v-for="item in repaireTypeList"
                 :key="item.value"
@@ -40,7 +40,7 @@
 
           <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
             <el-input
-              v-model="queryParams.repaireName"
+              v-model="queryParams1.repaireName"
               placeholder="请输入维修人员姓名"
               clearable
               size="small"
@@ -50,7 +50,7 @@
 
           <el-form-item label="报修时间" prop="repairCreateTime">
             <el-date-picker clearable size="small"
-                            v-model="queryParams.repairCreateTime"
+                            v-model="queryParams1.repairCreateTime"
                             type="date"
                             placeholder="选择报修时间">
             </el-date-picker>
@@ -60,6 +60,7 @@
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
+
         </el-form>
       </el-collapse-item>
     </el-collapse>
@@ -114,7 +115,9 @@
             </div>
           </div>
         </div>
+
         <div id="main" style="width: 90%;height:500px;margin: auto"></div>
+
       </div>
     </el-row>
 
@@ -145,8 +148,11 @@
             >删除
             </el-button>
           </el-col>
+
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+
         </el-row>
+
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
           <el-table-column sortable
@@ -263,10 +269,11 @@
         <pagination
           v-show="total>0"
           :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
+          :page.sync="queryParams1.pageNum"
+          :limit.sync="queryParams1.pageSize"
           @pagination="getList"
         />
+
       </el-collapse-item>
     </el-collapse>
 
@@ -537,15 +544,38 @@ export default {
         repairDestoryTime: null,
         countType: null, // 查询类别 1按日查询 2按周 3按月
         repairCreateTime: new Date(),// 默认查询当天记录
+        repairIsDelete: null,
+        repairYear: null,
+        repairMonth: null,
+        repairDay: null
+      },
+      // 查询参数
+      queryParams1: {
+        pageNum: 1,
+        pageSize: 10,
+        repairNo: null,
+        repairName: null,
+        repairAddress: null,
+        repairContent: null,
+        repairType: null,
+        repairExpectType: null,
+        repairExpectTime: null,
+        repairState: null,
+        repairedState: null,
+        repairDestory: null,
+        repairTransfer: null,
+        repairComment: null,
+        curWork: null,
+        repairDep: null,
+        applyId: null,
+        repairDestoryTime: null,
+        countType: null, // 查询类别 1按日查询 2按周 3按月
+        repairCreateTime: new Date(),// 默认查询当天记录
         repairTime: null, // 查询报修时间
         repairIsDelete: null,
         repairYear: null,
         repairMonth: null,
-        repairDay: null,
-        timeSlot: null, // 时间段查询参数
-        startTime: null, // 时间段查询开始时间
-        endTime: null // 时间段查询结束时间
-
+        repairDay: null
       },
       // 表单参数
       form: {},
@@ -586,7 +616,6 @@ export default {
   created() {
     this.baseUrl = process.env.VUE_APP_BASE_API
     this.handleQuery(0);
-    this.getList();
     this.getDepList();//获取二级学院信息
     this.getRepairTypeList();//获取报修类型
     this.getTransferOrder();//获取转单的维修单数量
@@ -595,6 +624,7 @@ export default {
     this.getFinishOrderTotal();//已经完成的维修单数量(已完成)
     this.getRepairOrderTotal();//全部维修单数量
     this.getRepairexpectType();//查看期望维修形式
+    this.getList();
   },
   activated() {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -938,29 +968,26 @@ export default {
       this.chartBar.on('click', function (data) {
         switch (data.dataIndex) {
           case 0:
-            that.queryParams.countType = 1
+            that.queryParams1.countType = 1
             break
           case 1:
-            that.queryParams.countType = 2
+            that.queryParams1.countType = 2
             break
           case 2:
-            that.queryParams.countType = 3
+            that.queryParams1.countType = 3
             break
           default:
-            that.queryParams.countType = 0
+            that.queryParams1.countType = 0
         }
-        // that.$nextTick(() => {
-        listTb(that.queryParams).then(response => {
+        listTb(that.queryParams1).then(response => {
           that.tbList = response.rows;
           that.total = response.total;
           that.msgSuccess("报修信息渲染成功");
         }).catch(err => {
           that.msgError("报修信息渲染失败");
         });
-        // })
       })
       this.chartBar.setOption(option)
-      // that.msgSuccess("报餐信息渲染成功");
       window.addEventListener('resize', () => {
         this.chartBar.resize()
       })
@@ -969,7 +996,7 @@ export default {
     /** 查询报修单列表 */
     getList() {
       this.loading = true;
-      listTb(this.queryParams).then(response => {
+      listTb(this.queryParams1).then(response => {
         this.tbList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -1047,14 +1074,14 @@ export default {
 
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
+      this.queryParams1.pageNum = 1;
       this.countOrder = null
       //默认查询当天的报修数据并渲染到柱状图
-      var repairtype = this.queryParams.repairType
-      if (this.queryParams.repairCreateTime != null && repairtype == null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairType = this.queryParams.repairType
-        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
+      var repairtype = this.queryParams1.repairType
+      if (this.queryParams1.repairCreateTime != null && repairtype == null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairType = this.queryParams1.repairType
+        countrepairAdminTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
@@ -1064,11 +1091,11 @@ export default {
         });
       }
       //按报修时间和报修类型统计报修信息输出日、周、月报表
-      var repairtype = this.queryParams.repairType
-      if (this.queryParams.repairCreateTime != null && repairtype != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairType = this.queryParams.repairType
-        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
+      var repairtype = this.queryParams1.repairType
+      if (this.queryParams1.repairCreateTime != null && repairtype != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairType = this.queryParams1.repairType
+        countrepairAdminTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
@@ -1078,11 +1105,11 @@ export default {
         });
       }
       //按照维修人员姓名和报修时间查询
-      var repairename = this.queryParams.repaireName
-      if (repairename != null && this.queryParams.repairCreateTime != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repaireName = this.queryParams.repaireName
-        countrepairAdminTimeByrepairType(this.queryParams).then(response => {
+      var repairename = this.queryParams1.repaireName
+      if (repairename != null && this.queryParams1.repairCreateTime != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repaireName = this.queryParams1.repaireName
+        countrepairAdminTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data//报修时间
           this.$nextTick(() => {
             this.initOrderMealData()

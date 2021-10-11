@@ -3,11 +3,11 @@
 
     <el-collapse v-model="activeName">
       <el-collapse-item title="展开/闭合搜索条件界面" name="1">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams1" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
 
 
           <el-form-item label="报修类型" label-width="135px" prop="repairType">
-            <el-select v-model="queryParams.repairType" clearable size="small">
+            <el-select v-model="queryParams1.repairType" clearable size="small">
               <el-option
                 v-for="item in repairTypeList"
                 :key="item.repairTypeId"
@@ -19,7 +19,7 @@
 
           <el-form-item label="报修者姓名" prop="repairName" label-width="100px">
             <el-input
-              v-model="queryParams.repairName"
+              v-model="queryParams1.repairName"
               placeholder="请输入报修者姓名"
               clearable
               size="small"
@@ -28,7 +28,7 @@
           </el-form-item>
 
           <el-form-item label="设备维修后状态" prop="repairedState" label-width="120px">
-            <el-select v-model="queryParams.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
+            <el-select v-model="queryParams1.repairedState" placeholder="请选择设备维修后状态" clearable size="small">
               <el-option
                 v-for="item in repaireTypeList"
                 :key="item.value"
@@ -40,7 +40,7 @@
 
           <el-form-item label="维修人员姓名" prop="repaireName" label-width="120px">
             <el-input
-              v-model="queryParams.repaireName"
+              v-model="queryParams1.repaireName"
               placeholder="请输入维修人员姓名"
               clearable
               size="small"
@@ -49,7 +49,7 @@
           </el-form-item>
 
           <el-form-item label="二级学院" prop="repairDep" label-width="100px">
-            <el-select v-model="queryParams.repairDep" placeholder="请选择二级学院" clearable size="small">
+            <el-select v-model="queryParams1.repairDep" placeholder="请选择二级学院" clearable size="small">
               <el-option
                 v-for="item in depList"
                 :key="item.deptId"
@@ -61,7 +61,7 @@
 
           <el-form-item label="报修时间" prop="repairCreateTime" label-width="120px">
             <el-date-picker clearable size="small"
-                            v-model="queryParams.repairCreateTime"
+                            v-model="queryParams1.repairCreateTime"
                             type="date"
                             placeholder="选择报修时间">
             </el-date-picker>
@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <div id="main" style="width: 90%;height:500px;float: right">
+        <div id="main" style="width: 90%;height:500px;margin: auto">
         </div>
 
 
@@ -162,7 +162,10 @@
             </el-button>
           </el-col>
 
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+
         </el-row>
+
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
           <el-table-column sortable
@@ -269,10 +272,11 @@
         <pagination
           v-show="total>0"
           :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
+          :page.sync="queryParams1.pageNum"
+          :limit.sync="queryParams1.pageSize"
           @pagination="getList"
         />
+
       </el-collapse-item>
     </el-collapse>
 
@@ -553,7 +557,36 @@ export default {
         repairIsDelete: null,
         repairYear: null,
         repairMonth: null,
-        repairDay: null,
+        repairDay: null
+      },
+      // 查询参数
+      queryParams1: {
+        pageNum: 1,
+        pageSize: 10,
+        repairNo: null,
+        repaireName: null,
+        repairName: null,
+        repairAddress: null,
+        repairContent: null,
+        repairType: null,
+        repairExpectType: null,
+        repairExpectTime: null,
+        repairState: null,
+        repairedState: null,
+        repairDestory: null,
+        repairTransfer: null,
+        repairComment: null,
+        curWork: null,
+        repairDep: null,
+        applyId: null,
+        repairDestoryTime: null,
+        countType: null, // 查询类别 1按日查询 2按周 3按月
+        repairCreateTime: new Date(),// 默认查询当天记录
+        repairTime: null, // 查询报修时间
+        repairIsDelete: null,
+        repairYear: null,
+        repairMonth: null,
+        repairDay: null
       },
       // 表单参数
       form: {},
@@ -899,18 +932,18 @@ export default {
       this.chartBar.on('click', function (data) {
         switch (data.dataIndex) {
           case 0:
-            that.queryParams.countType = 1
+            that.queryParams1.countType = 1
             break
           case 1:
-            that.queryParams.countType = 2
+            that.queryParams1.countType = 2
             break
           case 2:
-            that.queryParams.countType = 3
+            that.queryParams1.countType = 3
             break
           default:
-            that.queryParams.countType = 0
+            that.queryParams1.countType = 0
         }
-        listTb(that.queryParams).then(response => {
+        listTb(that.queryParams1).then(response => {
           that.tbList = response.rows;
           that.total = response.total;
           that.msgSuccess("报修信息渲染成功");
@@ -926,11 +959,68 @@ export default {
     /** 查询报修单列表 */
     getList() {
       this.loading = true;
-      listTb(this.queryParams).then(response => {
+      listTb(this.queryParams1).then(response => {
         this.tbList = response.rows;
-        this.total = response.rows.length;
+        this.total = response.total;
         this.loading = false;
       });
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        repairId: null,
+        repairNo: null,
+        repairAddress: null,
+        repairContent: null,
+        repairType: null,
+        repairExpectTime: null,
+        repairState: null,
+        repairedState: null,
+        repairDestory: null,
+        repairTransfer: null,
+        repairComment: null,
+        curWork: null,
+        repairName: null,
+        repairDep: null,
+        applyId: null,
+        repairDestoryTime: null,
+        repairCreateTime: new Date(),// 默认查询当天记录
+        repairIsDelete: null,
+        appImgList: null
+      };
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        repairId: null,
+        repairNo: null,
+        repairName: null,
+        repairAddress: null,
+        repairContent: null,
+        repairType: null,
+        repairExpectTime: null,
+        repairState: null,
+        repairedState: null,
+        repairDestory: null,
+        repairTransfer: null,
+        repairComment: null,
+        curWork: null,
+        repairDep: null,
+        applyId: null,
+        repairDestoryTime: null,
+        repairCreateTime: new Date(),// 默认查询当天记录
+        repairIsDelete: null,
+        countType: null,
+        repairTime: null,
+        timeSlot: null,
+        startTime: null,
+        endTime: null
+      };
+      this.resetForm("form");
     },
     //获取二级学院信息
     getDepList() {
@@ -984,68 +1074,6 @@ export default {
         this.RepairOrderTotal = response.rows.length
       });
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        repairExpectType: null,
-        repairId: null,
-        repairNo: null,
-        repairMoney: null,
-        repairAddress: null,
-        repairContent: null,
-        repairType: null,
-        repairExpectTime: null,
-        repairState: null,
-        repairedState: null,
-        repairDestory: null,
-        repairTransfer: null,
-        repairComment: null,
-        curWork: null,
-        repairName: null,
-        repaireName: null,
-        repairDep: null,
-        applyId: null,
-        repairDestoryTime: null,
-        repairCreateTime: new Date(),// 默认查询当天记录
-        repairIsDelete: null,
-        appImgList: null
-      };
-      this.queryParams = {
-        pageNum: 1,
-        pageSize: 10,
-        repairId: null,
-        repaireName: null,
-        repairNo: null,
-        repairName: null,
-        repairAddress: null,
-        repairContent: null,
-        repairType: null,
-        repairExpectTime: null,
-        repairState: null,
-        repairedState: null,
-        repairDestory: null,
-        repairTransfer: null,
-        repairComment: null,
-        curWork: null,
-        repairDep: null,
-        applyId: null,
-        repairDestoryTime: null,
-        repairCreateTime: new Date(),// 默认查询当天记录
-        repairIsDelete: null,
-        countType: null,
-        repairTime: null,
-        timeSlot: null,
-        startTime: null,
-        endTime: null
-      };
-      this.resetForm("form");
-    },
-
     // 格式化时间
     timeFormat(time) {
       // 时间格式化 2021-07-22 00:00:00
@@ -1060,95 +1088,100 @@ export default {
 
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
+      this.queryParams1.pageNum = 1;
       this.countOrder = null
-      var repairdep = this.queryParams.repairDep//学院id
-      var repairname = this.queryParams.repairName//报修人员姓名
-      var repairename = this.queryParams.repaireName//维修人员姓名
-      var repairtype = this.queryParams.repairType//报修类型
-      var repairedstate = this.queryParams.repairedState//维修后设备的状态类型
+      var repairdep = this.queryParams1.repairDep//学院id
+      var repairname = this.queryParams1.repairName//报修人员姓名
+      var repairename = this.queryParams1.repaireName//维修人员姓名
+      var repairtype = this.queryParams1.repairType//报修类型
+      var repairedstate = this.queryParams1.repairedState//维修后设备的状态类型
 
       // <-----------------------二级学院报修信息查询，只能同时有三个查询条件--------------------->
 
-      if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairename != null) {
+      if (repairdep != null && this.queryParams1.repairCreateTime != null && repairedstate != null && repairename != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairname != null) {
+      } else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairedstate != null && repairname != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null && repairtype != null) {
+      } else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairedstate != null && repairtype != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
-      } else if (repairdep != null && this.queryParams.repairCreateTime != null && repairname != null && repairename != null) {
+      } else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairname != null && repairename != null) {
         this.msgError("用二级学院名称查询报修数据，不能超过4个查询条件！")
         return false
       }
       //按照二级学院id和报修时间和维修后设备的状态类型查询  3个查询条件 ----1
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairedstate != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairdep = this.queryParams.repairDep
-        CountCollegeByRepairOrder(this.queryParams).then(response => {
+      else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairedstate != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairdep = this.queryParams1.repairDep
+        CountCollegeByRepairOrder(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("按照二级学院id和报修时间和维修后设备的状态类型统计渲染成功!")
           })
+          this.getList()
         });
       }
       //按照二级学院id和报修时间和报修者姓名查询    3个查询条件 ----2
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairname != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairdep = this.queryParams.repairDep
-        CountCollegeByRepairOrder(this.queryParams).then(response => {
+      else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairname != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairdep = this.queryParams1.repairDep
+        CountCollegeByRepairOrder(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("按照二级学院id和报修时间和报修者姓名统计报修数据渲染成功!")
           })
+          this.getList()
         });
       }
       //按照二级学院id和报修时间和维修人员姓名查询   3个查询条件 ----3
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairename != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairdep = this.queryParams.repairDep
-        CountCollegeByRepairOrder(this.queryParams).then(response => {
+      else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairename != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairdep = this.queryParams1.repairDep
+        CountCollegeByRepairOrder(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("按照二级学院id和报修时间和维修人员姓名统计报修数据渲染成功!")
           })
+          this.getList()
         });
       }
       //按照二级学院id和报修时间和报修类型查询 ----4
-      else if (repairdep != null && this.queryParams.repairCreateTime != null && repairtype != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairdep = this.queryParams.repairDep
-        CountCollegeByRepairOrder(this.queryParams).then(response => {
+      else if (repairdep != null && this.queryParams1.repairCreateTime != null && repairtype != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairdep = this.queryParams1.repairDep
+        CountCollegeByRepairOrder(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("按照二级学院id和报修时间和报修类型统计报修数据渲染成功!")
           })
+          this.getList()
         });
       }
         // <-----------------------报修信息查询，可以同时有多个查询条件--------------------->
       //按照二级学院id和报修时间查询
-      else if (repairdep != null && this.queryParams.repairCreateTime != null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairdep = this.queryParams.repairDep
-        CountCollegeByRepairOrder(this.queryParams).then(response => {
+      else if (repairdep != null && this.queryParams1.repairCreateTime != null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairdep = this.queryParams1.repairDep
+        CountCollegeByRepairOrder(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("某一天二级学院报修数据统计渲染成功统计报修数据渲染成功!")
           })
+          this.getList()
         });
       }
       //按报修时间和报修类型统计报修信息输出日、周、月报表
-      else if (this.queryParams.repairCreateTime != null && repairtype != null && repairdep == null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repairType = this.queryParams.repairType
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+      else if (this.queryParams1.repairCreateTime != null && repairtype != null && repairdep == null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repairType = this.queryParams1.repairType
+        countrepairTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
@@ -1158,14 +1191,13 @@ export default {
         });
       }
       //按照维修人员姓名和报修时间查询
-      else if (repairename != null && this.queryParams.repairCreateTime != null && repairdep == null) {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        this.queryParams.repaireName = this.queryParams.repaireName
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+      else if (repairename != null && this.queryParams1.repairCreateTime != null && repairdep == null) {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        this.queryParams1.repaireName = this.queryParams1.repaireName
+        countrepairTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data//报修时间
           this.$nextTick(() => {
             this.initOrderMealData()
-            console.log(456)
             this.msgSuccess("按照维修人员姓名和报修时间统计的报修数据信息渲染成功!")
           })
           this.getList()
@@ -1173,13 +1205,14 @@ export default {
       }
       //查询某一天报修数据统计报修信息输出日、周、月报表
       else {
-        this.queryParams.repairTime = this.timeFormat(this.queryParams.repairCreateTime)
-        countrepairTimeByrepairType(this.queryParams).then(response => {
+        this.queryParams1.repairTime = this.timeFormat(this.queryParams1.repairCreateTime)
+        countrepairTimeByrepairType(this.queryParams1).then(response => {
           this.repairTime = response.data
           this.$nextTick(() => {
             this.initOrderMealData()
             this.msgSuccess("某一天报修数据统计渲染成功!")
           })
+          this.getList()
         });
       }
     },

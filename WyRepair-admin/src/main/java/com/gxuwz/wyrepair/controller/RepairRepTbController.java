@@ -58,7 +58,6 @@ public class RepairRepTbController extends BaseController {
     public TableDataInfo list(@RequestParam Map<String, Object> params,RepairRepTb repairRepTb) {
         startPage();
         // 获取报修时间
-        System.out.println(params);
         String repairTime = (String) params.get("repairTime");
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
