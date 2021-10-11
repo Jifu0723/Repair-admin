@@ -63,8 +63,8 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
      *   列表(查询)
      */
     @Override
-    public List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params, Long deptId) {
-        return repairRepTbMapper.queryRepairAdminOrderList(params,deptId);
+    public List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params) {
+        return repairRepTbMapper.queryRepairAdminOrderList(params);
     }
 
     /**

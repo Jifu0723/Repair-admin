@@ -41,7 +41,7 @@ public interface IRepairRepTbService
      * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 列表(查询)
      */
-    List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params, Long deptId);
+    List<RepairRepTb> queryRepairAdminOrderList(Map<String, Object> params);
 
     /**
      * 维修专员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月

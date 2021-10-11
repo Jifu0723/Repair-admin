@@ -3,9 +3,13 @@ package com.gxuwz.wyrepair.controller;
 import com.gxuwz.wyrepair.common.annotation.Log;
 import com.gxuwz.wyrepair.common.core.controller.BaseController;
 import com.gxuwz.wyrepair.common.core.domain.AjaxResult;
+import com.gxuwz.wyrepair.common.core.domain.entity.SysRole;
+import com.gxuwz.wyrepair.common.core.domain.entity.SysUser;
 import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
+import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
+import com.gxuwz.wyrepair.domain.RepairRepTb;
 import com.gxuwz.wyrepair.framework.web.service.TokenService;
 import com.gxuwz.wyrepair.domain.RepairApply;
 import com.gxuwz.wyrepair.service.IRepairApplyService;
@@ -47,8 +51,20 @@ public class RepairApplyController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(RepairApply repairApply) {
         startPage();
-        List<RepairApply> list = repairApplyService.selectRepairApplyList(repairApply);
-        return getDataTable(list);
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        List<SysRole> roles = user.getRoles();
+        SysRole sysRole = roles.get(0);
+        if ("repairadmin".equals(sysRole.getRoleKey()))
+        {
+            repairApply.setApplyDep(user.getDeptId());
+            List<RepairApply> list = repairApplyService.selectRepairApplyList(repairApply);
+            return getDataTable(list);
+        }
+        else {
+            List<RepairApply> list = repairApplyService.selectRepairApplyList(repairApply);
+            return getDataTable(list);
+        }
     }
 
 

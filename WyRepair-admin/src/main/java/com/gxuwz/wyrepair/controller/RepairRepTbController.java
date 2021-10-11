@@ -67,7 +67,8 @@ public class RepairRepTbController extends BaseController {
         repairRepTb.setCurWork(1);
         List<RepairRepTb> list = new ArrayList<>();
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
-            list = repairRepTbService.queryRepairAdminOrderList(params,null);
+            params.put("repairDep",user.getDeptId());
+            list = repairRepTbService.queryRepairAdminOrderList(params);
             repairRepTb.setRepairDep(user.getDeptId());
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());
@@ -80,16 +81,30 @@ public class RepairRepTbController extends BaseController {
     }
 
     /**
-     * 查询报修单列表
+     * 查询报修单列表（后勤部门管理员查看）
      */
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/reptbList")
     public TableDataInfo list(RepairRepTb repairRepTb)
     {
         startPage();
-        List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb);
-        return getDataTable(list);
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        List<SysRole> roles = user.getRoles();
+        SysRole sysRole = roles.get(0);
+        if ("repairadmin".equals(sysRole.getRoleKey()))
+        {
+            System.out.println(2222);
+            repairRepTb.setRepairDep(user.getDeptId());
+            List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb);
+            return getDataTable(list);
+        }
+        else {
+            List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb);
+            return getDataTable(list);
+        }
     }
+
     /**
      * 后勤部门管理员按报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
@@ -120,6 +135,10 @@ public class RepairRepTbController extends BaseController {
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/countrepairAdminTimeByrepairType")
     public AjaxResult countrepairAdminTimeByrepairType(@RequestParam Map<String, Object> params) {
+
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("repairDep",user.getDeptId());
         Map map = repairRepTbService.countrepairAdminTimeByrepairType(params);
         return AjaxResult.success(map);
     }
@@ -337,9 +356,7 @@ public class RepairRepTbController extends BaseController {
         //更新维修单状态
         repTb.setRepairState(2);
         repairRepTbService.updateRepairRepTb(repTb);
-
         RepairApply apply = applyService.selectRepairApplyById(repTb.getApplyId());
-
         //生成维修过程信息
         RepairProcess process = new RepairProcess();
         process.initProcess(apply, repTb, repairName, repairNo);

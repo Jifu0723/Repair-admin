@@ -101,7 +101,7 @@
 
           <div class="card-panel"
                style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
-            <i class="el-icon-grape"></i>
+            <i class="el-icon-watermelon"></i>
             <count-to :end-val="TransferOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
               转单中
@@ -230,15 +230,6 @@
               <el-tag v-if="scope.row.repairType == 8" type="danger">木材类</el-tag>
             </template>
           </el-table-column>
-          <!--          <el-table-column label="设备维修后的状态" align="center" prop="repairedState">-->
-          <!--            <template slot-scope="scope">-->
-          <!--              <el-tag v-if="scope.row.repairedState == 0" type="warning">等待维修</el-tag>-->
-          <!--              <el-tag v-if="scope.row.repairedState == 1" type="success">已修复</el-tag>-->
-          <!--              <el-tag v-if="scope.row.repairedState == 2" type="primary">已换新</el-tag>-->
-          <!--              <el-tag v-if="scope.row.repairedState == 3" type="info">无法修复</el-tag>-->
-          <!--              <el-tag v-if="scope.row.repairedState == 4" type="danger">未修复</el-tag>-->
-          <!--            </template>-->
-          <!--          </el-table-column>-->
 
           <el-table-column v-if="form.repairDestory === 1" label="销单时间" align="center" prop="repairDestoryTime"
                            width="180">
@@ -295,14 +286,14 @@
         <el-row :gutter="0">
           <el-col :span="8">
             <el-form-item label="报修单编号" prop="repairNo" label-width="90px">
-              <el-input v-model="form.repairNo" placeholder="" clearable
+              <el-input v-model="form.repairNo" placeholder="" :readonly="true" clearable
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="4">
             <el-form-item label="维修单单价" prop="repairMoney" label-width="110px">
-              <el-input v-model="form.repairMoney" placeholder="" type="text" clearable :style="{width: '80%'}">
+              <el-input v-model="form.repairMoney" :readonly="true" placeholder="" type="text" clearable :style="{width: '80%'}">
               </el-input>
               元
             </el-form-item>
@@ -314,7 +305,7 @@
 
           <el-col :span="4">
             <el-form-item label="报修者姓名" prop="repairName" label-width="90px">
-              <el-input v-model="form.repairName" placeholder="" clearable :style="{width: '100%'}">
+              <el-input v-model="form.repairName" :readonly="true" placeholder="" clearable :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -323,7 +314,7 @@
           <el-col :span="6">
             <el-form-item label="期望维修形式" label-width="130px" prop="repairExpectType">
               <el-select v-model="form.repairExpectType" filterable
-                         clearable placeholder="">
+                         clearable placeholder="" disabled="disabled">
                 <el-option
                   v-for="item in repairexpectTypeList"
                   :key="item.repexpectTypeId"
@@ -335,9 +326,9 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="报修单位部门" label-width="120px" prop="repairExpectType">
+            <el-form-item label="报修单位部门" label-width="120px" prop="repairDep">
               <el-select v-model="form.repairDep" filterable
-                         clearable placeholder="">
+                         clearable placeholder="" disabled="disabled">
                 <el-option
                   v-for="item in depList"
                   :key="item.deptId"
@@ -351,7 +342,7 @@
           <el-col :span="6">
             <el-form-item label="设备维修后状态" label-width="130px" prop="repairedState">
               <el-select v-model="form.repairedState" filterable
-                         clearable placeholder="">
+                         clearable placeholder="" disabled="disabled">
                 <el-option
                   v-for="item in repaireTypeList"
                   :key="item.value"
@@ -367,7 +358,7 @@
 
           <el-col :span="4">
             <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
-              <el-input v-model="form.repaireName" placeholder="" clearable :style="{width: '100%'}">
+              <el-input :readonly="true" v-model="form.repaireName" placeholder="" clearable :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -375,7 +366,7 @@
           <el-col :span="6">
             <el-form-item label="报修类型" label-width="110px" prop="repairType">
               <el-select v-model="form.repairType" filterable
-                         clearable placeholder="">
+                         clearable placeholder="" disabled="disabled">
                 <el-option
                   v-for="item in repairTypeList"
                   :key="item.repairTypeId"
@@ -388,7 +379,7 @@
 
           <el-col :span="6">
             <el-form-item label="报修地点" prop="repairAddress" label-width="100px">
-              <el-input v-model="form.repairAddress" placeholder="" clearable :style="{width: '100%'}">
+              <el-input v-model="form.repairAddress" placeholder="" :readonly="true" clearable :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -398,6 +389,7 @@
               <el-date-picker clearable size="small" :style="{width: '100%'}"
                               v-model="form.repairExpectTime"
                               type="date"
+                              :readonly="true"
                               value-format="yyyy-MM-dd"
                               placeholder="选择期望维修时间">
               </el-date-picker>
@@ -410,13 +402,13 @@
         <el-row :gutter="0">
           <el-col :span="10">
             <el-form-item label="报修内容" prop="repairContent" label-width="80px">
-              <el-input v-model="form.repairContent" placeholder="" type="textarea"
+              <el-input v-model="form.repairContent" placeholder="" type="textarea" :readonly="true"
               ></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="16">
-            <el-form-item label="报修图片预览" prop="incomeSource" label-width="160px">
+          <el-col :span="10">
+            <el-form-item label="报修图片预览" prop="incomeSource" label-width="100px">
             <el-upload
               action=""
               list-type="picture-card"
@@ -950,7 +942,6 @@ export default {
     getRepairTypeList() {
       listRepType(this.queryParams).then(response => {
         this.repairTypeList = response.rows
-        console.log(response)
       })
     },
     //查看期望维修形式
@@ -1001,8 +992,6 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        pageNum: 1,
-        pageSize: 10,
         repairExpectType: null,
         repairId: null,
         repairNo: null,

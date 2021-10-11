@@ -5,13 +5,14 @@
       <el-collapse-item title="展开/闭合搜索条件界面" name="1">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
 
-          <el-form-item label="报修类型" prop="repairType" label-width="120px">
-            <el-select v-model="queryParams.repairType" placeholder="请选择报修类型" clearable size="small">
+          <el-form-item label="报修类型" label-width="110px" prop="repairType">
+            <el-select v-model="queryParams.repairType" filterable
+                       clearable placeholder="请选择报修类型">
               <el-option
                 v-for="item in repairTypeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.repairTypeId"
+                :label="item.repairType"
+                :value="item.repairTypeId">
               </el-option>
             </el-select>
           </el-form-item>
@@ -67,6 +68,52 @@
     <el-row style="margin-top: 20px">
       <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
       <div>
+        <div style="width: 100%;height:150px;">
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 8%">
+            <i class="el-icon-pear"></i>
+            <count-to :end-val="WaitOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              未处理
+            </div>
+          </div>
+
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+            <i class="el-icon-grape"></i>
+            <count-to :end-val="ReceivedOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              处理中
+            </div>
+          </div>
+
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+            <i class="el-icon-watermelon"></i>
+            <count-to :end-val="TransferOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              转单中
+            </div>
+          </div>
+
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+            <i class="el-icon-apple"></i>
+            <count-to :end-val="FinishOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              已完成
+            </div>
+          </div>
+
+          <div class="card-panel"
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
+            <i class="el-icon-potato-strips"></i>
+            <count-to :end-val="RepairOrderTotal" :duration="3600" class="card-panel-num"/>
+            <div class="card-panel-text">
+              全部
+            </div>
+          </div>
+        </div>
         <div id="main" style="width: 90%;height:500px;margin: auto"></div>
       </div>
     </el-row>
@@ -102,6 +149,40 @@
         </el-row>
         <el-table v-loading="loading" :data="tbList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
+          <el-table-column sortable
+                           hidden
+                           type="expand"
+                           header-align="center"
+                           align="center"
+                           width="120"
+                           label="展开报修流程进度">
+            <template slot-scope="scope">
+              <el-steps v-if="scope.row.repairState === 1" :active="scope.row.repairState" finish-status="success">
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
+              </el-steps>
+              <el-steps v-if="scope.row.repairState === 2" :active="scope.row.repairState" finish-status="success">
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
+              </el-steps>
+              <el-steps v-if="scope.row.repairState === 3" :active="scope.row.repairState" finish-status="success">
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
+              </el-steps>
+              <el-steps v-if="scope.row.repairState === 4" :active="scope.row.repairState" finish-status="success">
+                <el-step title="待接单"></el-step>
+                <el-step title="已接单"></el-step>
+                <el-step title="转单中"></el-step>
+                <el-step title="已完成"></el-step>
+              </el-steps>
+            </template>
+          </el-table-column>
           <el-table-column label="报修单位" align="center" prop="repairDep">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairDep == 200">大数据与软件工程学院</el-tag>
@@ -165,7 +246,7 @@
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['repair:tb:edit']"
-              >修改
+              >查看报修详情
               </el-button>
               <el-button
                 size="mini"
@@ -188,22 +269,238 @@
         />
       </el-collapse-item>
     </el-collapse>
+
+    <!-- 添加或修改报修单对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
+      <h2 style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:8px">报修单详情首页</h2>
+
+      <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px"
+               style="border: #0f1325 1px solid;padding: 12px">
+
+        <el-row :gutter="0">
+          <el-col :span="8">
+            <el-form-item label="报修单编号" prop="repairNo" label-width="90px">
+              <el-input v-model="form.repairNo" placeholder="" :readonly="true" clearable
+                        :style="{width: '100%'}"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="4">
+            <el-form-item label="维修单单价" prop="repairMoney" label-width="110px">
+              <el-input v-model="form.repairMoney" :readonly="true" placeholder="" type="text" clearable :style="{width: '80%'}">
+              </el-input>
+              元
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+        <el-row :gutter="0">
+
+          <el-col :span="4">
+            <el-form-item label="报修者姓名" prop="repairName" label-width="90px">
+              <el-input v-model="form.repairName":readonly="true" placeholder="" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+          </el-col>
+
+
+          <el-col :span="6">
+            <el-form-item label="期望维修形式" label-width="130px" prop="repairExpectType"  >
+              <el-select v-model="form.repairExpectType"  disabled="disabled">
+                <el-option
+                  v-for="item in repairexpectTypeList"
+                  :key="item.repexpectTypeId"
+                  :label="item.repexpectType"
+                  :value="item.repexpectTypeId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="报修单位部门" label-width="120px" prop="repairDep">
+              <el-select v-model="form.repairDep" filterable disabled
+                         clearable placeholder="">
+                <el-option
+                  v-for="item in depList"
+                  :key="item.deptId"
+                  :label="item.deptName"
+                  :value="item.deptId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="设备维修后状态" label-width="130px" prop="repairedState">
+              <el-select v-model="form.repairedState" filterable disabled
+                         clearable placeholder="">
+                <el-option
+                  v-for="item in repaireTypeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row :gutter="0">
+
+          <el-col :span="4">
+            <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
+              <el-input v-model="form.repaireName" :readonly="true" placeholder="" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="报修类型" label-width="110px" prop="repairType">
+              <el-select v-model="form.repairType" disabled
+                         placeholder="" >
+                <el-option
+                  v-for="item in repairTypeList"
+                  :key="item.repairTypeId"
+                  :label="item.repairType"
+                  :value="item.repairTypeId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="报修地点" prop="repairAddress" label-width="100px">
+              <el-input :readonly="true" v-model="form.repairAddress" placeholder="" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="期望维修时间" prop="repairExpectTime" label-width="130px">
+              <el-date-picker clearable size="small" :style="{width: '100%'}"
+                              v-model="form.repairExpectTime"
+                              type="date"
+                              value-format="yyyy-MM-dd"
+                              :readonly="true"
+                              placeholder="选择期望维修时间">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-divider><i class="el-icon-edit"></i></el-divider>
+
+        <el-row :gutter="0">
+
+          <el-col :span="10">
+            <el-form-item label="报修内容" prop="repairContent" label-width="80px">
+              <el-input v-model="form.repairContent" placeholder="" type="textarea" :readonly="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="10">
+            <el-form-item label="报修图片预览" prop="incomeSource" label-width="100px">
+              <el-upload
+                action=""
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :auto-upload="false"
+                accept="image/*"
+                multiple
+                :before-upload="beforeAvatarUpload"
+                :file-list="upload.fileList">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" append-to-body>
+                <img width="100%"
+                     :src="dialogImageUrl"
+                />
+              </el-dialog>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+      <el-form-item label="报修状态" prop="repairState">
+        <el-input v-model="form.repairState" placeholder="请输入报修状态"/>
+      </el-form-item>
+      <el-form-item label="维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)" prop="repairedState">
+        <el-input v-model="form.repairedState" placeholder="请输入维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)"/>
+      </el-form-item>
+      <el-form-item label="是否销单" prop="repairDestory">
+        <el-input v-model="form.repairDestory" placeholder="请输入是否销单"/>
+      </el-form-item>
+      <el-form-item label="是否转单" prop="repairTransfer">
+        <el-input v-model="form.repairTransfer" placeholder="请输入是否转单"/>
+      </el-form-item>
+      <el-form-item label="初次报修所属部门id" prop="repairDep">
+        <el-input v-model="form.repairDep" placeholder="请输入初次报修所属部门id"/>
+      </el-form-item>
+      <el-form-item label="申请表id" prop="applyId">
+        <el-input v-model="form.applyId" placeholder="请输入申请表id"/>
+      </el-form-item>
+      <el-form-item label="是否评论" prop="repairComment">
+        <el-input v-model="form.repairComment" placeholder="请输入是否评论"/>
+      </el-form-item>
+
+      <el-form-item label="是否为当前运转单" prop="curWork">
+        <el-input v-model="form.curWork" placeholder="请输入是否为当前运转单"/>
+      </el-form-item>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import {addTb, delTb, exportTb, getTb, listTb, updateTb} from "@/api/repair/tb";
+import {addTb, delTb, exportTb, getTb, listTb, updateTb,reptbList} from "@/api/repair/tb";
 import echarts from 'echarts'
 import {countrepairAdminTimeByrepairType} from "@/api/repair/repairadminordertotal";
+import {listRepType} from "@/api/repair/reptype";
+import {listType} from "@/api/repair/expecttype";
+import {listApply} from "@/api/repair/apply";
+import countTo from 'vue-count-to';
+import {listdept} from "@/api/system/dept";
 
 export default {
-  name: "Tb",
+  name: "repairadminorder",
+  components: {countTo},
   data() {
     return {
       // 遮罩层
       loading: true,
+      //图片上传
+      dialogImageUrl: '',
+      dialogVisible: false,
+      upload: {
+        // 是否禁用上传
+        isUploading: false,
+        // 上传的文件列表
+        fileList: []
+      },
       // 导出遮罩层
       exportLoading: false,
+      //二级学院列表
+      depList: [],
+      // 完成订单的总数
+      FinishOrderTotal: 0,
+      //待接单(待处理,处理中)
+      WaitOrderTotal: 0,
+      //已接单
+      ReceivedOrderTotal: 0,
+      //转单数量
+      TransferOrderTotal: 0,
+      //维修订单总数
+      RepairOrderTotal: 0,
+      //报修类型
+      repairTypeList: [],
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -222,8 +519,6 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
         repairNo: null,
         repairName: null,
         repairAddress: null,
@@ -256,6 +551,8 @@ export default {
       form: {},
       // 表单校验
       rules: {},
+      //期望维修形式
+      repairexpectTypeList: [],
       //设备维修后状态
       repaireTypeList: [{
         value: 0,
@@ -269,29 +566,6 @@ export default {
       }, {
         value: 3,
         label: '未修复'
-      }],
-      //报修类型
-      repairTypeList: [{
-        value: 1,
-        label: '网络设备'
-      }, {
-        value: 2,
-        label: '水电类'
-      }, {
-        value: 3,
-        label: '家具类'
-      }, {
-        value: 4,
-        label: '办公室设备'
-      }, {
-        value: 6,
-        label: '教学电子'
-      }, {
-        value: 7,
-        label: '电器类'
-      }, {
-        value: 8,
-        label: '木材类'
       }],
       chartBar: null,
       chartRich: null,
@@ -310,8 +584,17 @@ export default {
     };
   },
   created() {
+    this.baseUrl = process.env.VUE_APP_BASE_API
     this.handleQuery(0);
     this.getList();
+    this.getDepList();//获取二级学院信息
+    this.getRepairTypeList();//获取报修类型
+    this.getTransferOrder();//获取转单的维修单数量
+    this.getWairOrderTotal();//等待接的维修单数量(未处理)
+    this.getReceivedOrder();//已经接维修单的数量(处理中)
+    this.getFinishOrderTotal();//已经完成的维修单数量(已完成)
+    this.getRepairOrderTotal();//全部维修单数量
+    this.getRepairexpectType();//查看期望维修形式
   },
   activated() {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -329,6 +612,76 @@ export default {
     }
   },
   methods: {
+    /** 图片预上传格式限制 */
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    /** 图片预览 */
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    //获取二级学院信息
+    getDepList() {
+      listdept(this.queryParams).then(response => {
+        this.depList = response.rows
+      })
+    },
+    //查看期望维修形式
+    getRepairexpectType() {
+      listType(this.queryParams).then(response => {
+        this.repairexpectTypeList = response.rows
+      })
+    },
+    //获取报修类型
+    getRepairTypeList() {
+      listRepType(this.queryParams).then(response => {
+        this.repairTypeList = response.rows
+      })
+    },
+    //查询等待接的维修单总数
+    getWairOrderTotal() {
+      this.queryParams.repairState = 1 //待接的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.WaitOrderTotal = response.rows.length;
+      });
+    },
+    //查询已接单维修单总数
+    getReceivedOrder() {
+      this.queryParams.repairState = 2 //已接单维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.ReceivedOrderTotal = response.rows.length
+      });
+    },
+    //查询转单的维修单总数
+    getTransferOrder() {
+      this.queryParams.repairState = 3 //转单的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.TransferOrderTotal = response.rows.length
+      });
+    },
+    //查询完成的维修单总数
+    getFinishOrderTotal() {
+      this.queryParams.repairState = 4 //已完成的维修单数量
+      reptbList(this.queryParams).then(response => {
+        this.FinishOrderTotal = response.rows.length
+      });
+    },
+    //查询全部维修单总数
+    getRepairOrderTotal() {
+      listApply(this.queryParams).then(response => {
+        this.RepairOrderTotal = response.rows.length
+      });
+    },
     // echart图表
     initOrderMealData() {
       const that = this;
@@ -646,8 +999,9 @@ export default {
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
-        repairCreateTime: null,
-        repairIsDelete: null
+        repairCreateTime: new Date(),// 默认查询当天记录
+        repairIsDelete: null,
+        appImgList: null
       };
       this.queryParams = {
         pageNum: 1,
@@ -668,7 +1022,7 @@ export default {
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
-        repairCreateTime: null,
+        repairCreateTime: new Date(),// 默认查询当天记录
         repairIsDelete: null,
         countType: null,
         repairTime: null,
@@ -753,10 +1107,15 @@ export default {
     handleUpdate(row) {
       this.reset();
       const repairId = row.repairId || this.ids
+      this.upload.fileList = [];
       getTb(repairId).then(response => {
         this.form = response.data;
+        //报修申请图片
+        this.upload.fileList = this.form.appImgList
+        this.upload.fileList.forEach(item => {
+          item.url = this.baseUrl + '/repair/appimg/downloadRepairImg?appimgId=' + item.appimgId
+        })
         this.open = true;
-        this.title = "修改报修单";
       });
     },
     /** 提交按钮 */
