@@ -207,9 +207,6 @@
             </template>
           </el-table-column>
           <el-table-column label="报修者姓名" align="center" prop="repairName"/>
-          <el-table-column label="维修人员姓名" align="center" prop="repaireName"/>
-          <el-table-column label="报修地点" align="center" prop="repairAddress"/>
-          <el-table-column label="报修内容" align="center" prop="repairContent"/>
           <el-table-column label="报修类型" align="center" prop="repairType">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairType == 1" type="success">网络设备</el-tag>
@@ -279,22 +276,25 @@
 
     <!-- 添加或修改报修单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
-      <h2 style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:8px">报修单详情首页</h2>
+      <h2
+        style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:30px;font-size: 30px;font-weight: bold">
+        报修单详情首页</h2>
 
       <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px"
-               style="border: #0f1325 1px solid;padding: 12px">
+               style="border: #0f1325 1px solid;padding: 10px;">
 
         <el-row :gutter="0">
           <el-col :span="8">
             <el-form-item label="报修单编号" prop="repairNo" label-width="90px">
-              <el-input v-model="form.repairNo" placeholder="" :readonly="true" clearable
+              <el-input v-model="form.repairNo" placeholder="" style="font-size: 15px" :readonly="true"
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="4">
             <el-form-item label="维修单单价" prop="repairMoney" label-width="110px">
-              <el-input v-model="form.repairMoney" :readonly="true" placeholder="" type="text" clearable :style="{width: '80%'}">
+              <el-input v-model="form.repairMoney" style="font-size: 15px" :readonly="true" placeholder="" type="text"
+                        clearable :style="{width: '80%'}">
               </el-input>
               元
             </el-form-item>
@@ -303,18 +303,18 @@
         </el-row>
 
         <el-row :gutter="0">
-
           <el-col :span="4">
             <el-form-item label="报修者姓名" prop="repairName" label-width="90px">
-              <el-input v-model="form.repairName":readonly="true" placeholder="" clearable :style="{width: '100%'}">
+              <el-input v-model="form.repairName" style="font-size: 15px" :readonly="true" placeholder="" clearable
+                        :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
 
 
           <el-col :span="6">
-            <el-form-item label="期望维修形式" label-width="130px" prop="repairExpectType"  >
-              <el-select v-model="form.repairExpectType"  disabled="disabled">
+            <el-form-item label="期望维修形式" label-width="130px" prop="repairExpectType">
+              <el-select v-model="form.repairExpectType" disabled="disabled">
                 <el-option
                   v-for="item in repairexpectTypeList"
                   :key="item.repexpectTypeId"
@@ -358,7 +358,8 @@
 
           <el-col :span="4">
             <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
-              <el-input v-model="form.repaireName" :readonly="true" placeholder="" clearable :style="{width: '100%'}">
+              <el-input v-model="form.repaireName" style="font-size: 15px" :readonly="true" placeholder="" clearable
+                        :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -366,7 +367,7 @@
           <el-col :span="6">
             <el-form-item label="报修类型" label-width="110px" prop="repairType">
               <el-select v-model="form.repairType" disabled
-                         placeholder="" >
+                         placeholder="">
                 <el-option
                   v-for="item in repairTypeList"
                   :key="item.repairTypeId"
@@ -379,7 +380,8 @@
 
           <el-col :span="6">
             <el-form-item label="报修地点" prop="repairAddress" label-width="100px">
-              <el-input :readonly="true" v-model="form.repairAddress" placeholder="" clearable :style="{width: '100%'}">
+              <el-input :readonly="true" style="font-size: 15px" v-model="form.repairAddress" placeholder="" clearable
+                        :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -401,9 +403,10 @@
 
         <el-row :gutter="0">
 
-          <el-col :span="10">
+          <el-col :span="15">
             <el-form-item label="报修内容" prop="repairContent" label-width="80px">
-              <el-input v-model="form.repairContent" placeholder="" type="textarea" :readonly="true"
+              <el-input v-model="form.repairContent" style="font-size: 20px;width: 1000px;height: 100px" placeholder=""
+                        type="textarea" :readonly="true"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -467,7 +470,7 @@
 </template>
 
 <script>
-import {addTb, delTb, exportTb, getTb, listTb, updateTb,reptbList} from "@/api/repair/tb";
+import {addTb, delTb, exportTb, getTb, listTb, reptbList, updateTb} from "@/api/repair/tb";
 import echarts from 'echarts'
 import {countrepairAdminTimeByrepairType} from "@/api/repair/repairadminordertotal";
 import {listRepType} from "@/api/repair/reptype";
@@ -1025,6 +1028,7 @@ export default {
         repairName: null,
         repairDep: null,
         applyId: null,
+        repairMoney: null,
         repairDestoryTime: null,
         repairCreateTime: new Date(),// 默认查询当天记录
         repairIsDelete: null,

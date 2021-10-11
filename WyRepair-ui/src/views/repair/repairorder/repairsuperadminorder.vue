@@ -220,8 +220,6 @@
             </template>
           </el-table-column>
           <el-table-column label="报修者姓名" align="center" prop="repairName"/>
-          <el-table-column label="维修人员姓名" align="center" prop="repaireName"/>
-          <el-table-column label="报修地点" align="center" prop="repairAddress"/>
           <el-table-column label="报修类型" align="center" prop="repairType">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.repairType == 1" type="success">网络设备</el-tag>
@@ -281,23 +279,27 @@
     </el-collapse>
 
     <!-- 添加或修改报修单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="70%" append-to-body>
-      <h2 style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:8px">报修单详情首页</h2>
+    <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
+      <h2
+        style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:30px;font-size: 30px;font-weight: bold"
+      ">报修单详情首页</h2>
 
       <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px"
-               style="border: #0f1325 1px solid;padding: 12px">
+               style="border: #0f1325 1px solid;padding: 10px;">
 
         <el-row :gutter="0">
+
           <el-col :span="8">
             <el-form-item label="报修单编号" prop="repairNo" label-width="90px">
-              <el-input v-model="form.repairNo" placeholder="" :readonly="true" clearable
+              <el-input v-model="form.repairNo" placeholder="" style="font-size: 15px" :readonly="true"
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="4">
             <el-form-item label="维修单单价" prop="repairMoney" label-width="110px">
-              <el-input v-model="form.repairMoney" :readonly="true" placeholder="" type="text" clearable :style="{width: '80%'}">
+              <el-input v-model="form.repairMoney" style="font-size: 15px" :readonly="true" placeholder="" type="text"
+                        clearable :style="{width: '80%'}">
               </el-input>
               元
             </el-form-item>
@@ -362,7 +364,8 @@
 
           <el-col :span="4">
             <el-form-item label="维修人员姓名" prop="repaireName" label-width="100px">
-              <el-input :readonly="true" v-model="form.repaireName" placeholder="" clearable :style="{width: '100%'}">
+              <el-input v-model="form.repaireName" style="font-size: 15px" :readonly="true" placeholder="" clearable
+                        :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -383,7 +386,8 @@
 
           <el-col :span="6">
             <el-form-item label="报修地点" prop="repairAddress" label-width="100px">
-              <el-input v-model="form.repairAddress" placeholder="" :readonly="true" clearable :style="{width: '100%'}">
+              <el-input :readonly="true" style="font-size: 15px" v-model="form.repairAddress" placeholder="" clearable
+                        :style="{width: '100%'}">
               </el-input>
             </el-form-item>
           </el-col>
@@ -404,31 +408,32 @@
         <el-divider><i class="el-icon-edit"></i></el-divider>
 
         <el-row :gutter="0">
-          <el-col :span="10">
+          <el-col :span="15">
             <el-form-item label="报修内容" prop="repairContent" label-width="80px">
-              <el-input v-model="form.repairContent" placeholder="" type="textarea" :readonly="true"
+              <el-input v-model="form.repairContent" style="font-size: 20px;width: 1000px;height: 100px" placeholder=""
+                        type="textarea" :readonly="true"
               ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="10">
             <el-form-item label="报修图片预览" prop="incomeSource" label-width="100px">
-            <el-upload
-              action=""
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :auto-upload="false"
-              accept="image/*"
-              multiple
-              :before-upload="beforeAvatarUpload"
-              :file-list="upload.fileList">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible" append-to-body>
-              <img width="100%"
-                   :src="dialogImageUrl"
-              />
-            </el-dialog>
+              <el-upload
+                action=""
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :auto-upload="false"
+                accept="image/*"
+                multiple
+                :before-upload="beforeAvatarUpload"
+                :file-list="upload.fileList">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" append-to-body>
+                <img width="100%"
+                     :src="dialogImageUrl"
+                />
+              </el-dialog>
             </el-form-item>
           </el-col>
         </el-row>
