@@ -424,12 +424,23 @@
                 :file-list="upload.fileList">
                 <i class="el-icon-plus"></i>
               </el-upload>
-              <el-dialog :visible.sync="dialogVisible" append-to-body>
-                <img width="100%"
-                     :src="dialogImageUrl"
-                />
-              </el-dialog>
+              <div>
+                <el-dialog :visible.sync="dialogVisible" append-to-body>
+                  <img
+                    :style="{maxWidth:imgW+'px'}"
+                    ref="bigPic"
+                    :src="dialogImageUrl"
+                  />
+                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%" @click="imgW=imgW+100">
+                    <h1 style="line-height: 10px">
+                      +</h1></button>
+                  <button shape="circle" class="imgButton1" style="border:0;border-radius: 50%"
+                          @click="imgW-100>0?imgW=imgW-100:100"><h1 style="line-height: 10px">-</h1></button>
+
+                </el-dialog>
+              </div>
             </el-form-item>
+
           </el-col>
         </el-row>
       </el-form>
@@ -482,8 +493,10 @@ import {listdept} from "@/api/system/dept";
 export default {
   name: "repairadminorder",
   components: {countTo},
+
   data() {
     return {
+      imgW: 1000,
       // 遮罩层
       loading: true,
       //图片上传
@@ -645,6 +658,9 @@ export default {
     }
   },
   methods: {
+    closeBigMeg() {
+      this.imgW = 800;
+    },
     /** 图片预上传格式限制 */
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -1203,3 +1219,42 @@ export default {
   }
 };
 </script>
+<style>
+.mengban {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: scroll;
+}
+
+img {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -12%);
+  max-width: 800px;
+}
+
+.imgButton {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  top: 85%;
+  left: 70%;
+}
+
+.imgButton1 {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+
+  position: fixed;
+  top: 85%;
+  left: 75%;
+}
+</style>
