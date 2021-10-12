@@ -281,8 +281,7 @@
     <!-- 添加或修改报修单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
       <h2
-        style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:30px;font-size: 30px;font-weight: bold"
-      ">报修单详情首页</h2>
+        style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:30px;font-size: 30px;font-weight: bold">报修单详情首页</h2>
 
       <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px"
                style="border: #0f1325 1px solid;padding: 10px;">
@@ -430,9 +429,18 @@
                 <i class="el-icon-plus"></i>
               </el-upload>
               <el-dialog :visible.sync="dialogVisible" append-to-body>
+
                 <img width="100%"
                      :src="dialogImageUrl"
                 />
+
+<!--                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%;" @click="imgW=imgW+200">-->
+<!--                    <h1 style="line-height: 10px">-->
+<!--                      +</h1></button>-->
+<!--                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%"-->
+<!--                          @click="imgW-200>0?imgW=imgW-200:200"><h1 style="line-height: 10px">-</h1></button>-->
+
+
               </el-dialog>
             </el-form-item>
           </el-col>
@@ -1302,5 +1310,6 @@ export default {
   }
 };
 </script>
+
 
 
