@@ -57,6 +57,11 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         return roleMapper.selectRoleList(role);
     }
+    /**新用户查询所有部门*/
+    @Override
+    public List<SysRole> selectRoleListNew(SysRole role) {
+        return roleMapper.selectRoleListNew(role);
+    }
 
     /**
      * 根据用户ID查询角色

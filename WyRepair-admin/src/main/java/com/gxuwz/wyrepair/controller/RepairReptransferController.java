@@ -36,6 +36,7 @@ public class RepairReptransferController extends BaseController
     {
         startPage();
         List<RepairReptransfer> list = repairReptransferService.selectRepairReptransferList(repairReptransfer);
+        List<RepairReptransfer> list1 = repairReptransferService.selectRepairReptransferList(repairReptransfer);
         return getDataTable(list);
     }
 

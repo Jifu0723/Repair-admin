@@ -18,6 +18,14 @@ export function getUser(userId) {
   })
 }
 
+// 查询用户姓名下拉树结构
+export function treeselect() {
+  return request({
+    url: '/system/user/treeselect',
+    method: 'get'
+  })
+}
+
 // 新增用户
 export function addUser(data) {
   return request({

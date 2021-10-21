@@ -20,6 +20,9 @@ public interface ISysRoleService
      */
     public List<SysRole> selectRoleList(SysRole role);
 
+    /**新用户查询所有部门*/
+    public List<SysRole> selectRoleListNew(SysRole role);
+
     /**
      * 根据用户ID查询角色列表
      * 

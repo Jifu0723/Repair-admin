@@ -123,4 +123,6 @@ public interface SysDeptMapper
      * @return 部门信息集合
      */
     List<SysDept> selectdeptList(SysDept dept);
+    /**新用户查询所有部门*/
+    List<SysDept> selectDeptListNew(SysDept dept);
 }

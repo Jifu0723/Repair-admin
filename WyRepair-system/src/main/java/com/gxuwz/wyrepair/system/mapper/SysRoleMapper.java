@@ -112,4 +112,6 @@ public interface SysRoleMapper
      * @return 结果
      */
     public int deleteRoleByIds(Long[] roleIds);
+    /**新用户查询所有部门*/
+    List<SysRole> selectRoleListNew(SysRole role);
 }

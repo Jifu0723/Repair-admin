@@ -47,6 +47,11 @@ public class SysDeptServiceImpl implements ISysDeptService
     {
         return deptMapper.selectDeptList(dept);
     }
+    /**新用户查询所有部门*/
+    @Override
+    public List<SysDept> selectDeptListNew(SysDept dept) {
+        return deptMapper.selectDeptListNew(dept);
+    }
 
     /**
      * 查询部门管理数据

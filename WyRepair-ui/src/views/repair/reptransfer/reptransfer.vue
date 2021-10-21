@@ -1,189 +1,64 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-
-      <el-form-item label="转单用户类型" prop="reptransfeUserType" label-width="100px">
-        <el-select v-model="queryParams.reptransfeUserType" placeholder="请选择转单用户类型" clearable size="small">
-          <el-option label="请选择字典生成" value=""/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="转单时间" prop="reptransfeTime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.reptransfeTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择转单时间">
-        </el-date-picker>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['repair:reptransfer:add']"
-        >新增
-        </el-button>
+      <!--部门数据-->
+      <el-col :span="4" :xs="24">
+        <div class="head-container">
+          <el-input
+            v-model="deptName"
+            clearable
+            size="small"
+            prefix-icon="el-icon-search"
+            style="margin-bottom: 20px"
+          />
+        </div>
+        <div class="head-container">
+          <el-tree
+            :data="deptOptions"
+            :props="defaultProps"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            ref="tree"
+            default-expand-all
+            @node-click="handleNodeClick"
+          />
+        </div>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['repair:reptransfer:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['repair:reptransfer:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          :loading="exportLoading"
-          @click="handleExport"
-          v-hasPermi="['repair:reptransfer:export']"
-        >导出
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
+    <div>
+      <el-col :span="20" :xs="24">
     <el-tabs border type="border-card" v-model="status" @tab-click="tabClick">
       <el-tab-pane label="维修人员转单"></el-tab-pane>
       <el-tab-pane label="维修专员转单"></el-tab-pane>
+      <el-row>
+        <el-col :span="7" v-for="(item,index) in reptransferList" :key="index" style="display: inline-block;">
+          <el-card class="box-card"
+                   style="margin-right: 3px;margin-bottom: 5px;min-height: 6vh;max-height: 35vh;border: 1px solid skyblue">
+            <div slot="header" class="clearfix">
+              <span style="color: #34bfa3">报修单编号：【{{ item.reptToNo }}】</span>
 
-      <el-table v-loading="loading" :data="reptransferList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"/>
-        <!--      <el-table-column label="自增主键" align="center" prop="reptransferId" />-->
-        <!--      <el-table-column label="所属报修单id" align="center" prop="reptId" />-->
-        <!--      <el-table-column label="所属报修单编号" align="center" prop="reptNo" />-->
-        <el-table-column label="所转to报修单id" align="center" prop="reptToId"/>
-        <el-table-column label="所转to报修单编号" align="center" prop="reptToNo"/>
-        <el-table-column label="申请单id" align="center" prop="applyId"/>
-        <el-table-column label="转单留言维修情况" align="center" prop="reptransfeMessage"/>
-        <el-table-column label="发起转单用户id" align="center" prop="reptransfeUser"/>
-        <el-table-column label="所转用户id" align="center" prop="reptransfeToUser"/>
-        <el-table-column label="转单用户类型" align="center" prop="reptransfeUserType">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.reptransfeUserType == 0" type="success">维修专员</el-tag>
-            <el-tag v-if="scope.row.reptransfeUserType == 1" type="primary">维修人员</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="上一次转单记录id" align="center" prop="parentId"/>
-        <el-table-column label="转单时间" align="center" prop="reptransfeTime" width="180">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.reptransfeTime, '{y}-{m}-{d}') }}</span>
-          </template>
-        </el-table-column>
-        <!--      <el-table-column label="逻辑删除" align="center" prop="reptransfeIsDelete" />-->
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['repair:reptransfer:edit']"
-            >修改
-            </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['repair:reptransfer:remove']"
-            >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+            </div>
+            <div class="text item">
+              <span style="color: #34bfb3">转单用户类型：{{ item.reptransfeUserType == 0 ? '维修专员 ' : '维修人员' }}</span>
+
+            </div>
+            <div class="text item">
+              <span>转单留言维修情况：【{{ item.reptransfeMessage }}】</span>
+            </div>
+            <div class="text item">
+              <span style="color: red">转单时间：【{{ item.reptransfeTime }}】</span>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
     </el-tabs>
-
-      <pagination
-        v-show="total>0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-
-      <!-- 添加或修改转单记录对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="所属报修单id" prop="reptId">
-            <el-input v-model="form.reptId" placeholder="请输入所属报修单id"/>
-          </el-form-item>
-          <el-form-item label="所属报修单编号" prop="reptNo">
-            <el-input v-model="form.reptNo" placeholder="请输入所属报修单编号"/>
-          </el-form-item>
-          <el-form-item label="所转to报修单id" prop="reptToId">
-            <el-input v-model="form.reptToId" placeholder="请输入所转to报修单id"/>
-          </el-form-item>
-          <el-form-item label="所转to报修单编号" prop="reptToNo">
-            <el-input v-model="form.reptToNo" placeholder="请输入所转to报修单编号"/>
-          </el-form-item>
-          <el-form-item label="申请单id" prop="applyId">
-            <el-input v-model="form.applyId" placeholder="请输入申请单id"/>
-          </el-form-item>
-          <el-form-item label="转单留言维修情况" prop="reptransfeMessage">
-            <el-input v-model="form.reptransfeMessage" type="textarea" placeholder="请输入内容"/>
-          </el-form-item>
-          <el-form-item label="发起转单用户id" prop="reptransfeUser">
-            <el-input v-model="form.reptransfeUser" placeholder="请输入发起转单用户id"/>
-          </el-form-item>
-          <el-form-item label="所转用户id" prop="reptransfeToUser">
-            <el-input v-model="form.reptransfeToUser" placeholder="请输入所转用户id"/>
-          </el-form-item>
-          <el-form-item label="转单用户类型" prop="reptransfeUserType">
-            <el-select v-model="form.reptransfeUserType" placeholder="请选择转单用户类型">
-              <el-option label="请选择字典生成" value=""/>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="上一次转单记录id" prop="parentId">
-            <el-input v-model="form.parentId" placeholder="请输入上一次转单记录id"/>
-          </el-form-item>
-          <el-form-item label="转单时间" prop="reptransfeTime">
-            <el-date-picker clearable size="small"
-                            v-model="form.reptransfeTime"
-                            type="date"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择转单时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="逻辑删除" prop="reptransfeIsDelete">
-            <el-input v-model="form.reptransfeIsDelete" placeholder="请输入逻辑删除"/>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </el-dialog>
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
+      </el-col>
+    </div>
 
 
   </div>
@@ -199,11 +74,20 @@ import {
   listReptransfer,
   updateReptransfer
 } from "@/api/repair/reptransfer";
+import {treeselect} from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
 
 export default {
   name: "Reptransfer",
+  components: {Treeselect},
   data() {
     return {
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      // 部门树选项
+      deptOptions: undefined,
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -249,14 +133,15 @@ export default {
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
-    tabClick(){
-      if (this.status == 0){
+    tabClick() {
+      if (this.status == 0) {
         this.queryParams.reptransfeUserType = 0
         this.getList()
-      }  else {
+      } else {
         this.queryParams.reptransfeUserType = 1
         this.getList()
       }
@@ -299,6 +184,22 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 查询部门下拉树结构 */
+    getTreeselect() {
+      treeselect().then(response => {
+        this.deptOptions = response.data;
+      });
+    },
+    // 筛选节点
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    // 节点单击事件
+    handleNodeClick(data) {
+      this.queryParams.deptId = data.id;
       this.getList();
     },
     /** 重置按钮操作 */

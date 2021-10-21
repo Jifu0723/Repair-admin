@@ -145,24 +145,17 @@ public class SysUserController extends BaseController
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         j = userService.insertUser(user);
         Long[] roles = user.getRoleIds();
+       //设置维修工部门关联表
         for (Long roleId : roles)
         {
             SysRole sysRole =roleService.selectRoleById(roleId);
-            //SysRole sysRole1 = roleService.selectRoleByRoleName(sysRole.getRoleKey());
-            System.out.println(sysRole.getRoleKey());
             if ("repair".equals(sysRole.getRoleKey())){
                 RepairWorker repairWorker = new RepairWorker();
                 repairWorker.setUserId(user.getUserId());
-                System.out.println(user.getUserId());
                 i = repairWorkerService.insertRepairWorker(repairWorker);
             }
         }
-
-        //SysRole sysRole = roleService.selectRoleByRoleName(roleIds);
-        //System.out.println(sysRole.getRoleName());
-        //SysRole roles = roleService.selectRoleAll();
-        //SysRole sysRole = new SysRole();
-        if ((1>0  ||  j>0 )){
+        if ((i>0  ||  j>0 )){
             return AjaxResult.success();
         }else {
             return AjaxResult.error();

@@ -20,6 +20,7 @@ import com.gxuwz.wyrepair.service.IRepairApplyService;
 import com.gxuwz.wyrepair.service.IRepairProcessService;
 import com.gxuwz.wyrepair.service.IRepairRepTbService;
 import com.gxuwz.wyrepair.service.IRepairReptransferService;
+import com.gxuwz.wyrepair.system.service.ISysRoleService;
 import com.gxuwz.wyrepair.util.RepairCodeGen;
 import com.gxuwz.wyrepair.system.service.ISysDeptService;
 import com.gxuwz.wyrepair.system.service.ISysUserService;
@@ -55,6 +56,8 @@ public class ApiRepairRepTbController extends BaseController {
     private ISysUserService sysUserService;
     @Autowired
     private ISysDeptService deptService;
+    @Autowired
+    private ISysRoleService roleService;
 
     /**
      * 角色【维修专员】
@@ -460,12 +463,24 @@ public class ApiRepairRepTbController extends BaseController {
      *
      * @return AjaxResult
      */
-    @ApiOperation("查询所有部门")
     @GetMapping("/findAllDept")
     public AjaxResult findAllDept() {
         SysDept sysDept = new SysDept();
-        List<SysDept> depts = deptService.selectDeptList(sysDept);
+        List<SysDept> depts = deptService.selectDeptListNew(sysDept);
         return AjaxResult.success(depts);
+    }
+
+    /**
+     * 查询所有用户角色信息
+     *
+     * @return AjaxResult
+     */
+    @GetMapping("/findAllRole")
+    public AjaxResult findAllRole()
+    {
+        SysRole sysRole = new SysRole();
+        List<SysRole> roles = roleService.selectRoleListNew(sysRole);
+        return AjaxResult.success(roles);
     }
 
     /**
