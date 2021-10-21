@@ -134,12 +134,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
                 .antMatchers("/api/repair/repimg/loadImg/**").anonymous()
-
-
                 .antMatchers("/api/repair/tb/findAllRole").permitAll()//用户角色
                 .antMatchers("/api/repair/tb/findAllDept").permitAll()//二级学院
-
-
                 .antMatchers("/repair/appimg/downloadRepairImg/**").anonymous()//报修图片路径
                 .antMatchers("/api/repair/register/register").anonymous()//用户信息注册
 

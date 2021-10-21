@@ -49,6 +49,9 @@ public interface SysRoleMapper
      */
     public SysRole selectRoleById(Long roleId);
 
+    /**注册用户信息查询角色信息*/
+    public SysRole selectRoleKeyById(Long roleId);
+
     /**
      * 通过角色名称查询角色权限字符串(role_key)
      *

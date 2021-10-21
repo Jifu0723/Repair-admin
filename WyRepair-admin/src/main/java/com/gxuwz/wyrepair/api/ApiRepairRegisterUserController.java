@@ -58,16 +58,21 @@ public class ApiRepairRegisterUserController {
         repairRegisterUser.setNickName(params.get("nickName").toString());//获取前端输入的用户姓名
         Long roleId =  Long.parseLong(String.valueOf(params.get("roleName").toString()));//获取前端输入的用户姓名
         Long deptId =  Long.parseLong(String.valueOf(params.get("deptName")));//获取前端输入的院系名称
+
         repairRegisterUser.setDeptId(deptId);//插入二级学院id
         repairRegisterUser.setSex(params.get("sex").toString());//获取前端输入的用户性别
+
         j = repairRegisterUserService.insertSysUser(repairRegisterUser);
         repairUserRole.setRoleId(roleId);//插入角色id
         repairUserRole.setUserId(repairRegisterUser.getUserId());
+
         k = repairUserRoleService.insertUserRole(repairUserRole);
-        SysRole roles = roleService.selectRoleById(roleId);
+        SysRole roles = roleService.selectRoleKeyById(roleId);
+
         //设置维修工部门关联表
         if ("repair".equals(roles.getRoleKey()))
         {
+            System.out.println(5555);
             RepairWorker repairWorker = new RepairWorker();
             repairWorker.setUserId(repairRegisterUser.getUserId());
             i = repairWorkerService.insertRepairWorker(repairWorker);
