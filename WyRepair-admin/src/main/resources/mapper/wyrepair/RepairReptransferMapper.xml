@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="reptransfeIsDelete"    column="reptransfe_is_delete"    />
         <!--转单记录与所转用户一对一关系-->
         <association property="user" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysUser">
-            <result property="userName" column="user_name"/>
+            <result property="userId" column="user_id"/>
             <result property="nickName" column="nick_name"/>
         </association>
         <!--转单记录与所转部门一对一关系-->
@@ -30,6 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </association>
         <!--转单记录与申请单一对一关系-->
         <association property="apply" javaType="com.gxuwz.wyrepair.domain.RepairApply">
+            <result property="applyUserid" column="apply_userid"/>
+            <result property="applyNo" column="apply_no"/>
             <result property="applyType" column="apply_type"/>
             <result property="applyContent" column="apply_content"/>
             <result property="applyAddress" column="apply_address"/>
@@ -44,7 +46,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             apply.apply_type,
             apply.apply_content,
             apply.apply_address,
-            dept.dept_name,
         </if>
         reptransfer_id, rept_id, rept_no, rept_to_id, rept_to_no,
         repair_reptransfer.apply_id, reptransfe_message, reptransfe_user, reptransfe_to_user, reptransfe_user_type,
@@ -54,6 +55,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             left join sys_user as user on repair_reptransfer.reptransfe_user = user.user_id
         </if>
     </sql>
+
+    <!---查询转单记录列表(维修单转去人的信息包括部门、姓名等) -->
+    <select id="selectReptransferList"  parameterType="String" resultType="Map">
+        SELECT
+        reptransfer.reptransfe_user,
+        reptransfer.reptransfe_to_user,
+        apply.apply_userid,
+        apply.apply_type,
+        apply.apply_no,
+        apply.apply_address,
+        apply.apply_content,
+        u.user_id,
+        u.nick_name,
+        de.dept_id,
+        de.dept_name,
+        i.nick_name AS to_nick_name,
+        d.dept_name AS to_dept_name,
+        reptransfer.reptransfe_time as reptransfeTime
+        FROM
+        repair_reptransfer AS reptransfer
+        LEFT JOIN repair_apply AS apply ON apply.apply_id = reptransfer.apply_id
+        LEFT JOIN sys_user AS u ON reptransfer.reptransfe_user = u.user_id
+        LEFT JOIN sys_user AS i ON reptransfer.reptransfe_to_user = i.user_id
+        LEFT JOIN sys_dept AS d ON d.dept_id = i.dept_id
+        LEFT JOIN sys_dept AS de ON de.dept_id = u.dept_id
+        <where>
+            <if test="reptransfeUser != null "> and reptransfer.reptransfe_user = #{reptransfeUser}</if>
+        </where>
+    </select>
 
     <select id="selectRepairReptransferList" parameterType="RepairReptransfer" resultMap="RepairReptransferResult">
         <include refid="selectRepairReptransferVo"/>

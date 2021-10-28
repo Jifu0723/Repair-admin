@@ -3,10 +3,14 @@ package com.gxuwz.wyrepair.api;
 import com.gxuwz.wyrepair.common.annotation.Log;
 import com.gxuwz.wyrepair.common.core.controller.BaseController;
 import com.gxuwz.wyrepair.common.core.domain.AjaxResult;
+import com.gxuwz.wyrepair.common.core.domain.entity.SysUser;
+import com.gxuwz.wyrepair.common.core.domain.model.LoginUser;
 import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
+import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
 import com.gxuwz.wyrepair.domain.RepairReptransfer;
+import com.gxuwz.wyrepair.framework.web.service.TokenService;
 import com.gxuwz.wyrepair.service.IRepairReptransferService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 转单记录Controller
@@ -30,6 +35,8 @@ public class ApiRepairReptransferController extends BaseController
 {
     @Autowired
     private IRepairReptransferService repairReptransferService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询转单记录列表
@@ -37,10 +44,13 @@ public class ApiRepairReptransferController extends BaseController
     @ApiOperation("查询转单记录列表")
     @PreAuthorize("@ss.hasPermi('repair:reptransfer:list')")
     @GetMapping("/list")
-    public TableDataInfo list(RepairReptransfer repairReptransfer)
+    public TableDataInfo list(@RequestParam Map<String, Object> params)
     {
-        startPage();
-        List<RepairReptransfer> list = repairReptransferService.selectRepairReptransferList(repairReptransfer);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser sysUser = loginUser.getUser();
+        params.put("reptransfeUser",sysUser.getUserId());
+        List<Map<String,Object>> list = repairReptransferService.selectReptransferList(params);
+        System.out.println(list);
         return getDataTable(list);
     }
 

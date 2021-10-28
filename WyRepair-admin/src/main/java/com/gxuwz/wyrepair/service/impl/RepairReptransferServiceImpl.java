@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 转单记录Service业务层处理
@@ -42,6 +43,17 @@ public class RepairReptransferServiceImpl implements IRepairReptransferService
     public List<RepairReptransfer> selectRepairReptransferList(RepairReptransfer repairReptransfer)
     {
         return repairReptransferMapper.selectRepairReptransferList(repairReptransfer);
+    }
+
+    /**
+     * 查询转单记录列表(维修单转去人的信息包括部门、姓名等)
+     *
+     * @param params 转单记录
+     * @return 转单记录集合
+     */
+    @Override
+    public List<Map<String, Object>> selectReptransferList(Map<String, Object> params) {
+        return repairReptransferMapper.selectReptransferList(params);
     }
 
     /**

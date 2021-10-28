@@ -227,6 +227,7 @@ public class RepairRepTb extends BaseEntity {
      * 报修图片
      */
     private List<RepairRepImg> repImgList;
+
     /**
      * 报修图片
      */

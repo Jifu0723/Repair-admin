@@ -68,6 +68,7 @@ public class RepairRepTbController extends BaseController {
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             params.put("repairDep",user.getDeptId());
             list = repairRepTbService.queryRepairAdminOrderList(params);
+            System.out.println(params);
             repairRepTb.setRepairDep(user.getDeptId());
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());

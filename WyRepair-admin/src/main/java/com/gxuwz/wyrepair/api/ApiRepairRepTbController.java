@@ -94,6 +94,7 @@ public class ApiRepairRepTbController extends BaseController {
             // 设置当前运转单
             repairRepTb.setCurWork(1);
             List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb, user.getUserId());
+            System.out.println(list);
             return getDataTable(list);
         }
     }
@@ -181,6 +182,7 @@ public class ApiRepairRepTbController extends BaseController {
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(), deptId);
         newRepair.setRepairType(repairType);
         newRepair.setRepairState(3);//报修状态为转单中
+        newRepair.setRepairedState(4);//设置设备维修后的状态为等待维修
         newRepair.setRepairName(repairReptb.getRepairName());//报修者姓名
         newRepair.setRepairMoney(repairReptb.getRepairMoney());//维修单价格
         newRepair.setRepairDay(repairReptb.getRepairDay());//报修单日期
@@ -247,6 +249,7 @@ public class ApiRepairRepTbController extends BaseController {
         transferRep.initTransfer(repairRepTb, newRepair, apply.getApplyId(), sysUser.getUserId(), 1);
         transferRep.setReptransfeToUser(tUser.getUserId());
         transferRep.setReptToDept(repairDep);
+        transferRep.setReptransfeTime(new Date());//系统时间
         // 查询上一次转单记录
         RepairReptransfer rt = new RepairReptransfer();
         rt.setReptToNo(repairRepTb.getRepairNo());
@@ -511,6 +514,8 @@ public class ApiRepairRepTbController extends BaseController {
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         //标记维修人员姓名
         repairRepTb.setRepaireName(user.getNickName());
+        // 标记【设备维修后】状态
+        repairRepTb.setRepairedState(repairedState);
         int i = repairRepTbService.updateRepairRepTb(repairRepTb);
 
         // 维修过程表记录

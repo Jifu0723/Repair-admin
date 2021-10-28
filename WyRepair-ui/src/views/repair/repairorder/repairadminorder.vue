@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
 
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeName">
       <el-collapse-item title="展开/闭合搜索条件界面" name="1">
         <el-form :model="queryParams1" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
 
@@ -430,12 +430,6 @@
                     width="100%"
                     :src="dialogImageUrl"
                   />
-<!--                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%" @click="imgW=imgW+100">-->
-<!--                    <h1 style="line-height: 10px">-->
-<!--                      +</h1></button>-->
-<!--                  <button shape="circle" class="imgButton1" style="border:0;border-radius: 50%"-->
-<!--                          @click="imgW-100>0?imgW=imgW-100:100"><h1 style="line-height: 10px">-</h1></button>-->
-
                 </el-dialog>
 
             </el-form-item>
@@ -443,32 +437,6 @@
           </el-col>
         </el-row>
       </el-form>
-
-      <el-form-item label="报修状态" prop="repairState">
-        <el-input v-model="form.repairState" placeholder="请输入报修状态"/>
-      </el-form-item>
-      <el-form-item label="维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)" prop="repairedState">
-        <el-input v-model="form.repairedState" placeholder="请输入维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)"/>
-      </el-form-item>
-      <el-form-item label="是否销单" prop="repairDestory">
-        <el-input v-model="form.repairDestory" placeholder="请输入是否销单"/>
-      </el-form-item>
-      <el-form-item label="是否转单" prop="repairTransfer">
-        <el-input v-model="form.repairTransfer" placeholder="请输入是否转单"/>
-      </el-form-item>
-      <el-form-item label="初次报修所属部门id" prop="repairDep">
-        <el-input v-model="form.repairDep" placeholder="请输入初次报修所属部门id"/>
-      </el-form-item>
-      <el-form-item label="申请表id" prop="applyId">
-        <el-input v-model="form.applyId" placeholder="请输入申请表id"/>
-      </el-form-item>
-      <el-form-item label="是否评论" prop="repairComment">
-        <el-input v-model="form.repairComment" placeholder="请输入是否评论"/>
-      </el-form-item>
-
-      <el-form-item label="是否为当前运转单" prop="curWork">
-        <el-input v-model="form.curWork" placeholder="请输入是否为当前运转单"/>
-      </el-form-item>
 
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -617,6 +585,7 @@ export default {
       chartLine: null,
       chartPie: null,
       activeNames: ["0"],//闭合
+      activeName: ["0"],//闭合
       repairTime: {}, // 按时间统计用餐信息输出日、周、月报表
       netRepairNumber: [], // 网络设备量
       HyRepairNumber: [], // 水电类量

@@ -3,6 +3,7 @@ package com.gxuwz.wyrepair.mapper;
 import com.gxuwz.wyrepair.domain.RepairReptransfer;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 转单记录Mapper接口
@@ -22,11 +23,19 @@ public interface RepairReptransferMapper
 
     /**
      * 查询转单记录列表
-     * 
+     *
      * @param repairReptransfer 转单记录
      * @return 转单记录集合
      */
     public List<RepairReptransfer> selectRepairReptransferList(RepairReptransfer repairReptransfer);
+
+    /**
+     * 查询转单记录列表(维修单转去人的信息包括部门、姓名等)
+     *
+     * @param params 转单记录
+     * @return 转单记录集合
+     */
+    List<Map<String,Object>>  selectReptransferList(Map<String, Object> params);
 
     /**
      * 新增转单记录

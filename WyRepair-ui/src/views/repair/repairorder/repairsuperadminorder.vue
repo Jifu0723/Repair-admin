@@ -434,44 +434,11 @@
                      :src="dialogImageUrl"
                 />
 
-<!--                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%;" @click="imgW=imgW+200">-->
-<!--                    <h1 style="line-height: 10px">-->
-<!--                      +</h1></button>-->
-<!--                  <button shape="circle" class="imgButton" style="border:0;border-radius: 50%"-->
-<!--                          @click="imgW-200>0?imgW=imgW-200:200"><h1 style="line-height: 10px">-</h1></button>-->
-
-
               </el-dialog>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-
-      <el-form-item label="报修状态" prop="repairState">
-        <el-input v-model="form.repairState" placeholder="请输入报修状态"/>
-      </el-form-item>
-      <el-form-item label="维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)" prop="repairedState">
-        <el-input v-model="form.repairedState" placeholder="请输入维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)"/>
-      </el-form-item>
-      <el-form-item label="是否销单" prop="repairDestory">
-        <el-input v-model="form.repairDestory" placeholder="请输入是否销单"/>
-      </el-form-item>
-      <el-form-item label="是否转单" prop="repairTransfer">
-        <el-input v-model="form.repairTransfer" placeholder="请输入是否转单"/>
-      </el-form-item>
-      <el-form-item label="初次报修所属部门id" prop="repairDep">
-        <el-input v-model="form.repairDep" placeholder="请输入初次报修所属部门id"/>
-      </el-form-item>
-      <el-form-item label="申请表id" prop="applyId">
-        <el-input v-model="form.applyId" placeholder="请输入申请表id"/>
-      </el-form-item>
-      <el-form-item label="是否评论" prop="repairComment">
-        <el-input v-model="form.repairComment" placeholder="请输入是否评论"/>
-      </el-form-item>
-
-      <el-form-item label="是否为当前运转单" prop="curWork">
-        <el-input v-model="form.curWork" placeholder="请输入是否为当前运转单"/>
-      </el-form-item>
 
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -560,9 +527,7 @@ export default {
         repairDestory: null,
         repairTransfer: null,
         repairComment: null,
-        curWork: null,
         repairDep: null,
-        applyId: null,
         repairDestoryTime: null,
         countType: null, // 查询类别 1按日查询 2按周 3按月
         repairCreateTime: new Date(),// 默认查询当天记录
@@ -589,7 +554,6 @@ export default {
         repairDestory: null,
         repairTransfer: null,
         repairComment: null,
-        curWork: null,
         repairDep: null,
         applyId: null,
         repairDestoryTime: null,
