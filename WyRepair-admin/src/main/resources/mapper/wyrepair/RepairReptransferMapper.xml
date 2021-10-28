@@ -61,6 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
         reptransfer.reptransfe_user,
         reptransfer.reptransfe_to_user,
+        reptransfer.reptransfe_message,
+        reptransfer.reptransfe_user_type,
         apply.apply_userid,
         apply.apply_type,
         apply.apply_no,
@@ -82,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT JOIN sys_dept AS de ON de.dept_id = u.dept_id
         <where>
             <if test="reptransfeUser != null "> and reptransfer.reptransfe_user = #{reptransfeUser}</if>
+            <if test="reptransfe_user_type != null "> and reptransfer.reptransfe_user_type = #{reptransfe_user_type}</if>
         </where>
     </select>
 

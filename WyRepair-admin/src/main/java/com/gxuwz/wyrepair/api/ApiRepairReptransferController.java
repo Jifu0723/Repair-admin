@@ -50,7 +50,6 @@ public class ApiRepairReptransferController extends BaseController
         SysUser sysUser = loginUser.getUser();
         params.put("reptransfeUser",sysUser.getUserId());
         List<Map<String,Object>> list = repairReptransferService.selectReptransferList(params);
-        System.out.println(list);
         return getDataTable(list);
     }
 

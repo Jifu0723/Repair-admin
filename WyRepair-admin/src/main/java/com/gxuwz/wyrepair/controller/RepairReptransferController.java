@@ -3,8 +3,11 @@ package com.gxuwz.wyrepair.controller;
 import com.gxuwz.wyrepair.common.annotation.Log;
 import com.gxuwz.wyrepair.common.core.controller.BaseController;
 import com.gxuwz.wyrepair.common.core.domain.AjaxResult;
+import com.gxuwz.wyrepair.common.core.domain.entity.SysUser;
+import com.gxuwz.wyrepair.common.core.domain.model.LoginUser;
 import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
+import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
 import com.gxuwz.wyrepair.domain.RepairReptransfer;
 import com.gxuwz.wyrepair.service.IRepairReptransferService;
@@ -13,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 转单记录Controller
@@ -32,11 +36,9 @@ public class RepairReptransferController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('repair:reptransfer:list')")
     @GetMapping("/list")
-    public TableDataInfo list(RepairReptransfer repairReptransfer)
+    public TableDataInfo list(@RequestParam Map<String, Object> params)
     {
-        startPage();
-        List<RepairReptransfer> list = repairReptransferService.selectRepairReptransferList(repairReptransfer);
-        List<RepairReptransfer> list1 = repairReptransferService.selectRepairReptransferList(repairReptransfer);
+        List<Map<String,Object>> list = repairReptransferService.selectReptransferList(params);
         return getDataTable(list);
     }
 

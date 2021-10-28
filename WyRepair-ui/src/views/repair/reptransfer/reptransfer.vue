@@ -32,20 +32,35 @@
         <el-col :span="7" v-for="(item,index) in reptransferList" :key="index" style="display: inline-block;">
           <el-card class="box-card"
                    style="margin-right: 3px;margin-bottom: 5px;min-height: 6vh;max-height: 35vh;border: 1px solid skyblue">
+<!--            <div slot="header" class="clearfix">-->
+<!--              <span style="color: #34bfa3">报修单编号：【{{ item.apply_no }}】</span>-->
+
+<!--            </div>-->
             <div slot="header" class="clearfix">
-              <span style="color: #34bfa3">报修单编号：【{{ item.reptToNo }}】</span>
+              <span style="color: #34bfb3">转单用户类型：{{ item.reptransfe_user_type == 0 ? '维修专员 ' : '维修人员' }}</span>
 
             </div>
-            <div class="text item">
-              <span style="color: #34bfb3">转单用户类型：{{ item.reptransfeUserType == 0 ? '维修专员 ' : '维修人员' }}</span>
+            <div slot="header" class="clearfix">
+              <span style="color: #34bfa3">接单人姓名：【{{ item.nick_name }}】</span>
 
             </div>
+            <div slot="header" class="clearfix">
+              <span style="color: #34bfa3">接单人部门：【{{ item.dept_name }}】</span>
+
+            </div>
+
+<!--            <div class="text item">-->
+<!--              <span>转单留言维修情况：【{{ item.reptransfe_message }}】</span>-->
+<!--            </div>-->
             <div class="text item">
-              <span>转单留言维修情况：【{{ item.reptransfeMessage }}】</span>
+              <span style="color: red">被转单人姓名：【{{ item.to_nick_name }}】</span>
             </div>
             <div class="text item">
-              <span style="color: red">转单时间：【{{ item.reptransfeTime }}】</span>
+              <span style="color: red">被转单人部门：【{{ item.to_dept_name }}】</span>
             </div>
+<!--            <div class="text item">-->
+<!--              <span style="color: red">转单时间：【{{ item.reptransfeTime }}】</span>-->
+<!--            </div>-->
           </el-card>
         </el-col>
       </el-row>
@@ -113,16 +128,20 @@ export default {
         pageNum: 1,
         pageSize: 10,
         reptId: null,
-        reptNo: null,
+        apply_no: null,
         reptToId: null,
         reptToNo: null,
         applyId: null,
-        reptransfeMessage: null,
+        reptransfe_message: null,
         reptransfeUser: null,
         reptransfeToUser: null,
-        reptransfeUserType: null,
+        reptransfe_user_type: null,
+        nick_name: null,
         parentId: null,
+        to_nick_name:null,
         reptransfeTime: null,
+        to_dept_name: null,
+        dept_name: null,
         reptransfeIsDelete: null
       },
       // 表单参数
@@ -139,10 +158,10 @@ export default {
   methods: {
     tabClick() {
       if (this.status == 0) {
-        this.queryParams.reptransfeUserType = 0
+        this.queryParams.reptransfe_user_type = 1
         this.getList()
       } else {
-        this.queryParams.reptransfeUserType = 1
+        this.queryParams.reptransfe_user_type = 0
         this.getList()
       }
     },
@@ -151,6 +170,7 @@ export default {
       this.loading = true;
       listReptransfer(this.queryParams).then(response => {
         this.reptransferList = response.rows;
+        console.log(this.reptransferList)
         this.total = response.total;
         this.loading = false;
       });
