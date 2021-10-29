@@ -3,14 +3,14 @@ package com.gxuwz.wyrepair.controller;
 import com.gxuwz.wyrepair.common.annotation.Log;
 import com.gxuwz.wyrepair.common.core.controller.BaseController;
 import com.gxuwz.wyrepair.common.core.domain.AjaxResult;
+import com.gxuwz.wyrepair.common.core.domain.entity.SysDept;
 import com.gxuwz.wyrepair.common.core.domain.entity.SysUser;
-import com.gxuwz.wyrepair.common.core.domain.model.LoginUser;
 import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
-import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
 import com.gxuwz.wyrepair.domain.RepairReptransfer;
 import com.gxuwz.wyrepair.service.IRepairReptransferService;
+import com.gxuwz.wyrepair.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +31,10 @@ public class RepairReptransferController extends BaseController
     @Autowired
     private IRepairReptransferService repairReptransferService;
 
+    @Autowired
+    private ISysUserService sysUserService;
+
+
     /**
      * 查询转单记录列表
      */
@@ -38,6 +42,7 @@ public class RepairReptransferController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam Map<String, Object> params)
     {
+        System.out.println(params);
         List<Map<String,Object>> list = repairReptransferService.selectReptransferList(params);
         return getDataTable(list);
     }
@@ -56,13 +61,27 @@ public class RepairReptransferController extends BaseController
     }
 
     /**
+     * 查询用户信息列表
+     */
+    @GetMapping("/userlist")
+    public TableDataInfo userlist(SysUser sysUser)
+    {
+        List<SysUser> list = sysUserService.selectSysUserList(sysUser);
+        System.out.println(list);
+        return getDataTable(list);
+    }
+
+
+    /**
      * 获取转单记录详细信息
      */
     @PreAuthorize("@ss.hasPermi('repair:reptransfer:query')")
     @GetMapping(value = "/{reptransferId}")
     public AjaxResult getInfo(@PathVariable("reptransferId") Long reptransferId)
     {
-        return AjaxResult.success(repairReptransferService.selectRepairReptransferById(reptransferId));
+        Map<String,Object> list = repairReptransferService.selectRepairReptransferById(reptransferId);
+        System.out.println(list);
+        return AjaxResult.success(list);
     }
 
     /**

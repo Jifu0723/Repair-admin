@@ -278,7 +278,7 @@
       </el-collapse-item>
     </el-collapse>
 
-    <!-- 添加或修改报修单对话框 -->
+    <!-- 报修单详情首页 -->
     <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
       <h2
         style="display: flex;justify-content: center;margin-bottom: 30px;letter-spacing:30px;font-size: 30px;font-weight: bold">报修单详情首页</h2>

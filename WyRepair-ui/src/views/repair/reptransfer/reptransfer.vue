@@ -1,46 +1,59 @@
 <template>
   <div class="app-container">
-      <!--部门数据-->
-      <el-col :span="4" :xs="24">
-        <div class="head-container">
-          <el-input
-            v-model="deptName"
-            clearable
-            size="small"
-            prefix-icon="el-icon-search"
-            style="margin-bottom: 20px"
-          />
-        </div>
-        <div class="head-container">
-          <el-tree
-            :data="deptOptions"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="tree"
-            default-expand-all
-            @node-click="handleNodeClick"
-          />
-        </div>
-      </el-col>
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+
+      <el-form-item label="发起转单用户姓名" prop="reptransfeUser" label-width="140px">
+        <el-select v-model="queryParams.reptransfeUser" placeholder="请选择发起转单用户姓名">
+          <el-option
+            v-for="item in userList"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="被转单用户姓名" prop="reptransfe_to_user" label-width="120px">
+        <el-select v-model="queryParams.reptransfe_to_user" placeholder="请选择被转单用户姓名">
+          <el-option
+            v-for="item in userList"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="转单用户类型" prop="reptransfe_user_type" label-width="100px">
+      <el-select v-model="queryParams.reptransfe_user_type" placeholder="请选择转单用户类型">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+
+    </el-form>
     <div>
-      <el-col :span="20" :xs="24">
-    <el-tabs border type="border-card" v-model="status" @tab-click="tabClick">
-      <el-tab-pane label="维修人员转单"></el-tab-pane>
-      <el-tab-pane label="维修专员转单"></el-tab-pane>
+      <el-col :span="27" :xs="24">
       <el-row>
-        <el-col :span="7" v-for="(item,index) in reptransferList" :key="index" style="display: inline-block;">
+        <el-col :span="6" v-for="(item,index) in reptransferList" :key="index" style="display: inline-block;">
           <el-card class="box-card"
                    style="margin-right: 3px;margin-bottom: 5px;min-height: 6vh;max-height: 35vh;border: 1px solid skyblue">
-<!--            <div slot="header" class="clearfix">-->
-<!--              <span style="color: #34bfa3">报修单编号：【{{ item.apply_no }}】</span>-->
-
-<!--            </div>-->
             <div slot="header" class="clearfix">
               <span style="color: #34bfb3">转单用户类型：{{ item.reptransfe_user_type == 0 ? '维修专员 ' : '维修人员' }}</span>
 
             </div>
-            <div slot="header" class="clearfix">
+            <div v-if="item.reptransfe_user_type == 0 ? '#34bfa3 ' : '维修人员'" slot="header" class="clearfix">
               <span style="color: #34bfa3">接单人姓名：【{{ item.nick_name }}】</span>
 
             </div>
@@ -48,23 +61,21 @@
               <span style="color: #34bfa3">接单人部门：【{{ item.dept_name }}】</span>
 
             </div>
-
-<!--            <div class="text item">-->
-<!--              <span>转单留言维修情况：【{{ item.reptransfe_message }}】</span>-->
-<!--            </div>-->
             <div class="text item">
               <span style="color: red">被转单人姓名：【{{ item.to_nick_name }}】</span>
             </div>
             <div class="text item">
               <span style="color: red">被转单人部门：【{{ item.to_dept_name }}】</span>
             </div>
-<!--            <div class="text item">-->
-<!--              <span style="color: red">转单时间：【{{ item.reptransfeTime }}】</span>-->
-<!--            </div>-->
+            <div style="margin-top: 10px">
+            <el-button style="margin-bottom: 10px;float: right" type="primary" plain
+                       @click="handleUpdate(item)"
+            >查看转单详情</el-button>
+            </div>
           </el-card>
         </el-col>
       </el-row>
-    </el-tabs>
+=
         <pagination
           v-show="total>0"
           :total="total"
@@ -74,6 +85,38 @@
         />
       </el-col>
     </div>
+
+    <!-- 添加或修改转单记录对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+      <el-form ref="form" :model="ReptransferList"   :rules="rules" label-width="100px">
+        <el-form-item label="报修地址" prop="apply_address">
+          <el-input v-model="ReptransferList.apply_address" />
+        </el-form-item>
+        <el-form-item label="报修内容" prop="apply_content">
+          <el-input v-model="ReptransferList.apply_content" />
+        </el-form-item>
+        <el-form-item label="报修单编号" prop="apply_no">
+          <el-input v-model="ReptransferList.apply_no" />
+        </el-form-item>
+        <el-form-item label="接单人姓名" prop="nick_name">
+          <el-input v-model="ReptransferList.nick_name"  />
+        </el-form-item>
+        <el-form-item label="接单人部门" prop="dept_name">
+          <el-input v-model="ReptransferList.dept_name"  />
+        </el-form-item>
+        <el-form-item label="被单人姓名" prop="to_nick_name">
+          <el-input v-model="ReptransferList.to_nick_name"  />
+        </el-form-item>
+        <el-form-item label="被单人部门" prop="to_dept_name">
+          <el-input v-model="ReptransferList.to_dept_name"  />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
 
 
   </div>
@@ -87,9 +130,10 @@ import {
   exportReptransfer,
   getReptransfer,
   listReptransfer,
-  updateReptransfer
+  updateReptransfer,
+  UserList
 } from "@/api/repair/reptransfer";
-import {treeselect} from "@/api/system/dept";
+import {listdept, treeselect} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 
 export default {
@@ -101,8 +145,14 @@ export default {
         children: "children",
         label: "label"
       },
-      // 部门树选项
-      deptOptions: undefined,
+      value: '',
+      options: [{
+        value: '1',
+        label: '维修人员'
+      }, {
+        value: '0',
+        label: '维修专员'
+      }],
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -118,7 +168,11 @@ export default {
       // 总条数
       total: 0,
       // 转单记录表格数据
-      reptransferList: [],
+      //reptransferList: [],
+      // 转单记录表格数据
+      ReptransferList: [],
+      //用户信息列表
+      userList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -132,16 +186,25 @@ export default {
         reptToId: null,
         reptToNo: null,
         applyId: null,
+        reptNo: null,
+        reptransfer_id: null,
+        reptransfeMessage:null,
         reptransfe_message: null,
         reptransfeUser: null,
-        reptransfeToUser: null,
+        reptransfe_to_user: null,
         reptransfe_user_type: null,
+        reptransfeUserType: null,
+        reptransfeToUser:null,
         nick_name: null,
         parentId: null,
+        deptName: null,
         to_nick_name:null,
         reptransfeTime: null,
         to_dept_name: null,
         dept_name: null,
+        apply_address: null,
+        apply_content: null,
+        apply_userid: null,
         reptransfeIsDelete: null
       },
       // 表单参数
@@ -152,18 +215,17 @@ export default {
     };
   },
   created() {
+    this.getUserList();
     this.getTreeselect();
     this.getList();
   },
   methods: {
-    tabClick() {
-      if (this.status == 0) {
-        this.queryParams.reptransfe_user_type = 1
-        this.getList()
-      } else {
-        this.queryParams.reptransfe_user_type = 0
-        this.getList()
-      }
+    //获取用户信息
+    getUserList() {
+      UserList(this.queryParams).then(response => {
+        this.userList = response.rows
+        console.log( this.userList)
+      })
     },
     /** 查询转单记录列表 */
     getList() {
@@ -185,18 +247,23 @@ export default {
       this.form = {
         pageNum: 1,
         pageSize: 10,
-        reptransferId: null,
         reptId: null,
-        reptNo: null,
+        apply_no: null,
         reptToId: null,
         reptToNo: null,
         applyId: null,
-        reptransfeMessage: null,
+        reptransfer_id: null,
+        reptransfe_message: null,
         reptransfeUser: null,
-        reptransfeToUser: null,
-        reptransfeUserType: null,
+        reptransfe_to_user: null,
+        reptransfe_user_type: null,
+        nick_name: null,
         parentId: null,
+        deptName: null,
+        to_nick_name:null,
         reptransfeTime: null,
+        to_dept_name: null,
+        dept_name: null,
         reptransfeIsDelete: null
       };
       this.resetForm("form");
@@ -204,6 +271,12 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      listReptransfer(this.queryParams).then(response => {
+        this.reptransferList = response.rows;
+        console.log(this.reptransferList)
+        this.total = response.total;
+        this.loading = false;
+      });
       this.getList();
     },
     /** 查询部门下拉树结构 */
@@ -211,16 +284,6 @@ export default {
       treeselect().then(response => {
         this.deptOptions = response.data;
       });
-    },
-    // 筛选节点
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    },
-    // 节点单击事件
-    handleNodeClick(data) {
-      this.queryParams.deptId = data.id;
-      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -240,11 +303,13 @@ export default {
       this.title = "添加转单记录";
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
+    handleUpdate(item) {
       this.reset();
-      const reptransferId = row.reptransferId || this.ids
+      const reptransferId = item.reptransfer_id
+      console.log(reptransferId)
       getReptransfer(reptransferId).then(response => {
-        this.form = response.data;
+        this.ReptransferList = response.data;
+        console.log(this.ReptransferList)
         this.open = true;
         this.title = "修改转单记录";
       });

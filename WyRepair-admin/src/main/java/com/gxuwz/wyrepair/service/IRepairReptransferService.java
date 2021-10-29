@@ -19,7 +19,7 @@ public interface IRepairReptransferService
      * @param reptransferId 转单记录ID
      * @return 转单记录
      */
-    public RepairReptransfer selectRepairReptransferById(Long reptransferId);
+    public  Map<String,Object> selectRepairReptransferById(Long reptransferId);
 
     /**
      * 查询转单记录列表

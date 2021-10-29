@@ -119,6 +119,18 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 查询用户信息列表
+     *
+     * @param sysUser 用户信息
+     * @return 用户信息
+     */
+    @Override
+    public List<SysUser> selectSysUserList(SysUser sysUser)
+    {
+        return userMapper.selectSysUserList(sysUser);
+    }
+
+    /**
      * 通过用户ID查询用户
      * 
      * @param userId 用户ID

@@ -28,7 +28,7 @@ public class RepairReptransferServiceImpl implements IRepairReptransferService
      * @return 转单记录
      */
     @Override
-    public RepairReptransfer selectRepairReptransferById(Long reptransferId)
+    public Map<String, Object> selectRepairReptransferById(Long reptransferId)
     {
         return repairReptransferMapper.selectRepairReptransferById(reptransferId);
     }

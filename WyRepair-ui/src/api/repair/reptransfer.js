@@ -9,6 +9,15 @@ export function listReptransfer(query) {
   })
 }
 
+// 查询用户信息列表
+export function UserList(query) {
+  return request({
+    url: '/repair/reptransfer/userlist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询转单记录详细
 export function getReptransfer(reptransferId) {
   return request({

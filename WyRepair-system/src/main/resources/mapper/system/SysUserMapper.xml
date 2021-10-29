@@ -110,6 +110,15 @@
 		${params.dataScope}
 	</select>
 
+	<select id="selectSysUserList" parameterType="SysUser" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		<where>
+			<if test="userId != null "> and user_id = #{userId}</if>
+			<if test="nickName != null  and nickName != ''"> and nick_name = #{nickName})</if>
+		</where>
+	</select>
+
+
 	<select id="selectWorkerList" parameterType="SysUser" resultMap="SysUserResult">
 		SELECT
 		u.user_id,

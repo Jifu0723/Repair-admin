@@ -20,6 +20,14 @@ public interface SysUserMapper
     public List<SysUser> selectUserList(SysUser sysUser);
 
     /**
+     * 查询用户信息列表
+     *
+     * @param sysUser 用户信息
+     * @return 用户信息集合
+     */
+    public List<SysUser> selectSysUserList(SysUser sysUser);
+
+    /**
      * 根据条件分页查询用户列表（维修人员）
      *
      * @param sysUser 用户信息
