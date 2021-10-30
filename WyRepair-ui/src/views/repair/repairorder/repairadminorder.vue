@@ -403,16 +403,16 @@
 
         <el-row :gutter="0">
 
-          <el-col :span="15">
+          <el-col :span="18">
             <el-form-item label="报修内容" prop="repairContent" label-width="80px">
               <el-input v-model="form.repairContent" style="font-size: 20px;width: 1000px;height: 100px" placeholder=""
-                        type="textarea" :readonly="true"
+                        type="textarea" rows="5" :readonly="true"
               ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="10">
-            <el-form-item label="报修图片预览" prop="incomeSource" label-width="100px">
+            <el-form-item label="报修图片预览" prop="incomeSource"style="margin-top: 50px" label-width="100px">
               <el-upload
                 action=""
                 list-type="picture-card"
