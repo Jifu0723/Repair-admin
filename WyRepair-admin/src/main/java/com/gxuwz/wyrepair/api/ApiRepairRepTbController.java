@@ -126,7 +126,8 @@ public class ApiRepairRepTbController extends BaseController {
             SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
             repairRepTb.setRepairDep(user.getDeptId());
             // 更新维修单状态
-            repairRepTb.setRepairState(2);
+            repairRepTb.setRepairState(2);//已经接单
+            repairRepTb.setRepairedState(4);//等待修复
             repairRepTbService.updateRepairRepTb(repairRepTb);
             // 维修单更新
             RepairApply apply = applyService.selectRepairApplyById(repairRepTb.getApplyId());
@@ -215,7 +216,7 @@ public class ApiRepairRepTbController extends BaseController {
     @GetMapping("/transferRepair")
     public AjaxResult transferRepair(
             @ApiParam(name = "repairRepTb", value = "维修单实体") RepairRepTb repairRepTb,
-            @ApiParam(name = "transferName", value = "转单对象") SysUser tUser) {
+            @ApiParam(name = "transferName", value = "转单对象") SysUser tUser, String TrDescribe) {
 
         Long repairDep = repairRepTb.getRepairDep();//获取初次报修所属部门id
         //获取报修单信息
@@ -234,6 +235,7 @@ public class ApiRepairRepTbController extends BaseController {
 
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(),repairDep);
         newRepair.setRepairState(3);//报修状态为转单中
+        newRepair.setRepairedState(4);//维修状态为等待维修
         newRepair.setRepairName(repairReptb.getRepairName());//报修者姓名
         newRepair.setRepairMoney(repairReptb.getRepairMoney());//维修单价格
         newRepair.setRepairDay(repairReptb.getRepairDay());//报修单日期
@@ -249,6 +251,7 @@ public class ApiRepairRepTbController extends BaseController {
         transferRep.initTransfer(repairRepTb, newRepair, apply.getApplyId(), sysUser.getUserId(), 1);
         transferRep.setReptransfeToUser(tUser.getUserId());
         transferRep.setReptToDept(repairDep);
+        transferRep.setReptransfeMessage(TrDescribe);//转单留言维修情况
         transferRep.setReptransfeTime(new Date());//系统时间
         // 查询上一次转单记录
         RepairReptransfer rt = new RepairReptransfer();

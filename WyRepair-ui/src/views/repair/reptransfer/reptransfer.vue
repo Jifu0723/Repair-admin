@@ -44,7 +44,7 @@
 
     </el-form>
     <div>
-      <el-col :span="27" :xs="24">
+      <el-col :span="24" :xs="24">
         <el-row>
           <el-col :span="6" v-for="(item,index) in reptransferList" :key="index" style="display: inline-block;">
             <el-card class="box-card"
@@ -54,19 +54,22 @@
               </div>
               <div slot="header" class="clearfix">
                 <span>转单用户类型：{{ item.reptransfe_user_type == 0 ? '维修专员 ' : '维修人员' }}</span>
-
               </div>
 
-              <div v-if="item.reptransfe_user_type == 0 ? '#34bfa3 ' : '维修人员'" slot="header" class="clearfix">
+              <div slot="header" class="clearfix">
                 <span style="color: #34bfa3">接单人姓名：【{{ item.nick_name }}】</span>
-
+              </div>
+              <div slot="header" class="clearfix">
+                <span style="color: #34bfa3">接单人联系方式：【{{ item.phonenumber }}】</span>
               </div>
               <div slot="header" class="clearfix">
                 <span style="color: #34bfa3">接单人部门：【{{ item.dept_name }}】</span>
-
               </div>
               <div class="text item">
                 <span style="color: red">被转单人姓名：【{{ item.to_nick_name }}】</span>
+              </div>
+              <div class="text item">
+                <span style="color: red">被转单人联系方式：【{{ item.tophonenumber }}】</span>
               </div>
               <div class="text item">
                 <span style="color: red">被转单人部门：【{{ item.to_dept_name }}】</span>
@@ -99,91 +102,57 @@
       <el-form ref="form" :model="ReptransferList"  :rules="rules" label-width="100px">
 
         <table style="font-size: 16px" border="1" cellspacing="0" width="100%" class="table" rules="all" >
-        <el-row :gutter="0">
-          <el-col :span="15">
 
-            <el-form-item  label="报修单编号:" prop="apply_no" label-width="110px">
-              <div style="font-size: 17px">
-                【{{ ReptransferList.apply_no }}】
-              </div>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="9" >
-            <el-form-item label="报修类型:"   prop="apply_address" label-width="110px">
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 1">
-                【网络设备】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 2">
-                【水电类】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 3">
-                【家具类】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 4">
-                【办公室设备】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 6">
-                【教学电子】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 7">
-                【电器类】
-              </div>
-              <div style="font-size: 17px" v-if="ReptransferList.apply_type == 8">
-                【木材类】
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-
-        <el-row :gutter="0">
+        <el-row style="margin-top:20px"  :gutter="0">
           <el-col :span="12">
-            <el-form-item label="报修地址:" prop="apply_address" label-width="110px">
-              <div style="font-size: 17px">
-                【{{ ReptransferList.apply_address }}】
-              </div>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12">
-            <el-form-item label="转单时间:" prop="reptransfeTime" label-width="90px">
-              <div style="font-size: 17px">
-                【{{ ReptransferList.reptransfeTime }}】
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="0">
-          <el-col :span="12">
-            <el-form-item label="接单人姓名:" prop="nick_name" label-width="110px">
+            <el-form-item label="接单人姓名:" prop="nick_name" label-width="130px">
               <div style="font-size: 17px">
                 【{{ ReptransferList.nick_name }}】
               </div>
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
-            <el-form-item label="接单人部门:" prop="dept_name" label-width="90px">
-              <div style="font-size: 17px">
-                【{{ ReptransferList.dept_name }}】
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="0">
-          <el-col :span="12">
-            <el-form-item label="被单人姓名:" prop="to_nick_name" label-width="110px">
+            <el-form-item label="被转单人姓名:" prop="to_nick_name" label-width="150px">
               <div style="font-size: 17px">
                 【{{ ReptransferList.to_nick_name }}】
               </div>
             </el-form-item>
           </el-col>
+        </el-row>
 
+          <el-row  :gutter="0">
+            <el-col :span="12">
+              <el-form-item label="接单人性别:" prop="sex" label-width="130px">
+                <div style="font-size: 17px" v-if="ReptransferList.sex == 0">
+                  【男】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.sex == 1">
+                  【女】
+                </div>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="被转单人性别:" prop="tosex" label-width="150px">
+                <div style="font-size: 17px" v-if="ReptransferList.tosex == 0">
+                  【男】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.tosex == 1">
+                  【女】
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+        <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="被单人部门:" prop="to_dept_name" label-width="90px">
+            <el-form-item label="接单人部门:" prop="dept_name" label-width="130px">
+              <div style="font-size: 17px">
+                【{{ ReptransferList.dept_name }}】
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="被转单人部门:" prop="to_dept_name" label-width="150px">
               <div style="font-size: 17px">
                 【{{ ReptransferList.to_dept_name }}】
               </div>
@@ -191,24 +160,98 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="0">
-          <el-col :span="12">
-            <el-form-item label="报修内容:" prop="apply_content" label-width="110px">
-              <el-input v-model="ReptransferList.apply_content" style="font-size: 15px;" :readonly="true" placeholder=""
-                        type="textarea" rows="6"
-                        clearable :style="{width: '90%'}">
-              </el-input>
-            </el-form-item>
-          </el-col>
+          <el-row :gutter="0">
+            <el-col :span="12">
+              <el-form-item label="接单人联系方式:" prop="dept_name" label-width="160px">
+                <div style="font-size: 17px">
+                  【{{ ReptransferList.phonenumber }}】
+                </div>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="被转单人联系方式:" prop="to_dept_name" label-width="175px">
+                <div style="font-size: 17px">
+                  【{{ ReptransferList.tophonenumber }}】
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-          <el-col :span="12">
-            <el-form-item label="转单反馈:" prop="reptransfe_message" label-width="90px">
-              <el-input type="textarea" rows="6" v-model="ReptransferList.reptransfe_message" placeholder=""
-                        style="font-size: 15px" :readonly="true"
-                        :style="{width: '100%'}"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+          <el-row :gutter="0">
+            <el-col :span="13">
+              <el-form-item  label="报修单编号:" prop="apply_no" label-width="130px">
+                <div style="font-size: 17px">
+                  【{{ ReptransferList.apply_no }}】
+                </div>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="7" >
+              <el-form-item label="报修类型:"   prop="apply_address" label-width="80px">
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 1">
+                  【网络设备】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 2">
+                  【水电类】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 3">
+                  【家具类】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 4">
+                  【办公室设备】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 6">
+                  【教学电子】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 7">
+                  【电器类】
+                </div>
+                <div style="font-size: 17px" v-if="ReptransferList.apply_type == 8">
+                  【木材类】
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+
+          <el-row :gutter="0">
+            <el-col :span="12">
+              <el-form-item label="报修地址:" prop="apply_address" label-width="120px">
+                <div style="font-size: 17px">
+                  【{{ ReptransferList.apply_address }}】
+                </div>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="12">
+              <el-form-item label="转单时间:" prop="reptransfeTime" label-width="120px">
+                <div style="font-size: 17px">
+                  【{{ ReptransferList.reptransfeTime }}】
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="0">
+            <el-col :span="11">
+              <el-form-item label="报修内容:" prop="apply_content" label-width="120px">
+                <el-input v-model="ReptransferList.apply_content" style="font-size: 15px;" :readonly="true" placeholder=""
+                          type="textarea" rows="6"
+                          clearable :style="{width: '90%'}">
+                </el-input>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="11">
+              <el-form-item label="转单反馈:" prop="reptransfe_message" label-width="160px">
+                <el-input type="textarea" rows="6" v-model="ReptransferList.reptransfe_message" placeholder=""
+                          style="font-size: 15px" :readonly="true"
+                          :style="{width: '100%'}"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+
         </table>
 
       </el-form>
@@ -281,12 +324,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        tosex : null,
         reptId: null,
         apply_no: null,
         reptToId: null,
         reptToNo: null,
         applyId: null,
         reptNo: null,
+        tophonenumber: null,
+        phonenumber: null,
         reptransfer_id: null,
         reptransfeMessage: null,
         reptransfe_message: null,
@@ -333,6 +379,7 @@ export default {
       this.loading = true;
       listReptransfer(this.queryParams).then(response => {
         this.reptransferList = response.rows;
+        console.log(this.reptransferList)
         this.total = response.total;
         this.loading = false;
       });

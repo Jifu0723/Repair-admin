@@ -108,6 +108,7 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         repTb.setRepairMonth(month);//月份
         repTb.setRepairDay(day);//日份
         repTb.setRepairName(nickname);//报修者的姓名
+        repTb.setRepairedState(4);//等待维修
         repTb.initRepairApply(repairApply,repairApply.getApplyNo(),user.getDeptId());
         if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
         {

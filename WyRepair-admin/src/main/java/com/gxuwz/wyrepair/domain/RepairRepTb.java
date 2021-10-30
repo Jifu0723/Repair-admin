@@ -84,8 +84,8 @@ public class RepairRepTb extends BaseEntity {
     /**
      * 维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)
      */
-    @ApiModelProperty("维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复) ")
-    @Excel(name = "维修后设备状态描述(0待修、1已修复、2已换新、3未修复、4无法修复)")
+    @ApiModelProperty("维修后设备状态描述(0.已修复、1.已换新、2.无法修复 3.未修复、4.等待修复) ")
+    @Excel(name = "维修后设备状态描述(0.已修复、1.已换新、2.无法修复 3.未修复、4.等待修复)")
     private Integer repairedState;
 
     /**

@@ -70,12 +70,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         apply.apply_address,
         apply.apply_content,
         u.user_id,
+        u.sex,
         u.nick_name,
+        u.phonenumber,
         de.dept_id,
         de.dept_name,
         i.nick_name AS to_nick_name,
+        i.phonenumber AS tophonenumber,
+        i.sex AS tosex,
         d.dept_name AS to_dept_name,
-        reptransfer.reptransfe_time as reptransfeTime
+        reptransfer.reptransfe_time AS reptransfeTime
         FROM
         repair_reptransfer AS reptransfer
         LEFT JOIN repair_apply AS apply ON apply.apply_id = reptransfer.apply_id
@@ -111,30 +115,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectRepairReptransferById"  parameterType="Long" resultType="map">
         SELECT
-            reptransfer.reptransfer_id,
-            reptransfer.reptransfe_user,
-            reptransfer.reptransfe_to_user,
-            reptransfer.reptransfe_message,
-            reptransfer.reptransfe_user_type,
-            apply.apply_userid,
-            apply.apply_type,
-            apply.apply_no,
-            apply.apply_address,
-            apply.apply_content,
-            u.user_id,
-            u.nick_name,
-            de.dept_id,
-            de.dept_name,
-            i.nick_name AS to_nick_name,
-            d.dept_name AS to_dept_name,
-            reptransfer.reptransfe_time as reptransfeTime
+        reptransfer.reptransfer_id,
+        reptransfer.reptransfe_user,
+        reptransfer.reptransfe_to_user,
+        reptransfer.reptransfe_message,
+        reptransfer.reptransfe_user_type,
+        apply.apply_userid,
+        apply.apply_type,
+        apply.apply_no,
+        apply.apply_address,
+        apply.apply_content,
+        u.user_id,
+        u.sex,
+        u.nick_name,
+        u.phonenumber,
+        de.dept_id,
+        de.dept_name,
+        i.nick_name AS to_nick_name,
+        i.phonenumber AS tophonenumber,
+        i.sex AS tosex,
+        d.dept_name AS to_dept_name,
+        reptransfer.reptransfe_time AS reptransfeTime
         FROM
-            repair_reptransfer AS reptransfer
-                LEFT JOIN repair_apply AS apply ON apply.apply_id = reptransfer.apply_id
-                LEFT JOIN sys_user AS u ON reptransfer.reptransfe_user = u.user_id
-                LEFT JOIN sys_user AS i ON reptransfer.reptransfe_to_user = i.user_id
-                LEFT JOIN sys_dept AS d ON d.dept_id = i.dept_id
-                LEFT JOIN sys_dept AS de ON de.dept_id = u.dept_id
+        repair_reptransfer AS reptransfer
+        LEFT JOIN repair_apply AS apply ON apply.apply_id = reptransfer.apply_id
+        LEFT JOIN sys_user AS u ON reptransfer.reptransfe_user = u.user_id
+        LEFT JOIN sys_user AS i ON reptransfer.reptransfe_to_user = i.user_id
+        LEFT JOIN sys_dept AS d ON d.dept_id = i.dept_id
+        LEFT JOIN sys_dept AS de ON de.dept_id = u.dept_id
         <where>
             <if test="reptransferId != null "> and reptransfer_id = #{reptransferId}</if>
         </where>

@@ -174,7 +174,7 @@ public class RepairRepTbController extends BaseController {
             SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
             repairRepTb.setRepairDep(user.getDeptId());
             /** 更新维修单状态*/
-            repairRepTb.setRepairState(2);
+            repairRepTb.setRepairState(2);//已经接单
             repairRepTbService.updateRepairRepTb(repairRepTb);
             /** 维修单更新 */
             RepairApply apply = applyService.selectRepairApplyById(repairRepTb.getApplyId());
