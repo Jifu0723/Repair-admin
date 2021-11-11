@@ -138,6 +138,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/api/repair/tb/findAllDept").permitAll()//二级学院
                 .antMatchers("/repair/appimg/downloadRepairImg/**").anonymous()//报修图片路径
                 .antMatchers("/api/repair/register/register").anonymous()//用户信息注册
+                //.antMatchers("/api/repair/tb/totallist").anonymous()//完成的报修单列表
 
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()

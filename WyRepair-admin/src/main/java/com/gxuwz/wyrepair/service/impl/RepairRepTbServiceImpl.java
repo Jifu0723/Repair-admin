@@ -77,6 +77,17 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     }
 
     /**
+     * 查询完成的维修单列表
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    @Override
+    public   List<Map<String, Object>>  selectRepairTotalList( Map<String, Object> params) {
+        return repairRepTbMapper.selectRepairTotalList(params);
+    }
+
+    /**
      * 查询报修单列表
      *
      * @param repairRepTb 报修单
@@ -159,5 +170,10 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     public int deleteRepairRepTbById(Long repairId)
     {
         return repairRepTbMapper.deleteRepairRepTbById(repairId);
+    }
+
+    @Override
+    public List<Map<String, Object>> RepairTotalList(Map<String, Object> params) {
+        return repairRepTbMapper.RepairTotalList(params);
     }
 }

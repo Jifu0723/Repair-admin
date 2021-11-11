@@ -72,6 +72,22 @@ public interface RepairRepTbMapper
     public int deleteRepairRepTbByIds(Long[] repairIds);
 
     /**
+     * 查询完成的维修单列表（工资结算）
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    List<Map<String, Object>>  selectRepairTotalList( Map<String, Object> params);
+
+    /**
+     * 查询完成的维修单列表
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    List<Map<String, Object>> RepairTotalList(Map<String, Object> params);
+
+    /**
      * 查询除【维修人员】外的其他人员的报修单列表
      *
      * @param repairRepTb 报修单

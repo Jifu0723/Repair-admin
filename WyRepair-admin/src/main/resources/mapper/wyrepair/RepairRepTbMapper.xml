@@ -137,6 +137,61 @@
         </where>
     </select>
 
+    <select id="selectRepairTotalList"   parameterType="String" resultType="Map">
+        SELECT
+        repair_money as repairMoney,
+        repair_address as repairAddress,
+        repair_content as repairContent,
+        repair_month as repairMonth,
+        SUM( repair_money ) AS RepairMoneyTotal,
+        COUNT(*) AS RepairOrderTotal
+        FROM repair_rep_tb
+        <where>
+            and repair_comment = 1
+            and repair_destory = 1
+            <if test="repairMonth != null "> and repair_month = #{repairMonth}</if>
+            <if test="repaireName != null "> and repaire_name = #{repaireName}</if>
+        </where>
+        GROUP BY
+        repair_month
+    </select>
+
+    <select id="RepairTotalList" resultMap="RepairRepTbResult" parameterType="map">
+        select
+        repair_id,
+        repair_no,
+        repair_address,
+        repair_content,
+        repair_money,
+        repair_type,
+        repair_expect_type,
+        repair_expect_time,
+        repair_state,
+        repaired_state,
+        repair_destory,
+        repair_transfer,
+        repair_comment,
+        cur_work,
+        repair_dep,
+        apply_id,
+        repair_destory_time,
+        repair_create_time,
+        repair_is_delete,
+        repair_year,
+        repair_month,
+        repair_day,
+        repair_name,
+        repaire_name
+        from repair_rep_tb
+        <where>
+            and repair_comment = 1
+            and repair_destory = 1
+            <if test="repairMonth != null "> and repair_month = #{repairMonth}</if>
+            <if test="repaireName != null "> and repaire_name = #{repaireName}</if>
+        </where>
+
+    </select>
+
     <select id="selectRepairPersonRepTbList" resultMap="RepairRepTbResult">
         select
         tb.repair_id,

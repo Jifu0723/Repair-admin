@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报修单Controller
@@ -97,6 +98,33 @@ public class ApiRepairRepTbController extends BaseController {
             System.out.println(list);
             return getDataTable(list);
         }
+    }
+
+    /**
+     * 查询所有报修单列表(工资结算)
+     */
+    @ApiOperation("查询报修单列表(工资结算)")
+    @GetMapping("/moneytotal")
+    public AjaxResult moneytotal(@RequestParam  Map<String, Object> params) {
+        //startPage();
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("repaireName",user.getNickName());
+        List<Map<String,Object>> map   = repairRepTbService.selectRepairTotalList(params);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 查询所有报修单列表
+     */
+    @ApiOperation("查询报修单列表")
+    @GetMapping("/repairtotal")
+    public TableDataInfo repairtotal(@RequestParam  Map<String, Object> params) {
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("repaireName",user.getNickName());
+        List<Map<String,Object>> map   = repairRepTbService.RepairTotalList(params);
+        return getDataTable(map);
     }
 
     /**
