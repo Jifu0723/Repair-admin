@@ -9,6 +9,24 @@ export function listTb(query) {
   })
 }
 
+// 月酬金表数据查询
+export function MonthWorkList(query) {
+  return request({
+    url: '/repair/tb/monthworklist',
+    method: 'get',
+    params: query
+  })
+}
+
+// 获取用户信息（姓名、手机号码、所在二级学院等）
+export function UserInformation(query) {
+  return request({
+    url: '/repair/tb/userInformation',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询报修单列表
 export function reptbList(query) {
   return request({

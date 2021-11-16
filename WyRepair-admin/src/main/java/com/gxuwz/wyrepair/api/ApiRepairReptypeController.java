@@ -35,7 +35,6 @@ public class ApiRepairReptypeController extends BaseController
      * 查询维修类型列表
      */
     @ApiOperation("查询维修类型列表")
-    @PreAuthorize("@ss.hasPermi('repair:reptype:list')")
     @GetMapping("/list")
     public TableDataInfo list(RepairReptype repairReptype)
     {

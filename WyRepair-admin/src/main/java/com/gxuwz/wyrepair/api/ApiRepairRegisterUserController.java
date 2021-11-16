@@ -82,7 +82,7 @@ public class ApiRepairRegisterUserController {
 
         repairRegisterUser.setDeptId(deptId);//插入二级学院id
         repairRegisterUser.setSex(params.get("sex").toString());//获取前端输入的用户性别
-
+        repairRegisterUser.setState(0L);
         j = repairRegisterUserService.insertSysUser(repairRegisterUser);
         repairUserRole.setRoleId(roleId);//插入角色id
         repairUserRole.setUserId(repairRegisterUser.getUserId());

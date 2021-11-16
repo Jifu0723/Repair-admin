@@ -7,7 +7,7 @@ function resolve(dir) {
 
 const name = process.env.VUE_APP_TITLE || '后勤报修数字化管理平台' // 网页标题
 
-const port = process.env.port || process.env.npm_config_port || login80 // 端口
+const port = process.env.port || process.env.npm_config_port || 80 // 端口
 
 module.exports = {
 // vue.config.js 配置说明

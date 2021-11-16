@@ -76,6 +76,10 @@ public class SysUser extends BaseEntity
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
 
+    /** 银行卡信息是否填写状态（0.未填写1.已填写） */
+    @Excel(name = "银行卡信息是否填写状态（0.未填写1.已填写）")
+    private Long state;
+
     /** 部门对象 */
     @Excels({
         @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
@@ -98,6 +102,14 @@ public class SysUser extends BaseEntity
     public SysUser()
     {
 
+    }
+
+    public Long getState() {
+        return state;
+    }
+
+    public void setState(Long state) {
+        this.state = state;
     }
 
     public SysUser(Long userId)

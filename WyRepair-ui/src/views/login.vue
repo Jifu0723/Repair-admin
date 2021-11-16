@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">后勤报修数字化管理平台</h3>
+      <h2 class="title">后勤报修数字化管理平台</h2>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -18,20 +18,6 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-<!--      <el-form-item prop="code" v-if="captchaOnOff">-->
-<!--        <el-input-->
-<!--          v-model="loginForm.code"-->
-<!--          auto-complete="off"-->
-<!--          placeholder="验证码"-->
-<!--          style="width: 63%"-->
-<!--          @keyup.enter.native="handleLogin"-->
-<!--        >-->
-<!--          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />-->
-<!--        </el-input>-->
-<!--        <div class="login-code">-->
-<!--          <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
-<!--        </div>-->
-<!--      </el-form-item>-->
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
@@ -54,6 +40,7 @@
       <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -68,7 +55,7 @@ export default {
       codeUrl: "",
       cookiePassword: "",
       loginForm: {
-        username: "repairadmin",
+        username: "201809512626",
         password: "123456",
         rememberMe: false,
         uuid: ""
@@ -154,13 +141,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
-  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  background-color: #1ab394;
+  background-image: url("../assets/images/wy.jpg");
+  background-size: 100% 100%;
 }
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0 auto 30px auto;
   text-align: center;
+  font-size: 18px;
   color: #707070;
 }
 

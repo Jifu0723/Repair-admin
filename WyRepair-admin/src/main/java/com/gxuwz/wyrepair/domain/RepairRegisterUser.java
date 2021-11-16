@@ -67,10 +67,22 @@ public class RepairRegisterUser extends BaseEntity
     @Excel(name = "最后登录IP")
     private String loginIp;
 
+    /** 银行卡信息是否填写状态（0.未填写1.已填写） */
+    @Excel(name = "银行卡信息是否填写状态（0.未填写1.已填写）")
+    private Long state;
+
     /** 最后登录时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date loginDate;
+
+    public Long getState() {
+        return state;
+    }
+
+    public void setState(Long state) {
+        this.state = state;
+    }
 
     public void setUserId(Long userId)
     {
@@ -201,26 +213,22 @@ public class RepairRegisterUser extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("userId", getUserId())
-                .append("deptId", getDeptId())
-                .append("userName", getUserName())
-                .append("nickName", getNickName())
-                .append("userType", getUserType())
-                .append("email", getEmail())
-                .append("phonenumber", getPhonenumber())
-                .append("sex", getSex())
-                .append("avatar", getAvatar())
-                .append("password", getPassword())
-                .append("status", getStatus())
-                .append("delFlag", getDelFlag())
-                .append("loginIp", getLoginIp())
-                .append("loginDate", getLoginDate())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
+        return "RepairRegisterUser{" +
+                "userId=" + userId +
+                ", deptId=" + deptId +
+                ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", userType='" + userType + '\'' +
+                ", email='" + email + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", state=" + state +
+                ", loginDate=" + loginDate +
+                '}';
     }
 }

@@ -88,6 +88,19 @@ public interface RepairRepTbMapper
     List<Map<String, Object>> RepairTotalList(Map<String, Object> params);
 
     /**
+     * 获取用户信息（姓名、手机号码、所在二级学院等）
+     */
+    Map UserInformation(Map<String, Object> params);
+
+    /**
+     * 查询月酬金表数据
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    List<Map<String, Object>> selectRepairWorkTotal(Map<String, Object> params);
+
+    /**
      * 查询除【维修人员】外的其他人员的报修单列表
      *
      * @param repairRepTb 报修单

@@ -106,7 +106,6 @@ public class ApiRepairRepTbController extends BaseController {
     @ApiOperation("查询报修单列表(工资结算)")
     @GetMapping("/moneytotal")
     public AjaxResult moneytotal(@RequestParam  Map<String, Object> params) {
-        //startPage();
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         params.put("repaireName",user.getNickName());
@@ -115,9 +114,9 @@ public class ApiRepairRepTbController extends BaseController {
     }
 
     /**
-     * 查询所有报修单列表
+     * 查询所有报修单列表(完成的维修单)
      */
-    @ApiOperation("查询报修单列表")
+    @ApiOperation("查询报修单列表(完成的维修单)")
     @GetMapping("/repairtotal")
     public TableDataInfo repairtotal(@RequestParam  Map<String, Object> params) {
         // 获取用户信息
@@ -175,14 +174,12 @@ public class ApiRepairRepTbController extends BaseController {
     @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/repairpersonwaitReplist")
     public TableDataInfo repairpersonwaitReplist(RepairRepTb repairRepTb) {
-//        startPage();
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         repairRepTb.setCurWork(1);
         repairRepTb.setRepairState(1);
         repairRepTb.setRepairDep(user.getDeptId());
         List<RepairRepTb> list = repairRepTbService.selectRepairPersonRepTbList(repairRepTb, null);
-        System.out.println(list);
         return getDataTable(list);
     }
 
@@ -424,8 +421,7 @@ public class ApiRepairRepTbController extends BaseController {
     public AjaxResult edit(@RequestBody RepairRepTb repairRepTb) {
 
         RepairRepTb tb = repairRepTbService.selectRepairRepTbById(repairRepTb.getRepairId());
-        System.out.println(tb.getRepairMoney());
-        return toAjax(repairRepTbService.updateRepairRepTb(repairRepTb));
+        return toAjax(repairRepTbService.updateRepairRepTb(tb));
     }
 
     /**
@@ -482,11 +478,7 @@ public class ApiRepairRepTbController extends BaseController {
     @GetMapping("/findByDeptIdUserIdForUser")
     public AjaxResult findByDeptIdUserIdForUser(@ApiParam(name = "deptId", value = "部门ID") Long deptId) {
         SysUser sysUser = new SysUser();
-        //SysRole sysRole = new SysRole()
         sysUser.setDeptId(deptId);
-        //sysUser.setDeptId(deptId);
-        //Long[] roleIds = {101L};
-        //sysUser.setRoleIds(roleIds);
         List<SysUser> list = sysUserService.selectWorkerList(sysUser);
         System.out.println(list);
         return AjaxResult.success(list);
@@ -543,6 +535,8 @@ public class ApiRepairRepTbController extends BaseController {
         repairRepTb.setRepairedState(repairedState);
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        //标记维修人员ID
+        repairRepTb.setRepaireId(user.getUserId());
         //标记维修人员姓名
         repairRepTb.setRepaireName(user.getNickName());
         // 标记【设备维修后】状态

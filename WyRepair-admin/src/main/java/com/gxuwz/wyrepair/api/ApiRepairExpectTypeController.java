@@ -35,7 +35,6 @@ public class ApiRepairExpectTypeController extends BaseController
      * 查询期望维修类型列表
      */
     @ApiOperation("获取期望维修类型")
-    @PreAuthorize("@ss.hasPermi('repair:type:list')")
     @GetMapping("/list")
     public TableDataInfo list(RepairExpectType repairExpectType)
     {
@@ -48,7 +47,6 @@ public class ApiRepairExpectTypeController extends BaseController
      * 导出期望维修类型列表
      */
     @ApiOperation("导出期望维修类型列表")
-    @PreAuthorize("@ss.hasPermi('repair:type:export')")
     @Log(title = "期望维修类型", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(RepairExpectType repairExpectType)

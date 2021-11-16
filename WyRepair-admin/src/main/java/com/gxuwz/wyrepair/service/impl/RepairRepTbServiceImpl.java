@@ -176,4 +176,14 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     public List<Map<String, Object>> RepairTotalList(Map<String, Object> params) {
         return repairRepTbMapper.RepairTotalList(params);
     }
+
+    @Override
+    public List<Map<String, Object>> selectRepairWorkTotal(Map<String, Object> params) {
+        return repairRepTbMapper.selectRepairWorkTotal(params);
+    }
+
+    @Override
+    public Map UserInformation(Map<String, Object> params) {
+        return repairRepTbMapper.UserInformation(params);
+    }
 }

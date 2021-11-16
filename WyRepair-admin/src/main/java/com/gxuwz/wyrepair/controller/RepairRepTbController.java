@@ -16,6 +16,7 @@ import com.gxuwz.wyrepair.service.*;
 import com.gxuwz.wyrepair.util.RepairCodeGen;
 import com.gxuwz.wyrepair.util.DateUtil;
 import com.gxuwz.wyrepair.system.service.ISysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +69,6 @@ public class RepairRepTbController extends BaseController {
         if ("repairadmin".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             params.put("repairDep",user.getDeptId());
             list = repairRepTbService.queryRepairAdminOrderList(params);
-            System.out.println(params);
             repairRepTb.setRepairDep(user.getDeptId());
         } else if ("repair".equals(sysRole.getRoleKey()) && (repairTime!=null && !"".equals(repairTime))) {
             repairRepTb.setRepairDep(user.getDeptId());
@@ -77,6 +77,34 @@ public class RepairRepTbController extends BaseController {
             list = repairRepTbService.queryRepairOrderList(params);
         }
         params.remove("repairTime");
+        return getDataTable(list);
+    }
+
+    /**
+     * 获取用户信息（姓名、手机号码、所在二级学院等）
+     */
+    @ApiOperation("获取用户信息（姓名、手机号码、所在二级学院等）")
+    @GetMapping("/userInformation")
+    public AjaxResult userInformation(@RequestParam (required = false)Map<String, Object> params)
+    {
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("userId",user.getUserId());
+        Map map = repairRepTbService.UserInformation(params);
+        return AjaxResult.success(map);
+    }
+
+    /**
+     * 月酬金表数据查询
+     */
+    @ApiOperation("查询转单记录列表")
+    @GetMapping("/monthworklist")
+    public TableDataInfo monthworklist(@RequestParam Map<String, Object> params)
+    {
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("repaireName",user.getNickName());
+        List<Map<String,Object>> list = repairRepTbService.selectRepairWorkTotal(params);
         return getDataTable(list);
     }
 
@@ -94,7 +122,6 @@ public class RepairRepTbController extends BaseController {
         SysRole sysRole = roles.get(0);
         if ("repairadmin".equals(sysRole.getRoleKey()))
         {
-            System.out.println(2222);
             repairRepTb.setRepairDep(user.getDeptId());
             List<RepairRepTb> list = repairRepTbService.selectRepairRepTbList(repairRepTb);
             return getDataTable(list);
@@ -245,7 +272,6 @@ public class RepairRepTbController extends BaseController {
                                      SysUser tUser) {
         //获取申请单信息
         RepairApply apply = applyService.selectRepairApplyById(repairRepTb.getApplyId());
-//        SysUser sysUser = sysUserService.selectUserById(tUser.getUserId());
         // 原报修单运转状态改变
         repairRepTb.setCurWork(0);
         repairRepTbService.updateRepairRepTb(repairRepTb);

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxuwz.wyrepair.mapper.BankMapper">
+    
+    <resultMap type="Bank" id="BankResult">
+        <result property="bankId"    column="bank_id"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAccount"    column="bank_account"    />
+        <result property="bankUser"    column="bank_user"    />
+        <result property="cardno"    column="cardno"    />
+        <result property="userId"    column="user_id"    />
+        <!--银行卡信息与用户一对一关系-->
+        <association property="user" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysUser">
+            <result property="userName"    column="user_name"    />
+            <result property="nickName"    column="nick_name"    />
+            <result property="email"    column="email"    />
+            <result property="phonenumber"    column="phonenumber"    />
+            <result property="sex"    column="sex"    />
+            <result property="state"    column="state"    />
+        </association>
+        <!--转单记录与所转部门一对一关系-->
+        <association property="dept" javaType="com.gxuwz.wyrepair.common.core.domain.entity.SysDept">
+            <result property="deptName" column="dept_name"/>
+            <result property="deptId" column="dept_id"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectBankVo">
+        select bank_id, bank_name, bank_account, bank_user, cardno, user_id from bank
+    </sql>
+
+    <select id="selectUserBankList" resultMap="BankResult" >
+        SELECT
+        k.user_id,
+        k.bank_id,
+        k.bank_account ,
+        k.bank_name ,
+        k.bank_user ,
+        k.cardno,
+        u.email,
+        u.sex,
+        u.state,
+        u.phonenumber,
+        u.nick_name,
+        u.user_name ,
+        d.dept_name,
+        d.dept_id
+        FROM
+        sys_user AS u
+        LEFT JOIN bank AS k ON u.user_id = k.user_id
+        LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
+        <where>
+            <if test="userId != null "> and u.user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectBankByBankId" parameterType="Long" resultMap="BankResult">
+        <include refid="selectBankVo"/>
+        where bank_id = #{bankId}
+    </select>
+
+    <insert id="insertBank" parameterType="Bank" useGeneratedKeys="true" keyProperty="bankId">
+        insert into bank
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bankName != null">bank_name,</if>
+            <if test="bankAccount != null">bank_account,</if>
+            <if test="bankUser != null">bank_user,</if>
+            <if test="cardno != null">cardno,</if>
+            <if test="userId != null">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bankName != null">#{bankName},</if>
+            <if test="bankAccount != null">#{bankAccount},</if>
+            <if test="bankUser != null">#{bankUser},</if>
+            <if test="cardno != null">#{cardno},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+</mapper>

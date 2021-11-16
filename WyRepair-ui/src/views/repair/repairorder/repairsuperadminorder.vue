@@ -51,6 +51,7 @@
           <el-form-item label="二级学院" prop="repairDep" label-width="100px">
             <el-select v-model="queryParams1.repairDep" placeholder="请选择二级学院" clearable size="small">
               <el-option
+                v-if=""
                 v-for="item in depList"
                 :key="item.deptId"
                 :label="item.deptName"

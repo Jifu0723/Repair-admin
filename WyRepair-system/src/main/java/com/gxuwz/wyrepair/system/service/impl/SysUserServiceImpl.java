@@ -584,4 +584,14 @@ public class SysUserServiceImpl implements ISysUserService
         }
         return successMsg.toString();
     }
+    /**
+     * 修改用户信息
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public int updateUserInformation(SysUser user) {
+        return userMapper.updateUserInformation(user);
+    }
 }

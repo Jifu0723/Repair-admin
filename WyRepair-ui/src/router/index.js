@@ -66,9 +66,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: (resolve) => require(['@/views/index_v1'], resolve),
+        component: (resolve) => require(['@/views/index'], resolve),
         name: 'Index',
-        meta: { title: '数字化统计界面', icon: 'chart', affix: true }
+        meta: { title: '首页', icon: 'chart', affix: true }
       }
     ]
   },

@@ -24,10 +24,11 @@
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="state"    column="state"    />
     </resultMap>
 
     <sql id="selectRepairRegisterUserVo">
-        select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from sys_user
+        select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark,state from sys_user
     </sql>
 
     <insert id="insertSysUser" parameterType="repairRegisterUser" useGeneratedKeys="true" keyProperty="userId">
@@ -51,6 +52,7 @@
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
+            <if test="state != null">state,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptId != null">#{deptId},</if>
@@ -71,6 +73,7 @@
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="state != null">#{state},</if>
         </trim>
     </insert>
 

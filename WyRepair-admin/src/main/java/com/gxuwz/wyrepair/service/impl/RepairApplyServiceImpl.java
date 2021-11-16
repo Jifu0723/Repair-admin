@@ -112,11 +112,11 @@ public class RepairApplyServiceImpl implements IRepairApplyService
         repTb.initRepairApply(repairApply,repairApply.getApplyNo(),user.getDeptId());
         if (repairApply.getApplyExpectType() == 1 ||  repairApply.getApplyExpectType() == 2)
         {
-            repTb.setRepairMoney(15);//换新、换配件
+            repTb.setRepairMoney(30);//换新、换配件
         }
         if (repairApply.getApplyExpectType() == 3 )
         {
-            repTb.setRepairMoney(25);//维修
+            repTb.setRepairMoney(45);//维修
         }
         // 维修人员报修自动接单
         if (ROLE_REPAIR.equals(roleName) && isOrder >0) {

@@ -77,13 +77,6 @@ public interface IRepairRepTbService
      */
     public List<RepairRepTb> selectRepairTbListOfOthers(RepairRepTb repairRepTb,Long applyId);
 
-    /**
-     * 查询完成的维修单列表（工资结算）
-     *
-     * @param params 维修单列表
-     * @return 维修单列表集合
-     */
-    List<Map<String, Object>>  selectRepairTotalList( Map<String, Object> params);
 
     /**
      * 新增报修单
@@ -123,4 +116,24 @@ public interface IRepairRepTbService
      * @return 维修单列表集合
      */
     List<Map<String, Object>> RepairTotalList(Map<String, Object> params);
+
+    /**
+     * 查询完成的维修单列表（工资结算）
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    List<Map<String, Object>>  selectRepairTotalList( Map<String, Object> params);
+
+    /**
+     * 查询月酬金表数据
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    List<Map<String, Object>> selectRepairWorkTotal(Map<String, Object> params);
+    /**
+     * 获取用户信息（姓名、手机号码、所在二级学院等）
+     */
+    Map UserInformation(Map<String, Object> params);
 }
