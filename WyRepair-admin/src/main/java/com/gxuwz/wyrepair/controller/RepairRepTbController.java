@@ -101,10 +101,12 @@ public class RepairRepTbController extends BaseController {
     @GetMapping("/monthworklist")
     public TableDataInfo monthworklist(@RequestParam Map<String, Object> params)
     {
+        System.out.println(params);
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         params.put("repaireName",user.getNickName());
         List<Map<String,Object>> list = repairRepTbService.selectRepairWorkTotal(params);
+        System.out.println(list);
         return getDataTable(list);
     }
 

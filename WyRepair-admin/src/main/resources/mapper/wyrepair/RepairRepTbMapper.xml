@@ -165,10 +165,15 @@
         u.phonenumber AS phonenumber,
         u.email,
         u.user_name AS userName,
-        d.dept_name AS deptName
+        d.dept_name AS deptName ,
+        b.bank_account AS bankAccount,
+        b.bank_name AS bankName,
+        b.bank_user AS bankUser,
+        b.cardno
         FROM
         sys_user AS u
         LEFT JOIN sys_dept AS d ON d.dept_id = u.dept_id
+        LEFT JOIN bank AS b ON b.user_id = u.user_id
         <where>
             <if test="userId != null "> and u.user_id = #{userId}</if>
         </where>
@@ -177,13 +182,9 @@
     <select id="selectRepairWorkTotal"  parameterType="String" resultType="Map">
         SELECT
         repairRepTb.repaire_name AS repaireName,
-        u.phonenumber AS phonenumber,
-        u.email,
-        u.user_name AS userName,
         repairRepTb.repair_month AS repairMonth,
         repairRepTb.repair_type AS repairType,
-        d.dept_name AS deptName,
-        repairRepTb.repair_day,
+        repairRepTb.repair_day AS repairDay,
         SUM( repairRepTb.repair_day AND repairRepTb.repair_destory = 1 AND repairRepTb.repair_comment = 1 ) AS RepairOrderTotal,
         SUM( repair_money ) AS MoneyTotal
         FROM
@@ -191,7 +192,6 @@
         LEFT JOIN sys_user AS u ON repairRepTb.repaire_id = u.user_id
         LEFT JOIN sys_dept AS d ON d.dept_id = u.dept_id
         <where>
-            and repairRepTb.repair_comment = 1
             and repairRepTb.repair_destory = 1
             <if test="repairMonth != null "> and repairRepTb.repair_month = #{repairMonth}</if>
             <if test="repaireName != null "> and repairRepTb.repaire_name = #{repaireName}</if>
