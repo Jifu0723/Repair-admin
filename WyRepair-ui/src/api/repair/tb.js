@@ -18,6 +18,15 @@ export function MonthWorkList(query) {
   })
 }
 
+// 月酬金总金额、月维修单总数查询
+export function MoneyTotal(query) {
+  return request({
+    url: '/repair/tb/moneytotal',
+    method: 'get',
+    params: query
+  })
+}
+
 // 获取用户信息（姓名、手机号码、所在二级学院等）
 export function UserInformation(query) {
   return request({

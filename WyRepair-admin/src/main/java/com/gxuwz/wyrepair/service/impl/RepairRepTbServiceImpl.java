@@ -171,19 +171,41 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     {
         return repairRepTbMapper.deleteRepairRepTbById(repairId);
     }
-
+    /**
+     * 查询完成的维修单列表
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
     @Override
     public List<Map<String, Object>> RepairTotalList(Map<String, Object> params) {
         return repairRepTbMapper.RepairTotalList(params);
     }
-
+    /**
+     * 查询月酬金表数据
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
     @Override
     public List<Map<String, Object>> selectRepairWorkTotal(Map<String, Object> params) {
         return repairRepTbMapper.selectRepairWorkTotal(params);
     }
-
+    /**
+     * 获取用户信息（姓名、手机号码、所在二级学院等）
+     */
     @Override
     public Map UserInformation(Map<String, Object> params) {
         return repairRepTbMapper.UserInformation(params);
+    }
+    /**
+     * 查询完成的维修单列表（工资结算后台）
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    @Override
+    public Map MonthMoneyTotal(Map<String, Object> params) {
+        return repairRepTbMapper.MonthMoneyTotal(params);
     }
 }

@@ -143,7 +143,6 @@ public class ApiRepairRepTbController extends BaseController {
     }
 
     @ApiOperation("维修人员接单")
-    @PreAuthorize("@ss.hasPermi('repair:tb:add')")
     @PostMapping("/receiveRep")
     public AjaxResult receiveRep(@RequestBody RepairRepTb repairRepTb) {
         // 验证维修单是否已被接单

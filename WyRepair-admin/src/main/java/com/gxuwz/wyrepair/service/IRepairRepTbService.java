@@ -118,7 +118,7 @@ public interface IRepairRepTbService
     List<Map<String, Object>> RepairTotalList(Map<String, Object> params);
 
     /**
-     * 查询完成的维修单列表（工资结算）
+     * 查询完成的维修单列表（工资结算移动端）
      *
      * @param params 维修单列表
      * @return 维修单列表集合
@@ -136,4 +136,11 @@ public interface IRepairRepTbService
      * 获取用户信息（姓名、手机号码、所在二级学院等）
      */
     Map UserInformation(Map<String, Object> params);
+    /**
+     * 查询完成的维修单列表（工资结算后台）
+     *
+     * @param params 维修单列表
+     * @return 维修单列表集合
+     */
+    Map MonthMoneyTotal(Map<String, Object> params);
 }

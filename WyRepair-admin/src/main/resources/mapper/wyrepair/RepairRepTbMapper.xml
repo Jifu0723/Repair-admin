@@ -159,6 +159,22 @@
         repair_month
     </select>
 
+    <select id="MonthMoneyTotal"  parameterType="String" resultType="Map">
+        SELECT
+        repair_money as repairMoney,
+        repair_address as repairAddress,
+        repair_content as repairContent,
+        repair_month as repairMonth,
+        SUM( repair_money ) AS RepairMoneyTotal,
+        COUNT(*) AS RepairOrderTotal
+        FROM repair_rep_tb
+        <where>
+            and repair_destory = 1
+            <if test="repairMonth != null "> and repair_month = #{repairMonth}</if>
+            <if test="repaireName != null "> and repaire_name = #{repaireName}</if>
+        </where>
+    </select>
+
     <select id="UserInformation"  parameterType="String" resultType="Map">
         SELECT
         u.nick_name AS nickName,
@@ -185,7 +201,7 @@
         repairRepTb.repair_month AS repairMonth,
         repairRepTb.repair_type AS repairType,
         repairRepTb.repair_day AS repairDay,
-        SUM( repairRepTb.repair_day AND repairRepTb.repair_destory = 1 AND repairRepTb.repair_comment = 1 ) AS RepairOrderTotal,
+        SUM( repairRepTb.repair_day AND repairRepTb.repair_destory = 1 ) AS RepairOrderTotal,
         SUM( repair_money ) AS MoneyTotal
         FROM
         repair_rep_tb AS repairRepTb

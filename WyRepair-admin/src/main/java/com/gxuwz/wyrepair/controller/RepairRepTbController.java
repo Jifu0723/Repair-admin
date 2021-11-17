@@ -100,14 +100,25 @@ public class RepairRepTbController extends BaseController {
     @ApiOperation("查询转单记录列表")
     @GetMapping("/monthworklist")
     public TableDataInfo monthworklist(@RequestParam Map<String, Object> params)
-    {
-        System.out.println(params);
+    { ;
         // 获取用户信息
         SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
         params.put("repaireName",user.getNickName());
         List<Map<String,Object>> list = repairRepTbService.selectRepairWorkTotal(params);
-        System.out.println(list);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询所有报修单列表(工资结算后端)
+     */
+    @ApiOperation("查询报修单列表(工资结算后端)")
+    @GetMapping("/moneytotal")
+    public AjaxResult moneytotal(@RequestParam  Map<String, Object> params) {
+        // 获取用户信息
+        SysUser user = tokenService.getLoginUser(ServletUtils.getRequest()).getUser();
+        params.put("repaireName",user.getNickName());
+        Map map   = repairRepTbService.MonthMoneyTotal(params);
+        return AjaxResult.success(map);
     }
 
     /**
