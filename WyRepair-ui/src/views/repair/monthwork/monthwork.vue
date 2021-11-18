@@ -55,7 +55,7 @@
         <tr align='center' style="height: 2.5rem">
           <th colspan="2">工作内容</th>
           <td colspan="5">
-							<span style="color: red" v-for="(item,index) in doubleMonthList"> {{
+							<span  v-for="(item,index) in doubleMonthList"> {{
                   item.work1.repairType == 1 ? '网络设备' : item.work1.repairType == 2 ? '水电类' : item.work1.repairType == 3 ? '家具类' : item.work1.repairType == 4 ? '办公室设备'
                     : item.work1.repairType == 6 ? '教学电子' : item.work1.repairType == 7 ? '电器类' : item.work1.repairType == 8 ? '木材类' : ''
                 }}</span>维修、换新、换配件

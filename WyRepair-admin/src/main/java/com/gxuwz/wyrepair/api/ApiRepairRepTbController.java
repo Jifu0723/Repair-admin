@@ -78,7 +78,6 @@ public class ApiRepairRepTbController extends BaseController {
      * 查询报修单列表
      */
     @ApiOperation("查询报修单列表")
-    @PreAuthorize("@ss.hasPermi('repair:tb:list')")
     @GetMapping("/list")
     public TableDataInfo list(RepairRepTb repairRepTb) {
         startPage();
@@ -99,6 +98,7 @@ public class ApiRepairRepTbController extends BaseController {
             return getDataTable(list);
         }
     }
+
 
     /**
      * 查询所有报修单列表(工资结算)
