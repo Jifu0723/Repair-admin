@@ -42,7 +42,6 @@ public class ApiRepairReptransferController extends BaseController
      * 查询转单记录列表
      */
     @ApiOperation("查询转单记录列表")
-    @PreAuthorize("@ss.hasPermi('repair:reptransfer:list')")
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam Map<String, Object> params)
     {
@@ -72,7 +71,6 @@ public class ApiRepairReptransferController extends BaseController
      */
     @ApiOperation("获取转单记录详细信息")
     @ApiImplicitParam(name = "reptransferId", value = "转单记录D", required = true, dataType = "int", paramType = "path")
-    @PreAuthorize("@ss.hasPermi('repair:reptransfer:query')")
     @GetMapping(value = "/{reptransferId}")
     public AjaxResult getInfo(@PathVariable("reptransferId") Long reptransferId)
     {
@@ -84,7 +82,6 @@ public class ApiRepairReptransferController extends BaseController
      */
     @ApiOperation("新增转单记录")
     @ApiImplicitParam(name = "RepairReptransfer", value = "新增转单记录", dataType = "RepairReptransfer")
-    @PreAuthorize("@ss.hasPermi('repair:reptransfer:add')")
     @Log(title = "转单记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody RepairReptransfer repairReptransfer)
@@ -96,7 +93,6 @@ public class ApiRepairReptransferController extends BaseController
      * 修改转单记录
      */
     @ApiOperation("修改转单记录")
-    @PreAuthorize("@ss.hasPermi('repair:reptransfer:edit')")
     @Log(title = "转单记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody RepairReptransfer repairReptransfer)
@@ -109,7 +105,6 @@ public class ApiRepairReptransferController extends BaseController
      */
     @ApiOperation("删除转单记录")
     @ApiImplicitParam(name = "reptransferIds", value = "转单记录ID", required = true, dataType = "int,int[]", paramType = "path")
-    @PreAuthorize("@ss.hasPermi('repair:reptransfer:remove')")
     @Log(title = "转单记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{reptransferIds}")
     public AjaxResult remove(@PathVariable Long[] reptransferIds)
