@@ -1,6 +1,6 @@
 <template>
   <div class="c01">
-    <h1 class="title">欢迎登录梧州学院后勤报修数字化管理平台</h1>
+    <h1 class="title">欢迎登录后勤报修数字化管理平台</h1>
     <img
       src="../assets/images/login_bg.jpg"
       width="100%"

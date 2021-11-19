@@ -16,7 +16,7 @@
     <el-tab-pane label="12月"></el-tab-pane>
     <div id="printer">
       <div style="font-size: 30px;text-align: center;font-weight: 900;margin-top: 10px">
-        梧州学院{{ new Date().getFullYear() }}年{{ queryParams.repairMonth }}月份后勤报修工作考勤表
+        {{ new Date().getFullYear() }}年{{ queryParams.repairMonth }}月份后勤报修工作考勤表
       </div>
       <table style="font-size: 17px;margin-left: 10%;margin-top:20px;text-align: center" border="1" cellspacing="0" width="80%"
              class="table" rules="all">
@@ -24,7 +24,7 @@
           <th colspan="3">维修员姓名</th>
           <td colspan="1">{{ UserInformationList.nickName }}</td>
           <th colspan="2">用工部门</th>
-          <td colspan="1" v-text="">梧州学院后勤部</td>
+          <td colspan="1" v-text="">高校后勤部门</td>
         </tr>
         <tr align='center' style="height: 2.5rem">
           <th colspan="3">工号</th>
