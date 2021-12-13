@@ -16,7 +16,7 @@
     <el-tab-pane label="12月"></el-tab-pane>
     <div id="printer">
       <div style="font-size: 30px;text-align: center;font-weight: 900;margin-top: 10px">
-        {{ new Date().getFullYear() }}年{{ queryParams.repairMonth }}月份后勤报修工作考勤表
+       梧州学院 {{ new Date().getFullYear() }}年{{ queryParams.repairMonth }}月份后勤报修工作考勤表
       </div>
       <table style="font-size: 17px;margin-left: 10%;margin-top:20px;text-align: center" border="1" cellspacing="0" width="80%"
              class="table" rules="all">
