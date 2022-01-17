@@ -189,7 +189,7 @@ public class ApiRepairRepTbController extends BaseController {
      * @return AjaxResult
      */
     @ApiOperation("转单（维修专员跨部门转单）")
-    @PreAuthorize("@ss.hasPermi('repair:tb:transferToDep')")
+//    @PreAuthorize("@ss.hasPermi('repair:tb:transferToDep')")
     @GetMapping("/transferFromDep")
     public AjaxResult transferFromDep(@ApiParam(name = "repairRepTb", value = "维修单实体") RepairRepTb repairRepTb, long deptId, Long repairType) {
         // 原报修单运转状态改变

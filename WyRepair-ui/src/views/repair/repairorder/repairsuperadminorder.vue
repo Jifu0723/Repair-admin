@@ -1023,6 +1023,7 @@ export default {
       this.queryParams.repairState = 1 //待接的维修单数量
       reptbList(this.queryParams).then(response => {
         this.WaitOrderTotal = response.rows.length;
+        console.log(this.WaitOrderTotal)
       });
     },
     //查询已接单维修单总数
@@ -1050,6 +1051,7 @@ export default {
     getRepairOrderTotal() {
       listApply(this.queryParams).then(response => {
         this.RepairOrderTotal = response.rows.length
+        console.log(this.RepairOrderTotal)
       });
     },
     // 格式化时间

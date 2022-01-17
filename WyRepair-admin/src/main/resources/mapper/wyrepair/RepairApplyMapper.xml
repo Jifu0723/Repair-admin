@@ -62,8 +62,8 @@
         apply_create_time,
         apply_is_delete,
         appimgs.*
-        from repair_apply
-        left join repair_app_img appimgs on repair_apply.apply_id = appimgs.app_id
+        from repair_app_img appimgs
+        left join repair_apply on repair_apply.apply_id = appimgs.app_id
         <where>
             <if test="applyNo != null  and applyNo != ''">and apply_no = #{applyNo}</if>
             <if test="applyAddress != null  and applyAddress != ''">and apply_address = #{applyAddress}</if>
