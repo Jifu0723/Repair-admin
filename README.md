@@ -1,46 +1,23 @@
 ## 平台简介
 
-若依是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
+随着梧州学院师生数量的增加和校园规模的扩大，传统的报修模式已经不能适应越来越多繁重的工作量，给后勤报修服务带来了很大的压力。目前，传统的后勤服务形式主要存在以下不足：
+1、平台使用受众窄。传统的后勤管理平台基于PC端，数据上报与获取必须使用计算机终端进行操作。尽管平台报修系统设备并不陈旧，但由于当下受到使用移动终端解决问题惯性思维的影响，保修需要“舍近求远”，很大程度上影响人们的积极性。
+2、报修信息共享差。如维修人员遇到无法修复的报修单时，往往需要通过电话形式通知其他维修人员，造成报修信息传递不及时，降低了维修工作的效率。
+3、报修数据统计难。如在面对大量来自不同二级部门的报修单时，往往需要通过人力去统计，不仅给统计人员带来繁重的工作量，也易导致报修数据记录丢失，不利于后勤服务的发展。
+4、信息互动效率低。如设备在维护好的情况下，师生无法对设备的维修情况及时做出反馈，后勤服务人员无法及时发现维修后存在的隐患，导致设备容易出现二次维修。
+综上所述，正是在如此背景下，制定一套解决高校后勤报修管理的方案尤其重要，在传统后勤管理模式的基础上[1]，提出一种直观、快捷的快修体系，在确保报修信息传递准确、快速的同时，提高报修单信息的共享，减少全校师生及后勤工作人员不必要的烦劳奔走，给后勤服务提供了重要保障。
 
-* 前端采用Vue、Element UI。
-* 后端采用Spring Boot、Spring Security、Redis & Jwt。
-* 权限认证使用Jwt，支持多终端认证系统。
-* 支持加载动态权限菜单，多方式轻松权限控制。
-* 高效率开发，使用代码生成器可以一键生成前后端代码。
-* 提供了单应用版本[RuoYi-Vue-fast](https://github.com/yangzongzhuan/RuoYi-Vue-fast)，Oracle版本[RuoYi-Vue-Oracle](https://github.com/yangzongzhuan/RuoYi-Vue-Oracle)，保持同步更新。
-* 不分离版本，请移步[RuoYi](https://gitee.com/y_project/RuoYi)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
-* 特别鸣谢：[element](https://github.com/ElemeFE/element)，[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，[eladmin-web](https://github.com/elunez/eladmin-web)。
-* 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
-* 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
+## 平台内置功能
 
-## 内置功能
+1.  用户信息管理：用户是系统操作者，该功能主要完成维修专员信息、维修人员信息、学生信息、教职工信息管理。
+2.  基础数据管理：配置系统设备维修类型、期望维修类型、二级学院信息管理。
+3.  报修数据管理：配置系统报修提交，接单、转单、销单、派单、注册、评论、维修单数据统计。
+4.  薪酬结算管理：配置系统菜单，操作权限，按钮权限标识等。
+5.  角色信息管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
+6.  菜单信息管理：配置系统菜单，操作权限，按钮权限标识等。
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  通知公告：系统通知公告信息发布维护。
-9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10. 登录日志：系统登录日志记录查询包含登录异常。
-11. 在线用户：当前系统中活跃用户状态监控。
-12. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-13. 代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
-14. 系统接口：根据业务代码自动生成相关的api接口文档。
-15. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-16. 缓存监控：对系统的缓存信息查询，命令统计等。
-17. 在线构建器：拖动表单元素生成相应的HTML代码。
-18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
-## 在线体验
 
-- admin/admin123  
-- 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
-
-演示地址：http://vue.ruoyi.vip  
-文档地址：http://doc.ruoyi.vip
 
 ## 演示图
 
@@ -78,8 +55,3 @@
         <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
     </tr>
 </table>
-
-
-## 若依前后端分离交流群
-
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5bVB1og) [![加入QQ群](https://img.shields.io/badge/已满-887144332-blue.svg)](https://jq.qq.com/?_wv=1027&k=5eiA4DH) [![加入QQ群](https://img.shields.io/badge/已满-180251782-blue.svg)](https://jq.qq.com/?_wv=1027&k=5AxMKlC) [![加入QQ群](https://img.shields.io/badge/已满-104180207-blue.svg)](https://jq.qq.com/?_wv=1027&k=51G72yr) [![加入QQ群](https://img.shields.io/badge/已满-186866453-blue.svg)](https://jq.qq.com/?_wv=1027&k=VvjN2nvu) [![加入QQ群](https://img.shields.io/badge/已满-201396349-blue.svg)](https://jq.qq.com/?_wv=1027&k=5vYAqA05) [![加入QQ群](https://img.shields.io/badge/101456076-blue.svg)](https://jq.qq.com/?_wv=1027&k=kOIINEb5) 点击按钮入群。
