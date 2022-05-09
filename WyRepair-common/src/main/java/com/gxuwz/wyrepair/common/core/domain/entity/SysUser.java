@@ -1,5 +1,6 @@
 package com.gxuwz.wyrepair.common.core.domain.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.Email;
@@ -17,7 +18,7 @@ import com.gxuwz.wyrepair.common.core.domain.BaseEntity;
 
 /**
  * 用户对象 sys_user
- * 
+ *
  * @author ruoyi
  */
 public class SysUser extends BaseEntity
@@ -79,6 +80,18 @@ public class SysUser extends BaseEntity
     /** 银行卡信息是否填写状态（0.未填写1.已填写） */
     @Excel(name = "银行卡信息是否填写状态（0.未填写1.已填写）")
     private Long state;
+
+    /** 微信用户ID */
+    @Excel(name = "微信用户ID")
+    private String wxid;
+
+    public String getWxid() {
+        return wxid;
+    }
+
+    public void setWxid(String wxid) {
+        this.wxid = wxid;
+    }
 
     /** 部门对象 */
     @Excels({
@@ -327,27 +340,28 @@ public class SysUser extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("userId", getUserId())
-            .append("deptId", getDeptId())
-            .append("userName", getUserName())
-            .append("nickName", getNickName())
-            .append("email", getEmail())
-            .append("phonenumber", getPhonenumber())
-            .append("sex", getSex())
-            .append("avatar", getAvatar())
-            .append("password", getPassword())
-            .append("salt", getSalt())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("loginIp", getLoginIp())
-            .append("loginDate", getLoginDate())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .append("dept", getDept())
-            .toString();
+        return "SysUser{" +
+                "userId=" + userId +
+                ", deptId=" + deptId +
+                ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", email='" + email + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", loginDate=" + loginDate +
+                ", state=" + state +
+                ", wxid='" + wxid + '\'' +
+                ", dept=" + dept +
+                ", roles=" + roles +
+                ", roleIds=" + Arrays.toString(roleIds) +
+                ", postIds=" + Arrays.toString(postIds) +
+                ", roleId=" + roleId +
+                '}';
     }
 }

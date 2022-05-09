@@ -32,6 +32,7 @@
         <result property="repaireId"    column="repaire_id"    />
         <!-- 维修类型 -->
         <association property="repType" javaType="com.gxuwz.wyrepair.domain.RepairReptype">
+            <result property="repairTypeId" column="repairtypeid"/>
             <result property="repairType" column="repairtype"/>
         </association>
         <!--报修单与申请单一对一关系-->
@@ -506,6 +507,20 @@
         where repair_id = #{repairId}
     </select>
 
+    <select id="selectRepairId" parameterType="Long" resultMap="RepairRepTbResult">
+        SELECT
+            rtb.repair_address AS repairAddress,
+            rtb.repair_content AS repairContent,
+            rtb.repair_name AS repairName,
+            rtb.repair_id AS repairId,
+            rtype.repair_type AS repairType
+            FROM repair_rep_tb AS rtb
+            LEFT JOIN repair_reptype AS rtype ON  rtype.repair_type_id = rtb.repair_type
+        <where>
+            <if test="repairId != null "> and rtb.repair_id = #{repairId}</if>
+        </where>
+    </select>
+
     <insert id="insertRepairRepTb" parameterType="RepairRepTb" useGeneratedKeys="true" keyProperty="repairId">
         insert into repair_rep_tb
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -689,7 +704,7 @@
         </where>
     </select>
 
-    
+
     <!-- 后勤部门管理员按二级学院id、报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月报表-->
     <select id="CountCollegeByRepairOrder" parameterType="String" resultType="map">
         select

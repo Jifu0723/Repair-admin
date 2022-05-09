@@ -1,5 +1,6 @@
 package com.gxuwz.wyrepair.api;
 
+import cn.hutool.core.date.DateUtil;
 import com.gxuwz.wyrepair.common.annotation.Log;
 import com.gxuwz.wyrepair.common.core.controller.BaseController;
 import com.gxuwz.wyrepair.common.core.domain.AjaxResult;
@@ -11,19 +12,14 @@ import com.gxuwz.wyrepair.common.core.page.TableDataInfo;
 import com.gxuwz.wyrepair.common.enums.BusinessType;
 import com.gxuwz.wyrepair.common.utils.ServletUtils;
 import com.gxuwz.wyrepair.common.utils.poi.ExcelUtil;
+import com.gxuwz.wyrepair.domain.*;
 import com.gxuwz.wyrepair.framework.web.service.TokenService;
-import com.gxuwz.wyrepair.domain.RepairApply;
-import com.gxuwz.wyrepair.domain.RepairProcess;
-import com.gxuwz.wyrepair.domain.RepairRepTb;
-import com.gxuwz.wyrepair.domain.RepairReptransfer;
-import com.gxuwz.wyrepair.service.IRepairApplyService;
-import com.gxuwz.wyrepair.service.IRepairProcessService;
-import com.gxuwz.wyrepair.service.IRepairRepTbService;
-import com.gxuwz.wyrepair.service.IRepairReptransferService;
+import com.gxuwz.wyrepair.service.*;
 import com.gxuwz.wyrepair.system.service.ISysRoleService;
 import com.gxuwz.wyrepair.util.RepairCodeGen;
 import com.gxuwz.wyrepair.system.service.ISysDeptService;
 import com.gxuwz.wyrepair.system.service.ISysUserService;
+import com.gxuwz.wyrepair.util.WxMsgUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +42,8 @@ public class ApiRepairRepTbController extends BaseController {
     @Autowired
     private IRepairRepTbService repairRepTbService;
     @Autowired
+    private IRepairReptypeService repairReptypeService;
+    @Autowired
     private IRepairApplyService applyService;
     @Autowired
     private IRepairProcessService processService;
@@ -59,6 +57,8 @@ public class ApiRepairRepTbController extends BaseController {
     private ISysDeptService deptService;
     @Autowired
     private ISysRoleService roleService;
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 角色【维修专员】
@@ -193,6 +193,7 @@ public class ApiRepairRepTbController extends BaseController {
     @GetMapping("/transferFromDep")
     public AjaxResult transferFromDep(@ApiParam(name = "repairRepTb", value = "维修单实体") RepairRepTb repairRepTb, long deptId, Long repairType) {
         // 原报修单运转状态改变
+        System.out.println(repairRepTb);
         repairRepTb.setCurWork(0);
         repairRepTbService.updateRepairRepTb(repairRepTb);
         // 获取用户信息
@@ -206,7 +207,7 @@ public class ApiRepairRepTbController extends BaseController {
         RepairRepTb newRepair = new RepairRepTb();
         newRepair.initRepairApply(apply, RepairCodeGen.genApplyNo(), deptId);
         newRepair.setRepairType(repairType);
-        newRepair.setRepairState(3);//报修状态为转单中
+        newRepair.setRepairState(1);//报修状态为等待接单
         newRepair.setRepairedState(4);//设置设备维修后的状态为等待维修
         newRepair.setRepairName(repairReptb.getRepairName());//报修者姓名
         newRepair.setRepairMoney(repairReptb.getRepairMoney());//维修单价格
@@ -370,11 +371,27 @@ public class ApiRepairRepTbController extends BaseController {
             @ApiParam(name = "repTb", value = "维修单对象") RepairRepTb repTb,
             @ApiParam(name = "userName", value = "派单对象姓名") String userName,
             @ApiParam(name = "userId", value = "派单对象工号") Long userId) {
+        System.out.println(repTb);
+        System.out.println(userName);
+        System.out.println(userId);
         // 检验该单是否已被维修人员抢单
         RepairRepTb checkRep = repairRepTbService.selectRepairRepTbById(repTb.getRepairId());
         if(checkRep.getRepairState()==2){
             return AjaxResult.error("转单失败，该单已被维修人员接单了！");
         }
+
+        //分配消息推送
+        SysUser sysUser = userService.selectUserByUserName(userName);
+        // 查询报修单类型名称
+        RepairReptype reptype = repairReptypeService.selectRepairReptypeById(checkRep.getRepairType());
+        String wxId = sysUser.getWxid();//微信用户ID
+        String repairType = reptype.getRepairType();//报修类型名称
+        String repairAddress = checkRep.getRepairAddress();//报修地址
+        String repairName = checkRep.getRepairName();//申报人名字
+        String repairContent = checkRep.getRepairContent();//报修内容
+        String phonenumber = sysUser.getPhonenumber();//申报人电话号码
+        WxMsgUtil.pushOneUser(wxId,repairType,repairAddress,repairName,repairContent,phonenumber,"pages/myNeedDealt/deptIndex");
+
         //更新维修单状态
         repTb.setRepairState(2);
         repairRepTbService.updateRepairRepTb(repTb);

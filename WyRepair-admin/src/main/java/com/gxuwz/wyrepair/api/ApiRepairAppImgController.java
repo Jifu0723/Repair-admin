@@ -97,6 +97,7 @@ public class ApiRepairAppImgController extends BaseController
         StringBuilder dir = new StringBuilder("/");//文件路径
         String fileName = "";//文件全名称
         List<String> paths = StringUtils.str2List(uploadPath.substring(1), "/",false,true);
+        System.out.println(uploadPath);
         paths.remove(0);
         for (int i = 0; i < paths.size(); i++) {
             if(i==paths.size()-1){

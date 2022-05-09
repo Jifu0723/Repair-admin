@@ -11,19 +11,19 @@ import java.util.Map;
 
 /**
  * 报修单Service业务层处理
- * 
+ *
  * @author LMTeamTop-2018
  * @date 2021-05-10
  */
 @Service
-public class RepairRepTbServiceImpl implements IRepairRepTbService 
+public class RepairRepTbServiceImpl implements IRepairRepTbService
 {
     @Autowired
     private RepairRepTbMapper repairRepTbMapper;
 
     /**
      * 查询报修单
-     * 
+     *
      * @param repairId 报修单ID
      * @return 报修单
      */
@@ -32,6 +32,19 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
     {
         return repairRepTbMapper.selectRepairRepTbById(repairId);
     }
+
+    /**
+     * 查询报修单
+     *
+     * @param repairId 报修单ID
+     * @return 报修单
+     */
+    @Override
+    public RepairRepTb selectRepairId(Long repairId)
+    {
+        return repairRepTbMapper.selectRepairId(repairId);
+    }
+
     /**
      * 后勤部门管理员按二级学院id、报修时间、报修类型、维修人员姓名、设备维修后状态、报修人姓名统计报修信息输出日、周、月
      * 报表(查询)
@@ -126,7 +139,7 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
 
     /**
      * 新增报修单
-     * 
+     *
      * @param repairRepTb 报修单
      * @return 结果
      */
@@ -138,7 +151,7 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
 
     /**
      * 修改报修单
-     * 
+     *
      * @param repairRepTb 报修单
      * @return 结果
      */
@@ -150,7 +163,7 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
 
     /**
      * 批量删除报修单
-     * 
+     *
      * @param repairIds 需要删除的报修单ID
      * @return 结果
      */
@@ -162,7 +175,7 @@ public class RepairRepTbServiceImpl implements IRepairRepTbService
 
     /**
      * 删除报修单信息
-     * 
+     *
      * @param repairId 报修单ID
      * @return 结果
      */

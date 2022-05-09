@@ -8,15 +8,15 @@ import java.util.Map;
 
 /**
  * 报修单Mapper接口
- * 
+ *
  * @author LMTeamTop-2018
  * @date 2021-05-10
  */
-public interface RepairRepTbMapper 
+public interface RepairRepTbMapper
 {
     /**
      * 查询报修单
-     * 
+     *
      * @param repairId 报修单ID
      * @return 报修单
      */
@@ -32,7 +32,7 @@ public interface RepairRepTbMapper
 
     /**
      * 查询报修单列表（维修人员查看）
-     * 
+     *
      * @param repairRepTb 报修单
      * @param repairUserid 报修单所属维修人员
      * @return 报修单集合
@@ -41,7 +41,7 @@ public interface RepairRepTbMapper
 
     /**
      * 新增报修单
-     * 
+     *
      * @param repairRepTb 报修单
      * @return 结果
      */
@@ -49,7 +49,7 @@ public interface RepairRepTbMapper
 
     /**
      * 修改报修单
-     * 
+     *
      * @param repairRepTb 报修单
      * @return 结果
      */
@@ -57,7 +57,7 @@ public interface RepairRepTbMapper
 
     /**
      * 删除报修单
-     * 
+     *
      * @param repairId 报修单ID
      * @return 结果
      */
@@ -65,7 +65,7 @@ public interface RepairRepTbMapper
 
     /**
      * 批量删除报修单
-     * 
+     *
      * @param repairIds 需要删除的数据ID
      * @return 结果
      */
@@ -143,4 +143,12 @@ public interface RepairRepTbMapper
      * 报表(查询)
      */
     Map countrepairAdminTimeByrepairType(Map<String, Object> params);
+
+    /**
+     * 查询报修单和报修类型的名称（连表查询）
+     *
+     * @param repairId 报修单ID
+     * @return 报修单
+     */
+    RepairRepTb selectRepairId(Long repairId);
 }

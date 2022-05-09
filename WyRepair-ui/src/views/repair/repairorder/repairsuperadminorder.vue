@@ -83,7 +83,7 @@
       <div>
         <div style="width: 100%;height:150px;">
           <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 8%">
+               style="width: 250px;height: 120px; background-color: #1ab394;float: left;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px;margin-left: 18%">
             <i class="el-icon-pear"></i>
             <count-to :end-val="WaitOrderTotal" :duration="3600" class="card-panel-num"/>
             <div class="card-panel-text">
@@ -100,14 +100,6 @@
             </div>
           </div>
 
-          <div class="card-panel"
-               style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
-            <i class="el-icon-watermelon"></i>
-            <count-to :end-val="TransferOrderTotal" :duration="3600" class="card-panel-num"/>
-            <div class="card-panel-text">
-              转单中
-            </div>
-          </div>
 
           <div class="card-panel"
                style="width: 250px;height: 120px; background-color: #1ab394;float: left;margin-left:40px;line-height: 60px;text-align: center;color: #ffffff;font-size: 28px">
@@ -180,25 +172,16 @@
               <el-steps v-if="scope.row.repairState === 1" :active="scope.row.repairState" finish-status="success">
                 <el-step title="待接单"></el-step>
                 <el-step title="已接单"></el-step>
-                <el-step title="转单中"></el-step>
                 <el-step title="已完成"></el-step>
               </el-steps>
               <el-steps v-if="scope.row.repairState === 2" :active="scope.row.repairState" finish-status="success">
                 <el-step title="待接单"></el-step>
                 <el-step title="已接单"></el-step>
-                <el-step title="转单中"></el-step>
-                <el-step title="已完成"></el-step>
-              </el-steps>
-              <el-steps v-if="scope.row.repairState === 3" :active="scope.row.repairState" finish-status="success">
-                <el-step title="待接单"></el-step>
-                <el-step title="已接单"></el-step>
-                <el-step title="转单中"></el-step>
                 <el-step title="已完成"></el-step>
               </el-steps>
               <el-steps v-if="scope.row.repairState === 4" :active="scope.row.repairState" finish-status="success">
                 <el-step title="待接单"></el-step>
                 <el-step title="已接单"></el-step>
-                <el-step title="转单中"></el-step>
                 <el-step title="已完成"></el-step>
               </el-steps>
             </template>
