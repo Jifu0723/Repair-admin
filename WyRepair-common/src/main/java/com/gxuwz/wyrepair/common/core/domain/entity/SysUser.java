@@ -85,6 +85,18 @@ public class SysUser extends BaseEntity
     @Excel(name = "微信用户ID")
     private String wxid;
 
+    /** 授权标识ID */
+    @Excel(name = "授权标识ID")
+    private Long grantid;
+
+    public Long getGrantid() {
+        return grantid;
+    }
+
+    public void setGrantid(Long grantid) {
+        this.grantid = grantid;
+    }
+
     public String getWxid() {
         return wxid;
     }
@@ -357,6 +369,7 @@ public class SysUser extends BaseEntity
                 ", loginDate=" + loginDate +
                 ", state=" + state +
                 ", wxid='" + wxid + '\'' +
+                ", grantid=" + grantid +
                 ", dept=" + dept +
                 ", roles=" + roles +
                 ", roleIds=" + Arrays.toString(roleIds) +

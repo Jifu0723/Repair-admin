@@ -71,6 +71,30 @@ public class RepairRegisterUser extends BaseEntity
     @Excel(name = "银行卡信息是否填写状态（0.未填写1.已填写）")
     private Long state;
 
+    /** 微信用户ID */
+    @Excel(name = "微信用户ID")
+    private String wxid;
+
+    /** 授权标识ID */
+    @Excel(name = "授权标识ID")
+    private Long grantid;
+
+    public String getWxid() {
+        return wxid;
+    }
+
+    public void setWxid(String wxid) {
+        this.wxid = wxid;
+    }
+
+    public Long getGrantid() {
+        return grantid;
+    }
+
+    public void setGrantid(Long grantid) {
+        this.grantid = grantid;
+    }
+
     /** 最后登录时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -228,6 +252,8 @@ public class RepairRegisterUser extends BaseEntity
                 ", delFlag='" + delFlag + '\'' +
                 ", loginIp='" + loginIp + '\'' +
                 ", state=" + state +
+                ", wxid='" + wxid + '\'' +
+                ", grantid=" + grantid +
                 ", loginDate=" + loginDate +
                 '}';
     }

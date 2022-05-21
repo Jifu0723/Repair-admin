@@ -1,7 +1,4 @@
-# 项目相关配置
-ruoyi:
-    # 文件路径 示例（ Windows配置D:/zyy/uploadPath，Linux配置/opt/zyy-hospital/uploadPath）
-    profile: D:/wyrepair/uploadPath
+
 # 数据源配置
 spring:
     datasource:
@@ -13,8 +10,8 @@ spring:
 #                url: jdbc:mysql://120.24.6.71:3306/wyrepair?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
 #                username: wyrepair
 #                password: 123456
-                url: jdbc:mysql://127.0.0.1:3306/wyrepair?serverTimezone=CST
-                username: root
+                url: jdbc:mysql://120.24.6.71:3306/wyreapir?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+                username: wyreapir
                 password: 123456
             # 从库数据源
             slave:

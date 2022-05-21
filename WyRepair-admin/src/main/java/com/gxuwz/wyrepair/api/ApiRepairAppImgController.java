@@ -82,6 +82,7 @@ public class ApiRepairAppImgController extends BaseController
     @Log(title = "申请单图片", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(RepairAppImg repairAppImg, MultipartFile imgFile) throws IOException {
+        System.out.println(imgFile);
         String uploadPath = null;
         if (imgFile == null) {
             return AjaxResult.error();
